@@ -1,4 +1,4 @@
-/*global window, console*/
+/*global window, Exception, OpenSeadragon*/
 
 // polyfill forEach
 if (!Array.prototype.forEach) {
@@ -11,15 +11,16 @@ if (!Array.prototype.forEach) {
 }
 
 window.KbOSD = (function(window, undefined) {
+    // Make and prepare a uidGenerator
     var UIDGen = function (initial) {
         initial = initial || 0;
         this.generate = function () {
             return initial++;
-        }
-    }
-
+        };
+    };
     var uidGen = new UIDGen();
 
+    // Inject script method
     var loadAdditionalJavascript = function (url, callback) {
             var script = document.createElement('script');
             script.async = true;
@@ -36,7 +37,16 @@ window.KbOSD = (function(window, undefined) {
                     script.onload = null;
                 }
             };
+        };
+
+    // Setup a document.listener for for the event openseadragonloaded
+    document.addEventListener('openseadragonloaded', function () {
+        if (window.kbOSDconfig !== undefined) {
+            window.kbOSDconfig.forEach(function (config) {
+                new KbOSD(config);
+            }, this);
         }
+    });
 
     // initialization
     // add openSeaDragon script
@@ -64,12 +74,10 @@ window.KbOSD = (function(window, undefined) {
         this.uid = 'kbOSD-' + uidGen.generate();
         this.config = config;
         this.outerContainer = document.getElementById(this.config.id);
-        this.outerContainer.innerHTML = '<div class="kbOSDContainer"><div class="kbOSDHeader"></div><div id="' + this.uid + '" class="kbOSDContent"></div><div class="kbOSDFooter"></div></div>'
+        this.outerContainer.innerHTML = '<div class="kbOSDViewer"><div class="kbOSDHeader"></div><div id="' + this.uid + '" class="kbOSDContent"></div><div class="kbOSDFooter"></div></div>';
         config.id = this.uid;
-console.log('OpenSeadragon: ', typeof OpenSeadragon);
-        debugger; // We're going in!
-        this.openSeadragon = OpenSeadragon(config);
-        this.hash.push(this);
+        that.openSeadragon = OpenSeadragon(config);
+        that.hash.push(that);
     };
 
     KbOSD.prototype = {

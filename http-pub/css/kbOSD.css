@@ -1,28 +1,28 @@
-.kbOSDContainer{
+.kbOSDViewer{
     position:relative;
     overflow:hidden;
     height:100%;
 }
-.kbOSDContainer .kbOSDHeader{
+.kbOSDViewer .kbOSDHeader{
     position:absolute;
     top:0;
     width:100%;
-    height:52px;
+    height:48px;
     background-color: #000;
 }
-.kbOSDContainer .kbOSDContent{
+.kbOSDViewer .kbOSDContent{
     position:absolute;
-    top:52px;
-    bottom:52px;
+    top:48px;
+    bottom:48px;
     width:100%;
     z-index:90;
 }
-.kbOSDContainer .kbOSDFooter{
+.kbOSDViewer .kbOSDFooter{
     position:absolute;
     bottom:0;
     width:100%;
-    height:52px;
-    background-color: rgba(48,48,48,0.8);
+    height:48px;
+    background-color: #000;
     z-index:100;
 }
 
