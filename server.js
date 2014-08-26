@@ -29,7 +29,7 @@ function createResponseFunction(port) {
                         res.set('Content-Type', 'Application/javascript');
                         res.send(200, req.query.callback + '(' + data + ');');
                     } else {
-                        logMsg('returning a normal file request ' + fileName);
+                        logMsg('returning a normal file request ' + fileName + ' (filetype: ' + mime.lookup(path.extname(fileName)) + ')');
                         res.set('Content-Type', mime.lookup(path.extname(fileName)));
                         res.send(200, data);
                     }
