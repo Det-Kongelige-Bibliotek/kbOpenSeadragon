@@ -8,6 +8,25 @@
     <h4>Her kommer der en kbOpenSeadragon instans:</h4>
     <div style="border:1px solid black;width:1024px;height:768px">
         <script src="http://localhost:8001/js/kbOSDInjector.js"></script>
+        <div id="myInstance" style="height:100%"></div>
+        <script type="text/javascript">
+            document.addEventListener('openseadragonloaded', function (e) {
+                var myInstance = new KbOSD({
+                    prefixUrl: "/openseadragon/images/",
+                    id: "myInstance",
+                    showNavigator: true,
+                    initialPage: 4, // FIXME: This initialPage need to be sent through our js wrapping in a simpler way (like counting the tileSources array), and maybe with a "rtl" option?
+                    defaultZoomLevel: 1.05,
+                    tileSources: [
+                        "http://libimages.princeton.edu/loris/pudl0001%2F4609321%2Fs42%2F00000002.jp2/info.json",
+                        "http://libimages.princeton.edu/loris/pudl0001%2F4609321%2Fs42%2F00000003.jp2/info.json",
+                        "http://libimages.princeton.edu/loris/pudl0001%2F4609321%2Fs42%2F00000004.jp2/info.json",
+                        "http://libimages.princeton.edu/loris/pudl0001%2F4609321%2Fs42%2F00000005.jp2/info.json",
+                        "http://libimages.princeton.edu/loris/pudl0001%2F4609321%2Fs42%2F00000006.jp2/info.json",
+                    ]
+                });
+            });
+        </script>
     </div>
 </body>
 </html>

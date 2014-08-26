@@ -1,0 +1,28 @@
+.kbOSDContainer{
+    position:relative;
+    overflow:hidden;
+    height:100%;
+}
+.kbOSDContainer .kbOSDHeader{
+    position:absolute;
+    top:0;
+    width:100%;
+    height:52px;
+    background-color: #000;
+}
+.kbOSDContainer .kbOSDContent{
+    position:absolute;
+    top:52px;
+    bottom:52px;
+    width:100%;
+    z-index:90;
+}
+.kbOSDContainer .kbOSDFooter{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:52px;
+    background-color: rgba(48,48,48,0.8);
+    z-index:100;
+}
+
