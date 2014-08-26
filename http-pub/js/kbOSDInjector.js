@@ -76,15 +76,49 @@ window.KbOSD = (function(window, undefined) {
         this.outerContainer = document.getElementById(this.config.id);
         this.outerContainer.innerHTML = '<div class="kbOSDViewer">' +
                                             '<div id="' + this.uid + '-header" class="kbOSDHeader">' +
+                                                '<h1>' +
+                                                    '<a href="" class="pull-left icon kbLogo"></a>' +
+                                                    '<span id="' + this.uid + '-title">Jeg er titlen på billedet. sd sd sd sd sd ds ds sd sd sd sd sd ds sdsd</span>' +
+                                                '</h1>' +
                                             '</div>' +
                                             '<div id="' + this.uid + '" class="kbOSDContent"></div>' +
                                             '<div id="' + this.uid + '-footer" class="kbOSDFooter">' +
+                                                '<ul>' +
+                                                    '<li>' +
+                                                        '<a id="' + this.uid + '-home" href="" class="pull-left icon home"></a>' +
+                                                    '</li>' +
+                                                    '<li>' +
+                                                        '<a id="' + this.uid + '-zoomOut" href="" class="pull-right icon zoomOut"></a>' +
+                                                    '</li>' +
+                                                    '<li>' +
+                                                        '<a id="' + this.uid + '-zoomIn" href="" class="pull-left icon zoomIn"></a>' +
+                                                    '</li>' +
+                                                    '<li>' +
+                                                        '<a id="' + this.uid + '-rotate" href="" class="icon rotate"></a>' +
+                                                    '</li>' +
+                                                    '<li>' +
+                                                        '<a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
+                                                    '</li>' +
+                                                    '<li>' +
+                                                        '<a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
+                                                    '</li>' +
+                                                    '<li>' +
+                                                        '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximize"></a>' +
+                                                    '</li>' +
+                                                '</ul>' +
                                             '</div>' +
                                         '</div>';
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
             id: this.uid,
-            toolbar: this.uid + '-footer'
+            toolbar: this.uid + '-footer',
+            homeButton: this.uid + '-home',
+            zoomOutButton: this.uid + '-zoomOut',
+            zoomInButton: this.uid + '-zoomIn',
+            //rotateButton: this.uid + '-rotate',
+            previousButton: this.uid + '-prev',
+            nextButton: this.uid + '-next',
+            fullPageButton: this.uid + '-fullscreen',
         });
         that.openSeadragon = OpenSeadragon(config);
         that.hash.push(that);
