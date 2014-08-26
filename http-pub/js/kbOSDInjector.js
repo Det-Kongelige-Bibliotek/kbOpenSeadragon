@@ -75,7 +75,9 @@ window.KbOSD = (function(window, undefined) {
         this.config = config;
         this.outerContainer = document.getElementById(this.config.id);
         this.outerContainer.innerHTML = '<div class="kbOSDViewer"><div class="kbOSDHeader"></div><div id="' + this.uid + '" class="kbOSDContent"></div><div class="kbOSDFooter"></div></div>';
-        config.id = this.uid;
+        OpenSeadragon.extend(true, config, {
+            id: this.uid,
+        });
         that.openSeadragon = OpenSeadragon(config);
         that.hash.push(that);
     };
