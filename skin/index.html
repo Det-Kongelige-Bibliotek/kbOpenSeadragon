@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <style type="text/css">
+    #OSDViewer *{
+    	padding:0px;
+    	margin:0px;
+    	border:0px;
+    }
+    #OSDViewer .header, #OSDViewer .footer{
+    	height:48px;
+    	background:#1B1B1B;
+    	color:#757575;
+    }
+    #OSDViewer .header h1{
+    	font-family: arial;
+    	line-height:48px;
+    	font-size: 18px;
+    	font-weight: normal;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	white-space: nowrap; 
+
+    }
+
+    #OSDViewer .content{
+    	height:400px;
+    }
+    #OSDViewer .footer ul{
+    	text-decoration: none;
+    }
+    #OSDViewer .footer ul li{
+    	display:inline-block;
+    	width:14.285%;
+    	float:left;
+    	text-align: center;
+    }
+    #OSDViewer .icon{
+    	display:inline-block;
+    	background:transparent url('icon.png') no-repeat 0px 0px;
+    	height:48px;
+    	width:48px;
+    }
+    #OSDViewer .footer ul li .home{
+    	background-position:0px 0px; 
+    }
+    #OSDViewer .footer ul li .home:hover{
+    	background-position:0px -48px;
+    }
+
+    #OSDViewer .footer ul li .zoomOut{
+    	background-position:-48px 0px;
+    }
+    #OSDViewer .footer ul li .zoomOut:hover{
+    	background-position:-48px -48px;
+    }
+
+    #OSDViewer .footer ul li .zoomIn{
+    	background-position:-96px 0px;
+    }
+    #OSDViewer .footer ul li .zoomIn:hover{
+    	background-position:-96px -48px;
+    }
+    #OSDViewer .footer ul li .previous{
+    	background-position:-144px 0px;
+    }
+    #OSDViewer .footer ul li .previous:hover{
+    	background-position:-144px -48px;
+    }
+    #OSDViewer .footer ul li .next{
+    	background-position:-192px 0px;
+    }
+    #OSDViewer .footer ul li .next:hover{
+    	background-position:-192px -48px;
+    }
+    #OSDViewer .footer ul li .rotate{
+    	background-position:-240px 0px;
+    }
+    #OSDViewer .footer ul li .rotate:hover{
+    	background-position:-240px -48px;
+    }
+    #OSDViewer .footer ul li .minimize{
+    	background-position:-288px 0px;
+    }
+    #OSDViewer .footer ul li .minimize:hover{
+    	background-position:-288px -48px;
+    }
+    #OSDViewer .footer ul li .maximize{
+    	background-position:-336px 0px;
+    }
+    #OSDViewer .footer ul li .maximize:hover{
+    	background-position: -336px -48px;
+    }
+
+    #OSDViewer .kbLogo{
+    	background-position:-384px 0px;
+    }
+    .pull-left{
+    	float:left;
+    }
+    .pull-right{
+    	float:right;
+    }
+
+    
+
+    </style>
+  </head>
+  <body>
+    
+
+  		<div id="OSDViewer" class="kb">
+  			<div class="header">
+  				
+  				<h1>
+  					<a href="" class="pull-left icon kbLogo"></a>
+  					Jeg er titlen på billedet. sd sd sd sd sd ds ds sd sd sd sd sd ds sdsd 
+  				</h1>
+  			</div>
+  			<div class="content">
+
+  			</div>
+  			<div class="footer">
+  				<ul>
+  					<li>
+  						<a href="" class="pull-left icon home"></a>
+  					</li>
+  					<li>
+  						<a href="" class="pull-right icon zoomOut"></a>
+  					</li>
+  					<li>
+  						<a href="" class="pull-left icon zoomIn"></a>
+  					</li>
+  					<li>
+  						<a href="" class="icon rotate"></a>
+  					</li>
+  					<li>
+  						<a href="" class="pull-right icon previous"></a>
+  					</li>
+  					<li>
+  						<a href="" class="pull-left icon next"></a>
+  					</li>
+  					<li>
+  						<a href="" class="pull-right icon maximize"></a>
+  					</li>
+  				</ul>
+  			</div>
+
+  		</div>
+
+
+  </body>
+</html>
