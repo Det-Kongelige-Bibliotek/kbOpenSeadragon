@@ -18,7 +18,7 @@
     z-index:90;
 }
 .kbOSDViewer .kbOSDFooter{
-    position:absolute;
+    position:absolute !important; /* Apparently OpenSeadragon insist on making the toolbar position relative? */
     bottom:0;
     width:100%;
     height:48px;

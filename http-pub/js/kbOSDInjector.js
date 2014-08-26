@@ -74,9 +74,17 @@ window.KbOSD = (function(window, undefined) {
         this.uid = 'kbOSD-' + uidGen.generate();
         this.config = config;
         this.outerContainer = document.getElementById(this.config.id);
-        this.outerContainer.innerHTML = '<div class="kbOSDViewer"><div class="kbOSDHeader"></div><div id="' + this.uid + '" class="kbOSDContent"></div><div class="kbOSDFooter"></div></div>';
+        this.outerContainer.innerHTML = '<div class="kbOSDViewer">' +
+                                            '<div id="' + this.uid + '-header" class="kbOSDHeader">' +
+                                            '</div>' +
+                                            '<div id="' + this.uid + '" class="kbOSDContent"></div>' +
+                                            '<div id="' + this.uid + '-footer" class="kbOSDFooter">' +
+                                            '</div>' +
+                                        '</div>';
+        // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
             id: this.uid,
+            toolbar: this.uid + '-footer'
         });
         that.openSeadragon = OpenSeadragon(config);
         that.hash.push(that);
