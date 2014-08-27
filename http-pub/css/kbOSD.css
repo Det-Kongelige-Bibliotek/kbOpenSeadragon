@@ -50,10 +50,9 @@
 }
 .kbOSDViewer .icon{
     display:inline-block;
-    background:transparent url('icon.png') no-repeat 0px 0px;
+    background:transparent url('../images/icon.png') no-repeat 0px 0px;
     height:48px;
     width:48px;
-    border:1px dashed #666; background-color: #333; /* FIXME: This line is solely for testing purposes! */
 }
 .kbOSDViewer .kbOSDFooter ul li .home{
     background-position:0px 0px;
