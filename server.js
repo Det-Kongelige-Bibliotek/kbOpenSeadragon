@@ -12,7 +12,7 @@ var argv = require('optimist').argv,
 
 function createResponseFunction(port) {
     return function(req, res){
-        var fileName = path.join(__dirname + '/http-pub/' + req.params);
+        var fileName = path.join(__dirname + '/http-pub/' + req.params[0]);
         if (fileName.lastIndexOf('/') === (fileName.length - 1)) {
             fileName += 'index.html';
         }
@@ -21,22 +21,22 @@ function createResponseFunction(port) {
             if (exists) {
                 fs.readFile(fileName, {encoding: 'UTF-8'}, function (err, data) {
                     if (err) {
-                        res.send(500, '<h3>Error</h3>' + err);
+                        res.status(500).send('<h3>Error</h3>' + err);
                     }
                     if (req.query.callback) {
                         // JSONP call
                         logMsg('returning a jsonp object for ' + fileName);
                         res.set('Content-Type', 'Application/javascript');
-                        res.send(200, req.query.callback + '(' + data + ');');
+                        res.status(200).send(req.query.callback + '(' + data + ');');
                     } else {
                         logMsg('returning a normal file request ' + fileName + ' (filetype: ' + mime.lookup(path.extname(fileName)) + ')');
                         res.set('Content-Type', mime.lookup(path.extname(fileName)));
-                        res.send(200, data);
+                        res.status(200).send(data);
                     }
                 });
             } else {
                 logMsg('returning 404 - file "' + fileName + '" does not exist');
-                res.send(404, '404 - ressource "' + fileName + '" was not found.');
+                res.status(404).send('404 - ressource "' + fileName + '" was not found.');
             }
         });
     }
