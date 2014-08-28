@@ -9,7 +9,6 @@
   ],
   "dependencies": {
     "express": "~4.8",
-    "mime": "~1.2",
     "optimist": "~0.6"
   },
   "devDependencies": {
