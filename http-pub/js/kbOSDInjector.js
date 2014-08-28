@@ -111,11 +111,12 @@ window.KbOSD = (function(window, undefined) {
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
             id: this.uid,
+            showRotationControl: true,
             toolbar: this.uid + '-footer',
             homeButton: this.uid + '-home',
             zoomOutButton: this.uid + '-zoomOut',
             zoomInButton: this.uid + '-zoomIn',
-            //rotateButton: this.uid + '-rotate',
+            rotateRightButton: this.uid + '-rotate',
             previousButton: this.uid + '-prev',
             nextButton: this.uid + '-next',
             fullPageButton: this.uid + '-fullscreen',
