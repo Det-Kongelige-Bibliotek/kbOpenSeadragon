@@ -78,7 +78,7 @@ window.KbOSD = (function(window, undefined) {
                                             '<div id="' + this.uid + '-header" class="kbOSDHeader">' +
                                                 '<h1>' +
                                                     '<a href="" class="pull-left icon kbLogo"></a>' +
-                                                    '<span id="' + this.uid + '-title">Jeg er titlen på billedet. sd sd sd sd sd ds ds sd sd sd sd sd ds sdsd</span>' +
+                                                    (config.kbHeader !== undefined ? '<span id="' + this.uid + '-title">' + config.kbHeader + '</span>' : '') +
                                                 '</h1>' +
                                             '</div>' +
                                             '<div id="' + this.uid + '" class="kbOSDContent"></div>' +
