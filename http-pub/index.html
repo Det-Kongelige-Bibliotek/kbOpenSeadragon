@@ -7,12 +7,18 @@
 <body>
     <h4>Her kommer der en kbOpenSeadragon instans:</h4>
     <div style="border:1px solid black;width:1024px;height:768px">
-        <div id="myInstance" style="height:100%"></div>
+        <div id="myInstance" style="height:100%">
+            <div class="kbOSDViewer">
+                <div class="kbOSDHeader"></div>
+                <div class="kbOSDContent"></div>
+                <div class="kbOSDFooter"></div>
+            <div>
+        </div>
         <script type="text/javascript">
             var kbOSDconfig = [{
                     prefixUrl: '/3rdparty/openseadragon/images/',
                     id: 'myInstance',
-                    //kbHeader: 'Jeg er så titlen på billedet. æøåÆØÅ Tralalalalalalalala lalala lalalala (og jeg kan være ret lang) sd sd sd sd sd ds ds sd sd sd sd sd ds sdsd',
+                    kbHeader: 'This is the title',
                     showNavigator: true,
                     initialPage: 4, // FIXME: This initialPage need to be sent through our js wrapping in a simpler way (like counting the tileSources array), and maybe with a "rtl" option?
                     defaultZoomLevel: 1.05,

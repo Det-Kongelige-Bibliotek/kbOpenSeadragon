@@ -74,40 +74,42 @@ window.KbOSD = (function(window, undefined) {
         this.uid = 'kbOSD-' + uidGen.generate();
         this.config = config;
         this.outerContainer = document.getElementById(this.config.id);
-        this.outerContainer.innerHTML = '<div class="kbOSDViewer">' +
-                                            '<div id="' + this.uid + '-header" class="kbOSDHeader">' +
-                                                '<h1>' +
-                                                    '<a href="" class="pull-left icon kbLogo"></a>' +
-                                                    (config.kbHeader !== undefined ? '<span id="' + this.uid + '-title">' + config.kbHeader + '</span>' : '') +
-                                                '</h1>' +
-                                            '</div>' +
-                                            '<div id="' + this.uid + '" class="kbOSDContent"></div>' +
-                                            '<div id="' + this.uid + '-footer" class="kbOSDFooter">' +
-                                                '<ul>' +
-                                                    '<li>' +
-                                                        '<a id="' + this.uid + '-home" href="" class="pull-left icon home"></a>' +
-                                                    '</li>' +
-                                                    '<li>' +
-                                                        '<a id="' + this.uid + '-zoomOut" href="" class="pull-right icon zoomOut"></a>' +
-                                                    '</li>' +
-                                                    '<li>' +
-                                                        '<a id="' + this.uid + '-zoomIn" href="" class="pull-left icon zoomIn"></a>' +
-                                                    '</li>' +
-                                                    '<li>' +
-                                                        '<a id="' + this.uid + '-rotate" href="" class="icon rotate"></a>' +
-                                                    '</li>' +
-                                                    '<li>' +
-                                                        '<a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
-                                                    '</li>' +
-                                                    '<li>' +
-                                                        '<a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
-                                                    '</li>' +
-                                                    '<li>' +
-                                                        '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximize"></a>' +
-                                                    '</li>' +
-                                                '</ul>' +
-                                            '</div>' +
-                                        '</div>';
+
+        // FIXME: This structure (at lease the head/content/footer has got to be in there from the beginning - otherwise it destroys the full screen thingie!
+        this.viewerElem = this.outerContainer.firstElementChild;
+        this.headerElem = this.viewerElem.firstElementChild;
+        this.contentElem = this.headerElem.nextElementSibling;
+        this.footerElem = this.contentElem.nextElementSibling;
+        this.headerElem.id = this.uid + '-header';
+        this.headerElem.innerHTML = '<h1>' +
+                                        '<a href="" class="pull-left icon kbLogo"></a>' +
+                                        (config.kbHeader !== undefined ? '<span id="' + this.uid + '-title">' + config.kbHeader + '</span>' : '') +
+                                    '</h1>';
+        this.contentElem.id = this.uid;
+        this.footerElem.id = this.uid + '-footer';
+        this.footerElem.innerHTML = '<ul>' +
+                                        '<li>' +
+                                            '<a id="' + this.uid + '-home" href="" class="pull-left icon home"></a>' +
+                                        '</li>' +
+                                        '<li>' +
+                                            '<a id="' + this.uid + '-zoomOut" href="" class="pull-right icon zoomOut"></a>' +
+                                        '</li>' +
+                                        '<li>' +
+                                            '<a id="' + this.uid + '-zoomIn" href="" class="pull-left icon zoomIn"></a>' +
+                                        '</li>' +
+                                        '<li>' +
+                                            '<a id="' + this.uid + '-rotate" href="" class="icon rotate"></a>' +
+                                        '</li>' +
+                                        '<li>' +
+                                            '<a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
+                                        '</li>' +
+                                        '<li>' +
+                                            '<a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
+                                        '</li>' +
+                                        '<li>' +
+                                            '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximize"></a>' +
+                                        '</li>' +
+                                    '</ul>';
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
             id: this.uid,
