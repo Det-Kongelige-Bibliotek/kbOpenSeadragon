@@ -82,6 +82,7 @@ window.KbOSD = (function(window, undefined) {
         this.footerElem = this.contentElem.nextElementSibling;
         this.headerElem.id = this.uid + '-header';
         this.headerElem.innerHTML = '<h1>' +
+                                        '<form class="pull-right kbFastNav">page <input value="' + ((config.initialPage + 1) || 1) + '"> of ' + config.tileSources.length + '</form>' +
                                         '<a href="" class="pull-left icon kbLogo"></a>' +
                                         (config.kbHeader !== undefined ? '<span id="' + this.uid + '-title">' + config.kbHeader + '</span>' : '') +
                                     '</h1>';

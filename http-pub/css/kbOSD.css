@@ -18,6 +18,13 @@
 /*    position:absolute;
     top:0;*/
 }
+.kbOSDHeader .kbFastNav{
+    margin-right:16px;
+}
+.kbOSDHeader .kbFastNav input{
+    width:30px;
+    text-align:right;
+}
 .kbOSDHeader h1{
     font-family: arial;
     line-height:48px;
