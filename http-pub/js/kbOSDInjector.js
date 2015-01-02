@@ -76,9 +76,9 @@ window.KbOSD = (function(window, undefined) {
         this.outerContainer = document.getElementById(this.config.id);
 
         // FIXME: This structure (at lease the head/content/footer has got to be in there from the beginning - otherwise it destroys the full screen thingie!
-        this.viewerElem = this.outerContainer.firstElementChild;
-        this.headerElem = this.viewerElem.firstElementChild;
-        this.contentElem = this.headerElem.nextElementSibling;
+        this.headerElem = this.outerContainer.firstElementChild;
+        this.viewerElem = this.headerElem.nextElementSibling;
+        this.contentElem = this.viewerElem.firstElementChild;
         this.footerElem = this.contentElem.nextElementSibling;
         this.headerElem.id = this.uid + '-header';
         this.headerElem.innerHTML = '<h1>' +

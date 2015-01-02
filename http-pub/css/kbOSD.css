@@ -8,7 +8,7 @@
     margin:0px;
     border:0px;
 }
-.kbOSDViewer .kbOSDHeader, .kbOSDFooter{
+.kbOSDHeader, .kbOSDFooter{
     height:48px;
     background:#1B1B1B;
     color:#757575;
@@ -18,7 +18,7 @@
 /*    position:absolute;
     top:0;*/
 }
-.kbOSDViewer .kbOSDHeader h1{
+.kbOSDHeader h1{
     font-family: arial;
     line-height:48px;
     font-size: 18px;
@@ -26,6 +26,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-top:0;
 }
 .kbOSDViewer .kbOSDContent{
     /*position:absolute;
@@ -49,7 +50,7 @@
     float:left;
     text-align: center;
 }
-.kbOSDViewer .icon, .kbOSDFooter .icon{
+.kbOSDViewer .icon, .kbOSDFooter .icon, .kbOSDHeader .icon{
     display:inline-block;
     background:transparent url('../images/icon.png') no-repeat 0px 0px;
     height:48px;
@@ -103,7 +104,7 @@
 .kbOSDFooter ul li .maximize:hover{
     background-position: -336px -48px;
 }
-.kbOSDViewer .kbLogo{
+.kbOSDHeader .icon.kbLogo{
     background-position:-384px 0px;
 }
 .pull-left{
