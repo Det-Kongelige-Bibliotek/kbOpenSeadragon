@@ -18,8 +18,12 @@
 /*    position:absolute;
     top:0;*/
 }
-.kbOSDHeader .kbFastNav{
-    margin-right:16px;
+.kbOSDFooter .kbPrevNav{
+    width: 17.5%;
+}
+.kbOSDFooter .kbFastNav{
+    line-height:50px;
+    width:7%;
 }
 .kbOSDHeader .kbFastNav input{
     width:30px;
@@ -53,9 +57,13 @@
 }
 .kbOSDFooter ul li{
     display:inline-block;
-    width:14.285%;
+    width:12.5%;
     float:left;
     text-align: center;
+}
+.kbOSDFooter .kbOSDCurrentPage{
+    width:30px;
+    text-align:right;
 }
 .kbOSDViewer .icon, .kbOSDFooter .icon, .kbOSDHeader .icon{
     display:inline-block;

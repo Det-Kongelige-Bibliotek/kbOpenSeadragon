@@ -73,6 +73,9 @@ window.KbOSD = (function(window, undefined) {
         var that = this;
         this.uid = 'kbOSD-' + uidGen.generate();
         this.config = config;
+        if ('undefined' !== typeof this.config.initialPage) {
+            this.config.initialPage -= 1; // We have a one based index, while openSeadragon has a zero based index (yeah - yikes!)
+        }
         this.outerContainer = document.getElementById(this.config.id);
 
         this.headerElem = this.outerContainer.firstElementChild;
@@ -81,9 +84,8 @@ window.KbOSD = (function(window, undefined) {
         this.footerElem = this.contentElem.nextElementSibling;
         this.headerElem.id = this.uid + '-header';
         this.headerElem.innerHTML = '<h1>' +
-                                        '<form class="pull-right kbFastNav">page <input value="' + ((config.initialPage + 1) || 1) + '"> of ' + config.tileSources.length + '</form>' +
                                         '<a href="" class="pull-left icon kbLogo"></a>' +
-                                        (config.kbHeader !== undefined ? '<span id="' + this.uid + '-title">' + config.kbHeader + '</span>' : '') +
+                                        ('undefined' !== typeof config.kbHeader ? '<span id="' + this.uid + '-title">' + config.kbHeader + '</span>' : '') +
                                     '</h1>';
         this.contentElem.id = this.uid;
         this.footerElem.id = this.uid + '-footer';
@@ -100,8 +102,14 @@ window.KbOSD = (function(window, undefined) {
                                         '<li>' +
                                             '<a id="' + this.uid + '-rotate" href="" class="icon rotate"></a>' +
                                         '</li>' +
-                                        '<li>' +
+                                        '<li class="kbPrevNav">' +
                                             '<a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
+                                        '</li>' +
+                                        '<li class="kbFastNav">' +
+                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + ((config.initialPage + 1) || 1) + '">' +
+                                            '<span> / </span>' +
+                                            //'<span class="kbOSDPageCount">' + (config.tileSources.length + 1) + '</span>' +
+                                            '<span class="kbOSDPageCount">' + this.getLastPage() + '</span>' +
                                         '</li>' +
                                         '<li>' +
                                             '<a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
@@ -123,8 +131,39 @@ window.KbOSD = (function(window, undefined) {
             nextButton: this.uid + '-next',
             fullPageButton: this.uid + '-fullscreen',
         });
+
         that.openSeadragon = OpenSeadragon(config);
         that.openSeadragon.addHandler('animation', that.paintWatermark, that); // FIXME: Optimization: this might be too excessive - it repaints the watermark on every animation step!)
+
+        // set up listeners for the preview && next to keep the fastNav index updated.
+        this.footerElem.querySelector('#' +this.uid + '-prev').addEventListener('click', function () {
+            var kbosd = KbOSD.prototype.hash[this.id.split('-')[1]];
+            kbosd.fastNav.value = kbosd.getCurrentPage();
+        });
+        this.footerElem.querySelector('#' + this.uid + '-next').addEventListener('click', function () {
+            var kbosd = KbOSD.prototype.hash[this.id.split('-')[1]];
+            kbosd.fastNav.value = kbosd.getCurrentPage();
+        });
+
+        // setting up listeners for kbFastNav
+        this.fastNav = this.footerElem.getElementsByTagName('input')[0];
+        this.fastNav.addEventListener('focus', function (e) {
+            this.select();
+        });
+        this.fastNav.addEventListener('keyup', function (e) {
+            var page = e.target.value;
+                //owner = this.attributes['data-owner'].value;
+            if (!/^\s*$/.test(page)) {
+                // go to page requested FIXME: We might just wanna do this on change, or maybe with a delay?
+                var kbosd = KbOSD.prototype.hash[this.id.split('-')[1]];
+                try {
+                    e.target.value = kbosd.setCurrentPage(e.target.value);
+                } catch (e2) {
+                    e.target.value = kbosd.getCurrentPage();
+                }
+            }
+        });
+
         //that.openSeadragon.addHandler('update-tile', that.paintWatermark, that);
         that.hash.push(that);
     };
@@ -132,6 +171,47 @@ window.KbOSD = (function(window, undefined) {
     KbOSD.prototype = {
         hash: [],
         logo: new Image(),
+        getLastPage: function () {
+            if ('undefined' !== typeof this.openSeadragon) {
+                return this.openSeadragon.tileSources.length;
+            } else {
+                return this.config.tileSources.length;
+            }
+        },
+        getCurrentPage: function () {
+            return this.openSeadragon.currentPage() + 1; // index is 1 based
+        },
+        setCurrentPage: function (page) {
+            // correct page number
+            if (isNaN(page)) {
+                throw 'Page is not a number';
+            }
+            page = parseInt(page, 10);
+            page -= 1; // Our viewers index is 1 based, openSeadragon is 0 based
+            if (page > this.openSeadragon.tileSources.length) {
+                page = this.openSeadragon.tileSources.length;
+            } else if (page < 0) {
+                page = 0;
+            }
+            this.openSeadragon.goToPage(page);
+            return (page + 1);
+        },
+        getNextPageNumber : function () {
+            var current = this.getCurrentPage();
+            if (current >= this.getLastPage()) {
+                return current;
+            } else {
+                return current + 1;
+            }
+        },
+        getPrevPageNumber : function () {
+            var current = this.getCurrentPage();
+            if (current <= 1) {
+                return current;
+            } else {
+                return current - 1;
+            }
+        },
         getCanvas: function (returnAll) {
             var canvases = this.openSeadragon.element.getElementsByTagName('canvas');
             if (returnAll) {
@@ -154,6 +234,7 @@ window.KbOSD = (function(window, undefined) {
             //canvas.getContext('2d').drawImage(conf.userData.logo, 8, (height - 40 - 48)); // unoutcomment to test watermark
             canvas.getContext('2d').drawImage(conf.userData.logo, 8, (height - 40));
         }
+        //FIXME: We might wanna have a method that digs out the right KbOSD from the hash, given an id (traverses hash and returns element with correct id)
     };
 
     // setting up logo for watermark
