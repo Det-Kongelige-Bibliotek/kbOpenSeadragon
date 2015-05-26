@@ -6,7 +6,7 @@
 </head>
 <body>
     <h4>Her kommer der en kbOpenSeadragon instans:</h4>
-    <div style="border:1px solid black;width:1024px;height:768px">
+    <div style="border:1px solid black;height:768px">
         <div id="myInstance" style="height:100%">
             <div class="kbOSDHeader"></div>
             <div class="kbOSDViewer">
@@ -19,7 +19,7 @@
                     id: 'myInstance',
                     kbHeader: 'This is the title',
                     showNavigator: true,
-                    initialPage: 3, // FIXME: This initialPage need to be sent through our js wrapping in a simpler way (like counting the tileSources array), and maybe with a "rtl" option?
+                    initialPage: 1, // FIXME: This initialPage need to be sent through our js wrapping in a simpler way (like counting the tileSources array), and maybe with a "rtl" option?
                     defaultZoomLevel: 0.4,
                     tileSources: [
                         'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_01/info.json',
