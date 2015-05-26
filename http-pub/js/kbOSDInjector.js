@@ -41,7 +41,7 @@ window.KbOSD = (function(window, undefined) {
 
     // Setup a document.listener for for the event openseadragonloaded
     document.addEventListener('openseadragonloaded', function () {
-        if (window.kbOSDconfig !== undefined) {
+        if ('undefined' !== window.kbOSDconfig) {
             window.kbOSDconfig.forEach(function (config) {
                 new KbOSD(config);
             }, this);
@@ -67,7 +67,7 @@ window.KbOSD = (function(window, undefined) {
 
     // constructor
     var KbOSD = function (config) {
-        if (config === undefined || config.id === undefined) {
+        if ('undefined' === typeof config || 'undefined' === typeof config.id) {
             throw new Exception('No config object with id property found');
         }
         var that = this;
@@ -75,7 +75,6 @@ window.KbOSD = (function(window, undefined) {
         this.config = config;
         this.outerContainer = document.getElementById(this.config.id);
 
-        // FIXME: This structure (at lease the head/content/footer has got to be in there from the beginning - otherwise it destroys the full screen thingie!
         this.headerElem = this.outerContainer.firstElementChild;
         this.viewerElem = this.headerElem.nextElementSibling;
         this.contentElem = this.viewerElem.firstElementChild;
