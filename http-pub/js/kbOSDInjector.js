@@ -189,7 +189,7 @@ window.KbOSD = (function(window, undefined) {
             page = parseInt(page, 10);
             page -= 1; // Our viewers index is 1 based, openSeadragon is 0 based
             if (page > this.openSeadragon.tileSources.length) {
-                page = this.openSeadragon.tileSources.length;
+                page = this.openSeadragon.tileSources.length - 1;
             } else if (page < 0) {
                 page = 0;
             }
