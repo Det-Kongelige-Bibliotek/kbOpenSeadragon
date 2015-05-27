@@ -20,6 +20,48 @@ window.KbOSD = (function(window, undefined) {
     };
     var uidGen = new UIDGen();
 
+    // Local helper method Extract FragmentIdentifier
+    /**
+     * Turns a fragmentIdentifier of the form #id0=attrib0Key:attrib0Value;attrib1Key:attrib1Value&id1=attrib0Key:attrib0Value;attrib1Key:attrib1Value;attrib2Key:attrib2Value
+     * into this structure:
+     * hash[id0]
+               [attrib0Key]:attrib0Value
+               [attrib1Key]:attrib1Value
+           [id1]
+               [attrib0Key]:attrib0Value
+               [attrib1Key]:attrib1Value
+               [attrib2Key]:attrib2Value
+
+       So after running through this function, the result can be asked as follows:
+       var myHash = extractFragmentIdentifier();
+       myHash[id0][attrib1Key]; // = attrib1Value
+       as in: that.setCurrentPage(myHash[that.uid].page);
+     */
+    var extractFragmentIdentifier = function () {
+        try {
+            var fragmentIdentifier = window.location.hash.substr(1).split('&');
+            for (var i = 0; i < fragmentIdentifier.length; i += 1) {
+                fragmentIdentifier[i] = fragmentIdentifier[i].split('=');
+                fragmentIdentifier[i][1] = fragmentIdentifier[i][1].split(';');
+                for (var j = 0; j < fragmentIdentifier[i][1].length; j += 1) {
+                    fragmentIdentifier[i][1][j] = fragmentIdentifier[i][1][j].split(':');
+                }
+            };
+            var fragmentHash = [];
+            fragmentIdentifier.forEach(function (fragIdent) {
+                var params = [];
+                for (var j = 0; j < fragIdent[1].length; j += 1) {
+                    params[fragIdent[1][j][0]] = fragIdent[1][j][1];
+                }
+                fragmentHash[fragIdent[0]] = params;
+            });
+            return fragmentHash;
+        } catch (e) {
+            //something went sour, just returning null (as if there is no fragment identifier to parse)
+            return [];
+        }
+    };
+
     // Inject script method
     var loadAdditionalJavascript = function (url, callback) {
             var script = document.createElement('script');
@@ -42,8 +84,12 @@ window.KbOSD = (function(window, undefined) {
     // Setup a document.listener for for the event openseadragonloaded
     document.addEventListener('openseadragonloaded', function () {
         if ('undefined' !== window.kbOSDconfig) {
+            var fragmentHash = extractFragmentIdentifier();
             window.kbOSDconfig.forEach(function (config) {
-                new KbOSD(config);
+                var tmpOSD = new KbOSD(config); // FIXME: Shouldn't this have something like KbOSD.prototype.hash.push(new KbOSD(config)) instesd of that hiddeous that.hash.push(that) thing below?
+                if (fragmentHash[tmpOSD.uid] && fragmentHash[tmpOSD.uid].page) {
+                    setTimeout(function () { tmpOSD.setCurrentPage(fragmentHash[tmpOSD.uid].page); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
+                }
             }, this);
         }
     });
@@ -138,11 +184,13 @@ window.KbOSD = (function(window, undefined) {
         // set up listeners for the preview && next to keep the fastNav index updated.
         this.footerElem.querySelector('#' +this.uid + '-prev').addEventListener('click', function () {
             var kbosd = KbOSD.prototype.hash[this.id.split('-')[1]];
-            kbosd.fastNav.value = kbosd.getCurrentPage();
+            kbosd.updateFastNav();
+            kbosd.updateFragmentIdentifier();
         });
         this.footerElem.querySelector('#' + this.uid + '-next').addEventListener('click', function () {
             var kbosd = KbOSD.prototype.hash[this.id.split('-')[1]];
-            kbosd.fastNav.value = kbosd.getCurrentPage();
+            kbosd.updateFastNav();
+            kbosd.updateFragmentIdentifier();
         });
 
         // setting up listeners for kbFastNav
@@ -194,6 +242,8 @@ window.KbOSD = (function(window, undefined) {
                 page = 0;
             }
             this.openSeadragon.goToPage(page);
+            this.updateFragmentIdentifier();
+            this.updateFastNav();
             return (page + 1);
         },
         getNextPageNumber : function () {
@@ -211,6 +261,15 @@ window.KbOSD = (function(window, undefined) {
             } else {
                 return current - 1;
             }
+        },
+        updateFastNav: function () {
+            this.fastNav.value = this.getCurrentPage();
+        },
+        updateFragmentIdentifier: function () {
+            var fragment = KbOSD.prototype.hash.map(function (kbosd) {
+                return kbosd.uid + '=page:' + kbosd.getCurrentPage();
+            }).join('&');
+            history.replaceState(undefined, undefined, '#' + fragment);
         },
         getCanvas: function (returnAll) {
             var canvases = this.openSeadragon.element.getElementsByTagName('canvas');
