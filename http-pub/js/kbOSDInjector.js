@@ -87,8 +87,21 @@ window.KbOSD = (function(window, undefined) {
             var fragmentHash = extractFragmentIdentifier();
             window.kbOSDconfig.forEach(function (config) {
                 var tmpOSD = new KbOSD(config); // FIXME: Shouldn't this have something like KbOSD.prototype.hash.push(new KbOSD(config)) instesd of that hiddeous that.hash.push(that) thing below?
+                // FIXME: This part really sucks! I have serious problems getting the initial page to work correct having both ltr/rtl and zero/one based arrays to take into account.
+                //        It appears to work correct with the normalizePageNumber, when it is over the initial page load, but for the init here, it just kept being buggy.
+                //        This ultra ugly hack seems to work out, but you really should try to figure out the real problem instead of just fix the symptoms like this sheit! :-6
                 if (fragmentHash[tmpOSD.uid] && fragmentHash[tmpOSD.uid].page) {
-                    setTimeout(function () { tmpOSD.setCurrentPage(fragmentHash[tmpOSD.uid].page); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
+                    if (tmpOSD.config.rtl) { // FIXME: I have NO clue why this is buggy depending on rtl or not, but this ugly hack solves it! :-6 We have to find the problem though!
+                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.normalizePageNumber(fragmentHash[tmpOSD.uid].page)); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
+                    } else {
+                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.normalizePageNumber(fragmentHash[tmpOSD.uid].page - 2)); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
+                    }
+                } else {
+                    if (tmpOSD.config.rtl) {
+                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.normalizePageNumber(tmpOSD.config.initialPage || 1)); }, 0);
+                    } else {
+                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.config.initialPage - 2 || -1); }, 0);
+                    }
                 }
             }, this);
         }
@@ -119,9 +132,6 @@ window.KbOSD = (function(window, undefined) {
         var that = this;
         this.uid = 'kbOSD-' + uidGen.generate();
         this.config = config;
-        if ('undefined' !== typeof this.config.initialPage) {
-            this.config.initialPage -= 1; // We have a one based index, while openSeadragon has a zero based index (yeah - yikes!)
-        }
         this.outerContainer = document.getElementById(this.config.id);
 
         this.headerElem = this.outerContainer.firstElementChild;
@@ -219,6 +229,13 @@ window.KbOSD = (function(window, undefined) {
     KbOSD.prototype = {
         hash: [],
         logo: new Image(),
+        normalizePageNumber: function (page) {
+            if (this.config.rtl) {
+                return this.getLastPage() - page;
+            } else {
+                return page + 1;
+            }
+        },
         getLastPage: function () {
             if ('undefined' !== typeof this.openSeadragon) {
                 return this.openSeadragon.tileSources.length;
@@ -227,7 +244,7 @@ window.KbOSD = (function(window, undefined) {
             }
         },
         getCurrentPage: function () {
-            return this.openSeadragon.currentPage() + 1; // index is 1 based
+            return this.normalizePageNumber(this.openSeadragon.currentPage());
         },
         setCurrentPage: function (page) {
             // correct page number
@@ -235,8 +252,7 @@ window.KbOSD = (function(window, undefined) {
                 throw 'Page is not a number';
             }
             page = parseInt(page, 10);
-            page -= 1; // Our viewers index is 1 based, openSeadragon is 0 based
-            if (page > this.openSeadragon.tileSources.length) {
+            if (page > this.getLastPage()) {
                 page = this.openSeadragon.tileSources.length - 1;
             } else if (page < 0) {
                 page = 0;
@@ -244,7 +260,7 @@ window.KbOSD = (function(window, undefined) {
             this.openSeadragon.goToPage(page);
             this.updateFragmentIdentifier();
             this.updateFastNav();
-            return (page + 1);
+            return (this.normalizePageNumber(page));
         },
         getNextPageNumber : function () {
             var current = this.getCurrentPage();
