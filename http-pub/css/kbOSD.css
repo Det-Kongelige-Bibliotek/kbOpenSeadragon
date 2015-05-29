@@ -14,6 +14,9 @@
     color:#757575;
     width:100%;
 }
+.kbOSDViewer .kbOSDContent .navigator{
+    margin-top:48px !important; /* Moving the navigator down below the KB header */
+}
 .kbOSDViewer .kbOSDHeader{
 /*    position:absolute;
     top:0;*/
