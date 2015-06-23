@@ -92,13 +92,13 @@ window.KbOSD = (function(window, undefined) {
                 //        This ultra ugly hack seems to work out, but you really should try to figure out the real problem instead of just fix the symptoms like this sheit! :-6
                 if (fragmentHash[tmpOSD.uid] && fragmentHash[tmpOSD.uid].page) {
                     if (tmpOSD.config.rtl) { // FIXME: I have NO clue why this is buggy depending on rtl or not, but this ugly hack solves it! :-6 We have to find the problem though!
-                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.normalizePageNumber(fragmentHash[tmpOSD.uid].page)); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
+                        setTimeout(function () { tmpOSD.setCurrentPage(fragmentHash[tmpOSD.uid].page); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
                     } else {
-                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.normalizePageNumber(fragmentHash[tmpOSD.uid].page - 2)); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
+                        setTimeout(function () { tmpOSD.setCurrentPage(fragmentHash[tmpOSD.uid].page - 2); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
                     }
                 } else {
                     if (tmpOSD.config.rtl) {
-                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.normalizePageNumber(tmpOSD.config.initialPage || 1)); }, 0);
+                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.config.initialPage || 1); }, 0);
                     } else {
                         setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.config.initialPage - 2 || -1); }, 0);
                     }
@@ -165,7 +165,7 @@ window.KbOSD = (function(window, undefined) {
                                             '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + ((config.initialPage + 1) || 1) + '">' +
                                             '<span> / </span>' +
                                             //'<span class="kbOSDPageCount">' + (config.tileSources.length + 1) + '</span>' +
-                                            '<span class="kbOSDPageCount">' + this.getLastPage() + '</span>' +
+                                            '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
                                         '</li>' +
                                         '<li>' +
                                             '<a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
@@ -231,12 +231,12 @@ window.KbOSD = (function(window, undefined) {
         logo: new Image(),
         normalizePageNumber: function (page) {
             if (this.config.rtl) {
-                return this.getLastPage() - page;
+                return this.getPageCount() - page;
             } else {
                 return page + 1;
             }
         },
-        getLastPage: function () {
+        getPageCount: function () {
             if ('undefined' !== typeof this.openSeadragon) {
                 return this.openSeadragon.tileSources.length;
             } else {
@@ -252,19 +252,19 @@ window.KbOSD = (function(window, undefined) {
                 throw 'Page is not a number';
             }
             page = parseInt(page, 10);
-            if (page > this.getLastPage()) {
-                page = this.openSeadragon.tileSources.length - 1;
+            if (page > this.getPageCount()) {
+                page = this.getPageCount();
             } else if (page < 0) {
                 page = 0;
             }
-            this.openSeadragon.goToPage(page);
+            this.openSeadragon.goToPage(page - 1); // used to be without the " - 1" part
             this.updateFragmentIdentifier();
             this.updateFastNav();
-            return (this.normalizePageNumber(page));
+            return page; // used to be this.normalizePageNumber(page)
         },
         getNextPageNumber : function () {
             var current = this.getCurrentPage();
-            if (current >= this.getLastPage()) {
+            if (current >= this.getPageCount()) {
                 return current;
             } else {
                 return current + 1;
