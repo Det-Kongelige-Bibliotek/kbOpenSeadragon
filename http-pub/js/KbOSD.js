@@ -20,7 +20,7 @@ window.KbOSD = (function(window, undefined) {
     };
     var uidGen = new UIDGen();
 
-    // Local helper method Extract FragmentIdentifier
+    // Local helper method Extract FragmentIdentifier // NOTE: This isn't your default trivial fragmentidentifier, since we can have more than one kbOSD on each page.
     /**
      * Turns a fragmentIdentifier of the form #id0=attrib0Key:attrib0Value;attrib1Key:attrib1Value&id1=attrib0Key:attrib0Value;attrib1Key:attrib1Value;attrib2Key:attrib2Value
      * into this structure:
@@ -81,40 +81,39 @@ window.KbOSD = (function(window, undefined) {
             };
         };
 
-    // Setup a document.listener for for the event openseadragonloaded
-    document.addEventListener('openseadragonloaded', function () {
-        if ('undefined' !== window.kbOSDconfig) {
-            var fragmentHash = extractFragmentIdentifier();
-            window.kbOSDconfig.forEach(function (config) {
-                var tmpOSD = new KbOSD(config); // FIXME: Shouldn't this have something like KbOSD.prototype.hash.push(new KbOSD(config)) instesd of that hiddeous that.hash.push(that) thing below?
-                // FIXME: This part really sucks! I have serious problems getting the initial page to work correct having both ltr/rtl and zero/one based arrays to take into account.
-                //        It appears to work correct with the normalizePageNumber, when it is over the initial page load, but for the init here, it just kept being buggy.
-                //        This ultra ugly hack seems to work out, but you really should try to figure out the real problem instead of just fix the symptoms like this sheit! :-6
-                if (fragmentHash[tmpOSD.uid] && fragmentHash[tmpOSD.uid].page) {
-                    if (tmpOSD.config.rtl) { // FIXME: I have NO clue why this is buggy depending on rtl or not, but this ugly hack solves it! :-6 We have to find the problem though!
-                        setTimeout(function () { tmpOSD.setCurrentPage(fragmentHash[tmpOSD.uid].page); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
-                    } else {
-                        setTimeout(function () { tmpOSD.setCurrentPage(fragmentHash[tmpOSD.uid].page - 2); }, 0); // FIXME: It appears that once in a while the book is loaded after this, leaving the book on page 1 even thoug the fragment identifier should open the book. The timeout is to prevent this (but I don't know for sure if it fixes the problem?)
-                    }
-                } else {
-                    if (tmpOSD.config.rtl) {
-                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.config.initialPage || 1); }, 0);
-                    } else {
-                        setTimeout(function () { tmpOSD.setCurrentPage(tmpOSD.config.initialPage - 2 || -1); }, 0);
-                    }
-                }
-            }, this);
-        }
-    });
-
     // initialization
     // add openSeaDragon script
     loadAdditionalJavascript('http://localhost:8001/3rdparty/openseadragon.js', function () {
-        document.dispatchEvent(new CustomEvent('openseadragonloaded', {
-            detail:{
-                OpenSeadragon : window.OpenSeadragon
+        // This is run when openseadragon has loaded
+        if ('undefined' !== window.kbOSDconfig) {
+            var fragmentHash = extractFragmentIdentifier();
+            window.kbOSDconfig.forEach(function (config) {
+                // prefetch the comming uid, in order to look for it in the fragment identifier (the uid is a unique indentifier for each KbOSD object on the page)
+                var uid = config.uid = config.uid || 'kbOSD-' + uidGen.generate();
+
+                if (fragmentHash[uid] && fragmentHash[uid].page) {
+                    config.initialPage = fragmentHash[uid].page; // fragmentidentifier.page allways overrules config.initialPage
+                    if (config.rtl) {
+                        config.initialPage = config.tileSources.length - config.initialPage;
+                    } else {
+                        config.initialPage = config.initialPage - 1; // OSD initial page is zero based - kbOSD is one based :-/
+                    }
+                } else { // no page selected in the fragmentidentifier
+                    if (config.rtl) {
+                        config.initialPage = config.initialPage || config.tileSources.length - 1;
+                    } else {
+                        config.initialPage = ('undefined' !== typeof config.initialPage) ? config.initialPage - 1 : 0;
+                    }
+                }
+
+                KbOSD.prototype.hash.push(new KbOSD(config)); // handle to all KbOSD objects in KbOSD.prototype.hash
+
+            }, this);
+        } else {
+            if ('undefined' !== typeof window.console) {
+                console.error('No kbOSDconfig found - aborting.');
             }
-        }));
+        }
     });
 
     // add kbOSD stylesheet
@@ -130,7 +129,7 @@ window.KbOSD = (function(window, undefined) {
             throw new Exception('No config object with id property found');
         }
         var that = this;
-        this.uid = 'kbOSD-' + uidGen.generate();
+        this.uid = config.uid || 'kbOSD-' + uidGen.generate();
         this.config = config;
         this.outerContainer = document.getElementById(this.config.id);
 
@@ -162,9 +161,8 @@ window.KbOSD = (function(window, undefined) {
                                             '<a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
                                         '</li>' +
                                         '<li class="kbFastNav">' +
-                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + ((config.initialPage + 1) || 1) + '">' +
+                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (config.rtl ? config.tileSources.length - config.initialPage : (config.initialPage + 1) || 1) + '">' +
                                             '<span> / </span>' +
-                                            //'<span class="kbOSDPageCount">' + (config.tileSources.length + 1) + '</span>' +
                                             '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
                                         '</li>' +
                                         '<li>' +
@@ -221,9 +219,6 @@ window.KbOSD = (function(window, undefined) {
                 }
             }
         });
-
-        //that.openSeadragon.addHandler('update-tile', that.paintWatermark, that);
-        that.hash.push(that);
     };
 
     KbOSD.prototype = {
