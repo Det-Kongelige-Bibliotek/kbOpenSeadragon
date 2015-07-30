@@ -3,6 +3,7 @@
 <head>
     <title>Example of KBs openSeadragon viewer</title>
     <meta charset="utf-8">
+    <script src="http://localhost:8001/3rdparty/history.js/scripts/bundled/html4+html5/native.history.js"></script>
 </head>
 <body>
     <h4>Her kommer der en kbOpenSeadragon instans:</h4>
@@ -22,6 +23,7 @@
                     //rtl: true,
                     //initialPage: 1,
                     defaultZoomLevel: 0.4,
+                    sequenceMode: true, // <--- this was added in v2.0.0! FIXME: We have got to disable sequence buttons in the menu bar if there is only one image /HAFE
                     tileSources: [
                         'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_01/info.json',
                         'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_02/info.json',
