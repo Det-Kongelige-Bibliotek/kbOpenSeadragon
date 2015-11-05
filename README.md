@@ -9,7 +9,7 @@ To set up your local machine to use it there are some prerequisites. You need to
 * have [nodeJs and npm](https://nodejs.org/en/) installed.
 * Create a library under http-pub called "3rdparty" 
 * have a functional openSeadragon.js file in the 3rdparty library
-  I clone [openSeadragon](https://github.com/openseadragon/openseadragon.git) compiles it (with grunt-cli) and dumps a symlink inside 3rdparty *//FIXME: Note to self - make these sub-modules!*
+  I clone [openSeadragon](https://github.com/openseadragon/openseadragon.git) compiles it (with grunt-cli) and dumps a symlink inside 3rdparty.
 * clone [history.js](https://github.com/browserstate/history.js.git) inside the 3rdparty library
 
 When all this is in place do:
