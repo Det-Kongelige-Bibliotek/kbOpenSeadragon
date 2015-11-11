@@ -2,20 +2,72 @@
 Open Seadragon kb flavour
 
 This is an openSeadragon wrapper for [The Royal Library, Denmark](http://www.kb.dk). It customizes an oppenSeadragon viewer, and let users insert a javascript snippet to summon an openSeadragon instance.
+
 It passes on an openSeadragon configuration object to openSeadragon.
 
-## How to install
+## How to install it
 To set up your local machine to use it there are some prerequisites. You need to:
-* have [nodeJs and npm](https://nodejs.org/en/) installed.
-* Create a library under http-pub called "3rdparty" 
-* have a functional openSeadragon.js file in the 3rdparty library
-  I clone [openSeadragon](https://github.com/openseadragon/openseadragon.git) compiles it (with grunt-cli) and dumps a symlink inside 3rdparty.
-* clone [history.js](https://github.com/browserstate/history.js.git) inside the 3rdparty library
 
-When all this is in place do:
-* npm install
-* ./server.js
+1. have [nodeJs and npm](https://nodejs.org/en/) installed.
 
-The server will listen on both port 8001 and 8002, and just serve files with webroot set to http-pub. This is in order to test Xdomain requests.
-Open http://localhost:8001/ in you prefered browser, and there you go.
+2. install grunt-cli installed.
+
+  * npm install -g grunt-cli
+
+3. install gulp
+
+  * npm install -g gulp
+
+4. Create a library under http-pub called "__3rdparty__"
+
+5. Stand in the 3rdparty library and:
+
+6. clone [openSeadragon](https://github.com/openseadragon/openseadragon.git)
+
+  * git clone https://github.com/openseadragon/openseadragon.git
+
+  * cd openseadragon
+
+  * npm install
+
+  * grunt
+
+  * cd ..
+
+  * ln -s openseadragon/build/openseadragon/openseadragon.js openseadragon.js
+
+7. clone [history.js](https://github.com/browserstate/history.js.git)
+
+  * ln -s history.js/scripts/bundled/html4+html5/native.history.js
+
+When all this is in place, go to the project root and do:
+
+8. npm install
+
+## How to start it
+
+When everything is installed, you can start the localhost testserver by typing:
+
+1. ./server.js
+
+The server will listen both on port 8001 and 8002, and just serve files with webroot set to http-pub. The two ports is in order to test Xdomain requests.
+
+## How to see it
+
+Open __http://localhost:8001/__ in you prefered browser, and there you go.
+
 index.html is a test page that contains a kbOpenSeadragon viewer feeded with some images from the KB IIIF image server.
+
+## How to distribute it to a server
+
+If you want to put the system up on a server, you can deploy it with:
+
+1. gulp --dest=myProjectRootURL (which will give you working production files under _/production_ )
+
+    * Note that there are some static absolute URLs in the production files that are pointed at the _dest_ URL (it defaults to https://static.kb.dk/~hafe/kbOpenSeadragon/ )
+
+2. gulp dist (which will create a tarball under _/dist_ )
+
+3. scp dist/kbOpenSeadragon.tar.gz myWebServer.com:
+
+4. ssh to the server, unpack the tar in a directory under the webroot (be aware that there is no parent dir in the tarball)
