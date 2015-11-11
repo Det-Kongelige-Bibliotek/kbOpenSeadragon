@@ -1,2 +1,5 @@
 3rdparty/
 node_modules/
+development/
+production/
+
