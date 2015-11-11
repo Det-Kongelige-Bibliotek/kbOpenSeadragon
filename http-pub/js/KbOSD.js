@@ -83,7 +83,7 @@ window.KbOSD = (function(window, undefined) {
 
     // initialization
     // add openSeaDragon script
-    loadAdditionalJavascript('http://localhost:8001/3rdparty/openseadragon.js', function () {
+    loadAdditionalJavascript('http://localhost:8002/3rdparty/openseadragon.js', function () {
         // This is run when openseadragon has loaded
         if ('undefined' !== window.kbOSDconfig) {
             var fragmentHash = extractFragmentIdentifier();
@@ -118,7 +118,7 @@ window.KbOSD = (function(window, undefined) {
 
     // add kbOSD stylesheet
     var link = document.createElement('link');
-    link.href = 'http://localhost:8001/css/kbOSD.css';
+    link.href = 'http://localhost:8002/css/kbOSD.css';
     link.rel = 'stylesheet';
     link.type = 'text/css';
     document.head.appendChild(link);
