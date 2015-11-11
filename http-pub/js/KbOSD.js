@@ -82,6 +82,8 @@ window.KbOSD = (function(window, undefined) {
         };
 
     // initialization
+    // add history polyfill
+    loadAdditionalJavascript('http://localhost:8002/3rdparty/native.history.js');
     // add openSeaDragon script
     loadAdditionalJavascript('http://localhost:8002/3rdparty/openseadragon.js', function () {
         // This is run when openseadragon has loaded
