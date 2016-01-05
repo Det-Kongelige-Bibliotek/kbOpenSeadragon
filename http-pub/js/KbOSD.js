@@ -133,6 +133,9 @@ window.KbOSD = (function(window, undefined) {
         var that = this;
         this.uid = config.uid || 'kbOSD-' + uidGen.generate();
         this.config = config;
+        if ('undefined' === typeof this.config.hidePageNav) { // default hidePageNav to false
+            this.config.hidePageNav = false;
+        }
         this.outerContainer = document.getElementById(this.config.id);
 
         this.headerElem = this.outerContainer.firstElementChild;
@@ -146,7 +149,8 @@ window.KbOSD = (function(window, undefined) {
                                     '</h1>';
         this.contentElem.id = this.uid;
         this.footerElem.id = this.uid + '-footer';
-        this.footerElem.innerHTML = '<ul>' +
+        // assembling footer content
+        var tmpFooterElemInnerHTML = '<ul>' +
                                         '<li>' +
                                             '<a id="' + this.uid + '-home" href="" class="pull-left icon home"></a>' +
                                         '</li>' +
@@ -158,8 +162,9 @@ window.KbOSD = (function(window, undefined) {
                                         '</li>' +
                                         '<li>' +
                                             '<a id="' + this.uid + '-rotate" href="" class="icon rotate"></a>' +
-                                        '</li>' +
-                                        '<li class="kbPrevNav">' +
+                                        '</li>';
+        if ((this.getPageCount() > 1) && !this.config.hidePageNav) { // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
+            tmpFooterElemInnerHTML +=   '<li class="kbPrevNav">' +
                                             '<a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
                                         '</li>' +
                                         '<li class="kbFastNav">' +
@@ -169,11 +174,15 @@ window.KbOSD = (function(window, undefined) {
                                         '</li>' +
                                         '<li>' +
                                             '<a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
-                                        '</li>' +
-                                        '<li>' +
+                                        '</li>';
+        } else {
+            tmpFooterElemInnerHTML +=   '<li></li><li></li><li></li>';
+        }
+        tmpFooterElemInnerHTML +=       '<li>' +
                                             '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximize"></a>' +
                                         '</li>' +
                                     '</ul>';
+        this.footerElem.innerHTML = tmpFooterElemInnerHTML;
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
             id: this.uid,

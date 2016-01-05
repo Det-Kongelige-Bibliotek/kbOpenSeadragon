@@ -60,6 +60,7 @@
 }
 .kbOSDFooter ul li{
     display:inline-block;
+    min-height:1px;
     width:12.5%;
     float:left;
     text-align: center;
