@@ -138,15 +138,9 @@ window.KbOSD = (function(window, undefined) {
         }
         this.outerContainer = document.getElementById(this.config.id);
 
-        this.headerElem = this.outerContainer.firstElementChild;
-        this.viewerElem = this.headerElem.nextElementSibling;
+        this.viewerElem = this.outerContainer.firstElementChild;
         this.contentElem = this.viewerElem.firstElementChild;
         this.footerElem = this.contentElem.nextElementSibling;
-        this.headerElem.id = this.uid + '-header';
-        this.headerElem.innerHTML = '<h1>' +
-                                        '<a href="" class="pull-left icon kbLogo"></a>' +
-                                        ('undefined' !== typeof config.kbHeader ? '<span id="' + this.uid + '-title">' + config.kbHeader + '</span>' : '') +
-                                    '</h1>';
         this.contentElem.id = this.uid;
         this.footerElem.id = this.uid + '-footer';
         // assembling footer content
