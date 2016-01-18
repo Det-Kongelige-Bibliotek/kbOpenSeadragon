@@ -142,6 +142,7 @@ window.KbOSD = (function(window, undefined) {
         this.contentElem = this.viewerElem.firstElementChild;
         this.footerElem = this.contentElem.nextElementSibling;
         this.contentElem.id = this.uid;
+        this.contentElem.innerHTML = ''; // emptying the openSeaDragon element so there is no content in it besides OpenSeadragon (due to a hack to aviod empty divs which were stripped somewhere in the server flow)
         this.footerElem.id = this.uid + '-footer';
         // assembling footer content
         var tmpFooterElemInnerHTML = '<ul>' +
