@@ -96,6 +96,13 @@ gulp.task('production', ['clean'], function (cb) {
     .pipe(replace('KbOSD.js','KbOSD_bundle_min.js')) // FIXME: This ought to be more generic, but gulp-replace does not work with regExp on streams??
     .pipe(gulp.dest(DEST));
 
+    // bundling a non minified version and move js files
+    gutil.log('Bundling and moving js ...');
+    gulp.src(JSSRC)
+    .pipe(concat('KbOSD_bundle.js'))
+    .pipe(replace(LOCALHOSTURL, STATICURL))
+    .pipe(gulp.dest(DEST + '/js'));
+
     // minify and move js files
     gutil.log('Minifying and moving js ...');
     gulp.src(JSSRC)
@@ -112,6 +119,12 @@ gulp.task('production', ['clean'], function (cb) {
     gulp.src(externalJSSRC)
     .pipe(chmod(664))
     .pipe(gulp.dest(DEST + '/3rdparty'));
+
+    // moving unminified version of css
+    gutil.log('Moving non minified version of css ...');
+    gulp.src(CSSSRC)
+    .pipe(replace(LOCALHOSTURL, STATICURL))
+    .pipe(gulp.dest(DEST + '/css'));
 
     // minify and move css
     gutil.log('Minifying and moving css ...');
