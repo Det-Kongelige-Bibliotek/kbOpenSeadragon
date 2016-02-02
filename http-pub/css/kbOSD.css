@@ -47,6 +47,74 @@
     margin: 0 0 -48px 0;
     width:100%;
 }
+.indexPage{
+    position:absolute;
+    left:0;
+    right:100%;
+    top:0;
+    bottom:48px; /* minus footer height */
+    background-color:darkgreen;
+    opacity:0.7;
+    transition: right 200ms ease-out;
+    -webkit-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
+    -moz-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
+    box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
+}
+.indexPage.shown{
+    right:80%;
+    min-width:200px;
+}
+.indexFan{
+    position:absolute;
+    width:32px;
+    height:32px;
+    background-color:darkgreen;
+    cursor:pointer;
+    right:0;
+    margin-right:-32px;
+    top:100px;
+    border:1px solid black;
+    border-left-width:0;
+    border-radius:0 5px 5px 0;
+    z-index:9999;
+    -webkit-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
+    -moz-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
+    box-shadow:3px 3px 6px rgba(0,0,0,0.2);
+}
+.indexFan img{
+    margin-top:6px;
+    margin-left:5px;
+}
+.indexPage .indexFan .glyphicon{
+    display:block;
+    margin-top:3px;
+    margin-left:5px;
+    width: 21px;
+    height: 24px;
+    background-repeat: no-repeat;
+}
+.indexPage .indexFan .glyphicon{
+    background-image: url(../images/glyphicons-list.png);
+    background-position-y:3px;
+}
+.indexPage.shown .indexFan .glyphicon{
+    background-image: url(../images/glyphicons-arrow-left.png);
+    background-position-y:3px;
+}
+.indexContent{
+    position:absolute;
+    top:20px;
+    left:20px;
+    right:20px;
+    bottom:20px;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+.indexContent ul li .indexLink{
+    cursor:pointer;
+    color:white;
+    text-decoration:underline;
+}
 .kbOSDFooter{
     /*position:absolute !important; /* Apparently OpenSeadragon insist on making the toolbar position relative? */
     /*bottom:0;*/
