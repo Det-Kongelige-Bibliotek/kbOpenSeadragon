@@ -193,6 +193,44 @@ window.KbOSD = (function(window, undefined) {
         });
 
         that.openSeadragon = OpenSeadragon(config);
+
+        // inject index if there is one
+        if (('undefined' !== typeof config.indexPage) && config.indexPage.length && config.indexPage.length > 0) {
+            that.indexElem = document.createElement('div');
+            that.indexElem.className = 'indexPage shown';
+            that.indexFan = document.createElement('div');
+            that.indexFan.className = 'indexFan';
+            that.indexFan.innerHTML = '<span class="glyphicon glyphicons-arrow-left"></span>';
+            that.indexElem.appendChild(that.indexFan);
+            that.indexContent = document.createElement('div');
+            that.indexContent.className = 'indexContent';
+            that.indexContent.id = that.uid + '_index';
+            // populating indexContent with titles and pages
+            var tmpIndexContentStr = '<ul>';
+            that.config.indexPage.forEach(function (link) {
+                tmpIndexContentStr += '<li><span class="indexLink" data-page="' + link.page + '">' + link.title + '</span></li>'; // TODO: We might wanna wrap the link in an a-tag for graceful degradation, but then we have to ensure that the links also will work on pages with more than one instance of kbOSD (and that is anything but trivial!) FIXME: We also need to work this through with accessability!! :-/
+            });
+            tmpIndexContentStr += "</ul>";
+            that.indexContent.innerHTML = tmpIndexContentStr;
+
+            that.indexElem.appendChild(that.indexContent);
+            that.contentElem.appendChild(that.indexElem);
+
+            //set up eventhandlers
+            that.indexFan.addEventListener('click', function (e) {
+                KbOSD.prototype.getInstanceFromElem(e.target).toggleIndexPage();
+            });
+            that.indexContent.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (e.target.className === 'indexLink') {
+                    var page = parseInt(e.target.attributes.getNamedItem('data-page').value, 10),
+                        kbOSD = KbOSD.prototype.getInstanceFromElem(e.target);
+                    kbOSD.setCurrentPage(page);
+                    //kbOSD.toggleIndexPage();
+                }
+            });
+        }
+
         that.openSeadragon.addHandler('animation', that.paintWatermark, that); // FIXME: Optimization: this might be too excessive - it repaints the watermark on every animation step!)
 
         // set up listeners for the preview && next to keep the fastNav index updated.
