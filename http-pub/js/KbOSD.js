@@ -24,7 +24,7 @@ window.KbOSD = (function(window, undefined) {
     /**
      * Turns a fragmentIdentifier of the form #id0=attrib0Key:attrib0Value;attrib1Key:attrib1Value&id1=attrib0Key:attrib0Value;attrib1Key:attrib1Value;attrib2Key:attrib2Value
      * into this structure:
-     * hash[id0]
+     * instances[id0]
                [attrib0Key]:attrib0Value
                [attrib1Key]:attrib1Value
            [id1]
@@ -108,7 +108,7 @@ window.KbOSD = (function(window, undefined) {
                     }
                 }
 
-                KbOSD.prototype.hash.push(new KbOSD(config)); // handle to all KbOSD objects in KbOSD.prototype.hash
+                KbOSD.prototype.instances.push(new KbOSD(config)); // handle to all KbOSD objects in KbOSD.prototype.instances
 
             }, this);
         } else {
@@ -197,17 +197,17 @@ window.KbOSD = (function(window, undefined) {
 
         // set up listeners for the preview && next to keep the fastNav index updated.
         this.footerElem.querySelector('#' +this.uid + '-prev').addEventListener('click', function () {
-            var kbosd = KbOSD.prototype.hash[this.id.split('-')[1]];
+            var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
             kbosd.updateFastNav();
             kbosd.updateFragmentIdentifier();
         });
         this.footerElem.querySelector('#' + this.uid + '-next').addEventListener('click', function () {
-            var kbosd = KbOSD.prototype.hash[this.id.split('-')[1]];
+            var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
             kbosd.updateFastNav();
             kbosd.updateFragmentIdentifier();
         });
 
-        // setting up listeners for kbFastNav
+        // setting up eventHandlers for kbFastNav
         this.fastNav = this.footerElem.getElementsByTagName('input')[0];
         this.fastNav.addEventListener('focus', function (e) {
             this.select();
@@ -217,7 +217,7 @@ window.KbOSD = (function(window, undefined) {
                 //owner = this.attributes['data-owner'].value;
             if (!/^\s*$/.test(page)) {
                 // go to page requested FIXME: We might just wanna do this on change, or maybe with a delay?
-                var kbosd = KbOSD.prototype.hash[this.id.split('-')[1]];
+                var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
                 try {
                     e.target.value = kbosd.setCurrentPage(e.target.value);
                 } catch (e2) {
@@ -228,7 +228,7 @@ window.KbOSD = (function(window, undefined) {
     };
 
     KbOSD.prototype = {
-        hash: [],
+        instances: [],
         logo: new Image(),
         normalizePageNumber: function (page) {
             if (this.config.rtl) {
@@ -283,7 +283,7 @@ window.KbOSD = (function(window, undefined) {
             this.fastNav.value = this.getCurrentPage();
         },
         updateFragmentIdentifier: function () {
-            var fragment = KbOSD.prototype.hash.map(function (kbosd) {
+            var fragment = KbOSD.prototype.instances.map(function (kbosd) {
                 return kbosd.uid + '=page:' + kbosd.getCurrentPage();
             }).join('&');
             history.replaceState(undefined, undefined, '#' + fragment);
