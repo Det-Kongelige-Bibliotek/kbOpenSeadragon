@@ -230,6 +230,24 @@ window.KbOSD = (function(window, undefined) {
     KbOSD.prototype = {
         instances: [],
         logo: new Image(),
+        getInstance: function (uid) {
+            return this.instances.filter(function (instance) {
+                return instance.uid === uid;
+            })[0];
+        },
+        getInstanceFromElem: function (elem) {
+            if (('undefined' !== typeof elem) && (elem instanceof HTMLElement)) {
+                while ((elem.className.indexOf('kbOSDContent') < 0) && (elem !== document.body)) {
+                    elem = elem.parentElement;
+                }
+                if (elem === document.body) {
+                    return; // this was not an element on a indexPage container
+                }
+                return this.getInstance(elem.id);
+            } else {
+                return;
+            }
+        },
         normalizePageNumber: function (page) {
             if (this.config.rtl) {
                 return this.getPageCount() - page;
@@ -288,6 +306,15 @@ window.KbOSD = (function(window, undefined) {
             }).join('&');
             history.replaceState(undefined, undefined, '#' + fragment);
         },
+        toggleIndexPage: function () {
+            if ('undefined' !== typeof this.indexElem) { // only do if there IS an indexPage
+                if (this.indexElem.className.indexOf('shown') > 0) {
+                    this.indexElem.className = 'indexPage';
+                } else {
+                    this.indexElem.className = 'indexPage shown';
+                }
+            }
+        },
         getCanvas: function (returnAll) {
             var canvases = this.openSeadragon.element.getElementsByTagName('canvas');
             if (returnAll) {
@@ -310,7 +337,6 @@ window.KbOSD = (function(window, undefined) {
             //canvas.getContext('2d').drawImage(conf.userData.logo, 8, (height - 40 - 48)); // unoutcomment to test watermark
             canvas.getContext('2d').drawImage(conf.userData.logo, 8, (height - 40));
         }
-        //FIXME: We might wanna have a method that digs out the right KbOSD from the hash, given an id (traverses hash and returns element with correct id)
     };
 
     // setting up logo for watermark
