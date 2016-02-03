@@ -137,10 +137,9 @@ window.KbOSD = (function(window, undefined) {
             this.config.hidePageNav = false;
         }
         this.outerContainer = document.getElementById(this.config.id);
-
-        this.viewerElem = this.outerContainer.firstElementChild;
-        this.contentElem = this.viewerElem.firstElementChild;
-        this.footerElem = this.contentElem.nextElementSibling;
+        this.viewerElem = this.outerContainer.getElementsByClassName('kbOSDViewer')[0];
+        this.contentElem = this.viewerElem.getElementsByClassName('kbOSDContent')[0];
+        this.footerElem = this.viewerElem.getElementsByClassName('kbOSDFooter')[0];
         this.contentElem.id = this.uid;
         this.contentElem.innerHTML = ''; // emptying the openSeaDragon element so there is no content in it besides OpenSeadragon (due to a hack to aviod empty divs which were stripped somewhere in the server flow)
         this.footerElem.id = this.uid + '-footer';
