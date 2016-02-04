@@ -95,17 +95,6 @@ window.KbOSD = (function(window, undefined) {
 
                 if (fragmentHash[uid] && fragmentHash[uid].page) {
                     config.initialPage = fragmentHash[uid].page; // fragmentidentifier.page allways overrules config.initialPage
-                    if (config.rtl) {
-                        config.initialPage = config.tileSources.length - config.initialPage;
-                    } else {
-                        config.initialPage = config.initialPage - 1; // OSD initial page is zero based - kbOSD is one based :-/
-                    }
-                } else { // no page selected in the fragmentidentifier
-                    if (config.rtl) {
-                        config.initialPage = config.initialPage || config.tileSources.length - 1;
-                    } else {
-                        config.initialPage = ('undefined' !== typeof config.initialPage) ? config.initialPage - 1 : 0;
-                    }
                 }
 
                 KbOSD.prototype.instances.push(new KbOSD(config)); // handle to all KbOSD objects in KbOSD.prototype.instances
@@ -125,7 +114,106 @@ window.KbOSD = (function(window, undefined) {
     link.type = 'text/css';
     document.head.appendChild(link);
 
-    // constructor
+    // +----------------------------+
+    // | Object KbPageNumNormalizer |
+    // +----------------------------+
+    // This object will make it transparent to kbOSD whether this is a rtl or ltr view (arabic vs. western pagenumbers etc.)
+    // Constructor
+    var KbPageNumNormalizer = function (config) {
+        config = config || {};
+        if ('undefined' === typeof config.rtl) {
+            this.rtl = false;
+        } else {
+            this.rtl = config.rtl;
+        }
+        this.osd = config.osd;
+        if (this.osd && this.osd.tileSources) {
+            this.pageCount = this.osd.tileSources.length;
+        } else if (!isNaN(config.pageCount)) {
+            this.pageCount = parseInt(config.pageCount, 10);
+        } else if ('undefined' !== typeof config.tileSources) {
+            this.pageCount = config.tileSources.length;
+        } else {
+            this.pageCount = 0; // I give up! :)
+        }
+    };
+
+    KbPageNumNormalizer.prototype = {
+        setOsd: function (osd) {
+            debugger;
+            this.osd = osd;
+        },
+        getPageCount: function () {
+            return this.pageCount; // Todo: this might go wrong if tiles can be added dynamically (but I don't think it can by now)
+        },
+        getCurrentPage: function () {
+            if (this.rtl) {
+                return this.pageCount - this.osd.currentPage() + 1;
+            } else {
+                return this.osd.currentPage() + 1;
+            }
+        },
+        setCurrentPage: function (number) {
+            number = this.validatedPageNumber(number);
+            if (this.rtl) {
+                this.osd.goToPage(this.pageCount - number - 1);
+            } else {
+                this.osd.goToPage(number - 1);
+            }
+            return number;
+        },
+        validatedPageNumber: function (pageNumber, zeroBased) {
+            if (isNaN(pageNumber)) {
+                throw 'Page is not a number';
+            }
+            pageNumber = parseInt(pageNumber, 10);
+            var maxPage = zeroBased ? this.pageCount - 1 : this.pageCount,
+                minPage = zeroBased ? 0 : 1;
+            if (pageNumber > maxPage) {
+                pageNumber = maxPage;
+            }
+            if (pageNumber < minPage) {
+                pageNumber = minPage;
+            }
+            return pageNumber;
+        },
+        calculateRealPageNumber: function (normalizedPageNumber) {
+            normalizedPageNumber = this.validatedPageNumber(normalizedPageNumber);
+            if (this.rtl) {
+                return this.pageCount - normalizedPageNumber - 1
+            } else {
+                return normalizedPageNumber - 1;
+            }
+        },
+        calculateNormalizedPageNumber: function (realPageNumber) {
+            debugger;
+            realPageNumber = this.validatedPageNumber(realPageNumber, true);
+            if (this.rtl) {
+                return this.pageCount - realPageNumber + 1;
+            } else {
+                return realPageNumber + 1;
+            }
+        },
+        getNextPageNumber: function () {
+            if (this.getCurrentPage() < this.pageCount) {
+                return this.getCurerntPage() + 1;
+            } else {
+                return this.getCurrentPage();
+            }
+        },
+        getPrevPageNumber: function () {
+            if (this.getCurrentPage() > 1) {
+                return this.getCurrentPage() - 1;
+            } else {
+                return this.getCurrentPage();
+            }
+        }
+    };
+
+    // +--------------+
+    // | Object KbOSD |
+    // +--------------+
+    // Constructor
     var KbOSD = function (config) {
         if ('undefined' === typeof config || 'undefined' === typeof config.id) {
             throw new Exception('No config object with id property found');
@@ -136,6 +224,18 @@ window.KbOSD = (function(window, undefined) {
         if ('undefined' === typeof this.config.hidePageNav) { // default hidePageNav to false
             this.config.hidePageNav = false;
         }
+
+        // get a KbPageNumNormalizer
+        this.pageNumNormalizer = new KbPageNumNormalizer({
+            rtl: this.config.rtl,
+            pageCount: this.config.tileSources && this.config.tileSources.length || this.config.pageCount || 0
+        });
+
+        //set initialpage to a real OSD pageNumber
+        if ('undefined' !== typeof config.initialPage) {
+            config.initialPage = this.pageNumNormalizer.calculateRealPageNumber(config.initialPage);
+        }
+
         this.outerContainer = document.getElementById(this.config.id);
         this.viewerElem = this.outerContainer.getElementsByClassName('kbOSDViewer')[0];
         this.contentElem = this.viewerElem.getElementsByClassName('kbOSDContent')[0];
@@ -162,7 +262,7 @@ window.KbOSD = (function(window, undefined) {
                                             '<a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
                                         '</li>' +
                                         '<li class="kbFastNav">' +
-                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (config.rtl ? config.tileSources.length - config.initialPage : (config.initialPage + 1) || 1) + '">' +
+                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage) || 1) + '">' +
                                             '<span> / </span>' +
                                             '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
                                         '</li>' +
@@ -192,6 +292,8 @@ window.KbOSD = (function(window, undefined) {
         });
 
         that.openSeadragon = OpenSeadragon(config);
+
+        that.pageNumNormalizer.setOsd(that.openSeadragon);
 
         // inject index if there is one
         if (('undefined' !== typeof config.indexPage) && config.indexPage.length && config.indexPage.length > 0) {
@@ -232,36 +334,38 @@ window.KbOSD = (function(window, undefined) {
 
         that.openSeadragon.addHandler('animation', that.paintWatermark, that); // FIXME: Optimization: this might be too excessive - it repaints the watermark on every animation step!)
 
-        // set up listeners for the preview && next to keep the fastNav index updated.
-        this.footerElem.querySelector('#' +this.uid + '-prev').addEventListener('click', function () {
-            var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
-            kbosd.updateFastNav();
-            kbosd.updateFragmentIdentifier();
-        });
-        this.footerElem.querySelector('#' + this.uid + '-next').addEventListener('click', function () {
-            var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
-            kbosd.updateFastNav();
-            kbosd.updateFragmentIdentifier();
-        });
-
-        // setting up eventHandlers for kbFastNav
-        this.fastNav = this.footerElem.getElementsByTagName('input')[0];
-        this.fastNav.addEventListener('focus', function (e) {
-            this.select();
-        });
-        this.fastNav.addEventListener('keyup', function (e) {
-            var page = e.target.value;
-                //owner = this.attributes['data-owner'].value;
-            if (!/^\s*$/.test(page)) {
-                // go to page requested FIXME: We might just wanna do this on change, or maybe with a delay?
+        if (this.footerElem.querySelector('#' +this.uid + '-prev')) {
+            // set up listeners for the preview && next to keep the fastNav index updated.
+            this.footerElem.querySelector('#' +this.uid + '-prev').addEventListener('click', function () {
                 var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
-                try {
-                    e.target.value = kbosd.setCurrentPage(e.target.value);
-                } catch (e2) {
-                    e.target.value = kbosd.getCurrentPage();
+                kbosd.updateFastNav();
+                kbosd.updateFragmentIdentifier();
+            });
+            this.footerElem.querySelector('#' + this.uid + '-next').addEventListener('click', function () {
+                var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
+                kbosd.updateFastNav();
+                kbosd.updateFragmentIdentifier();
+            });
+
+            // setting up eventHandlers for kbFastNav
+            this.fastNav = this.footerElem.getElementsByTagName('input')[0];
+            this.fastNav.addEventListener('focus', function (e) {
+                this.select();
+            });
+            this.fastNav.addEventListener('change', function (e) {
+                var page = e.target.value;
+                    //owner = this.attributes['data-owner'].value;
+                if (!/^\s*$/.test(page)) {
+                    // go to page requested FIXME: We might just wanna do this on change, or maybe with a delay?
+                    var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
+                    try {
+                        e.target.value = kbosd.setCurrentPage(e.target.value);
+                    } catch (e2) {
+                        e.target.value = kbosd.getCurrentPage();
+                    }
                 }
-            }
-        });
+            });
+        }
     };
 
     KbOSD.prototype = {
@@ -285,54 +389,23 @@ window.KbOSD = (function(window, undefined) {
                 return;
             }
         },
-        normalizePageNumber: function (page) {
-            if (this.config.rtl) {
-                return this.getPageCount() - page;
-            } else {
-                return page + 1;
-            }
-        },
         getPageCount: function () {
-            if ('undefined' !== typeof this.openSeadragon) {
-                return this.openSeadragon.tileSources.length;
-            } else {
-                return this.config.tileSources.length;
-            }
+            return this.pageNumNormalizer.getPageCount();
         },
         getCurrentPage: function () {
-            return this.normalizePageNumber(this.openSeadragon.currentPage());
+            return this.pageNumNormalizer.getCurrentPage();
         },
         setCurrentPage: function (page) {
-            // correct page number
-            if (isNaN(page)) {
-                throw 'Page is not a number';
-            }
-            page = parseInt(page, 10);
-            if (page > this.getPageCount()) {
-                page = this.getPageCount();
-            } else if (page < 0) {
-                page = 0;
-            }
-            this.openSeadragon.goToPage(page - 1); // used to be without the " - 1" part
+            page = this.pageNumNormalizer.setCurrentPage(page);
             this.updateFragmentIdentifier();
             this.updateFastNav();
-            return page; // used to be this.normalizePageNumber(page)
+            return page;
         },
-        getNextPageNumber : function () {
-            var current = this.getCurrentPage();
-            if (current >= this.getPageCount()) {
-                return current;
-            } else {
-                return current + 1;
-            }
+        getNextPageNumber: function () {
+            return this.pageNumNormalizer.getNextPageNumber();
         },
-        getPrevPageNumber : function () {
-            var current = this.getCurrentPage();
-            if (current <= 1) {
-                return current;
-            } else {
-                return current - 1;
-            }
+        getPrevPageNumber: function () {
+            return this.pageNumNormalizer.getPrevPageNumber();
         },
         updateFastNav: function () {
             this.fastNav.value = this.getCurrentPage();
