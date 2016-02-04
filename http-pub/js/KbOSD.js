@@ -140,7 +140,6 @@ window.KbOSD = (function(window, undefined) {
 
     KbPageNumNormalizer.prototype = {
         setOsd: function (osd) {
-            debugger;
             this.osd = osd;
         },
         getPageCount: function () {
@@ -186,7 +185,6 @@ window.KbOSD = (function(window, undefined) {
             }
         },
         calculateNormalizedPageNumber: function (realPageNumber) {
-            debugger;
             realPageNumber = this.validatedPageNumber(realPageNumber, true);
             if (this.rtl) {
                 return this.pageCount - realPageNumber + 1;
