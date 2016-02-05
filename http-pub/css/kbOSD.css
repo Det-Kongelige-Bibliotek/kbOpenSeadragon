@@ -29,6 +29,27 @@
     width:30px;
     text-align:right;
 }
+
+.kbButtonOverlay{
+    z-index:5;
+    width:48px;
+    height:48px;
+    background:transparent url(../images/icon.png) no-repeat 0px 0px;
+}
+.kbButtonOverlay.kbLeft{
+    float:left;
+    background-position:-192px 0px;
+}
+.kbButtonOverlay.kbLeft:hover{
+    background-position:-192px -48px;
+}
+.kbButtonOverlay.kbRight{
+    float:right;
+    background-position:-144px 0px;
+}
+.kbButtonOverlay.kbRight:hover{
+    background-position:-144px -48px;
+}
 .kbOSDHeader h1{
     font-family: arial;
     line-height:48px;

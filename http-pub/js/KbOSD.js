@@ -147,7 +147,7 @@ window.KbOSD = (function(window, undefined) {
         },
         getCurrentPage: function () {
             if (this.rtl) {
-                return this.pageCount - this.osd.currentPage() + 1;
+                return this.pageCount - this.osd.currentPage();
             } else {
                 return this.osd.currentPage() + 1;
             }
@@ -155,7 +155,7 @@ window.KbOSD = (function(window, undefined) {
         setCurrentPage: function (number) {
             number = this.validatedPageNumber(number);
             if (this.rtl) {
-                this.osd.goToPage(this.pageCount - number - 1);
+                this.osd.goToPage(this.pageCount - number);
             } else {
                 this.osd.goToPage(number - 1);
             }
@@ -179,7 +179,7 @@ window.KbOSD = (function(window, undefined) {
         calculateRealPageNumber: function (normalizedPageNumber) {
             normalizedPageNumber = this.validatedPageNumber(normalizedPageNumber);
             if (this.rtl) {
-                return this.pageCount - normalizedPageNumber - 1
+                return this.pageCount - normalizedPageNumber;
             } else {
                 return normalizedPageNumber - 1;
             }
@@ -187,14 +187,14 @@ window.KbOSD = (function(window, undefined) {
         calculateNormalizedPageNumber: function (realPageNumber) {
             realPageNumber = this.validatedPageNumber(realPageNumber, true);
             if (this.rtl) {
-                return this.pageCount - realPageNumber + 1;
+                return this.pageCount - realPageNumber;
             } else {
                 return realPageNumber + 1;
             }
         },
         getNextPageNumber: function () {
             if (this.getCurrentPage() < this.pageCount) {
-                return this.getCurerntPage() + 1;
+                return this.getCurrentPage() + 1;
             } else {
                 return this.getCurrentPage();
             }
@@ -257,7 +257,7 @@ window.KbOSD = (function(window, undefined) {
                                         '</li>';
         if ((this.getPageCount() > 1) && !this.config.hidePageNav) { // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
             tmpFooterElemInnerHTML +=   '<li class="kbPrevNav">' +
-                                            '<a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
+                                            '<div class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
                                         '</li>' +
                                         '<li class="kbFastNav">' +
                                             '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage) || 1) + '">' +
@@ -265,7 +265,7 @@ window.KbOSD = (function(window, undefined) {
                                             '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
                                         '</li>' +
                                         '<li>' +
-                                            '<a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
+                                            '<div class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
                                         '</li>';
         } else {
             tmpFooterElemInnerHTML +=   '<li></li><li></li><li></li>';
@@ -290,6 +290,10 @@ window.KbOSD = (function(window, undefined) {
         });
 
         that.openSeadragon = OpenSeadragon(config);
+
+        // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
+        document.getElementById(this.uid + '-prev').style.display='none';
+        document.getElementById(this.uid + '-next').style.display='none';
 
         that.pageNumNormalizer.setOsd(that.openSeadragon);
 
@@ -334,13 +338,20 @@ window.KbOSD = (function(window, undefined) {
 
         if (this.footerElem.querySelector('#' +this.uid + '-prev')) {
             // set up listeners for the preview && next to keep the fastNav index updated.
-            this.footerElem.querySelector('#' +this.uid + '-prev').addEventListener('click', function () {
-                var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
+            // NOTE: Notice that the prev/next buttons are swapped if rtl!
+            // go to previous page
+            this.footerElem.querySelector('#' +this.uid + (this.pageNumNormalizer.rtl ? '-next' : '-prev')).parentElement.firstChild.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
+                kbosd.setCurrentPage(kbosd.getPrevPageNumber());
                 kbosd.updateFastNav();
                 kbosd.updateFragmentIdentifier();
             });
-            this.footerElem.querySelector('#' + this.uid + '-next').addEventListener('click', function () {
-                var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
+            // go to next page
+            this.footerElem.querySelector('#' + this.uid + (this.pageNumNormalizer.rtl ? '-prev' : '-next')).parentElement.firstChild.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
+                kbosd.setCurrentPage(kbosd.getNextPageNumber());
                 kbosd.updateFastNav();
                 kbosd.updateFragmentIdentifier();
             });
