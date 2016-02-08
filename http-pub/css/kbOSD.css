@@ -38,6 +38,16 @@
         width:24%;
     }
 }
+/* These next three are in here because we can not use a media query, if the viewer is on a huge page, but in a narrow container */
+.kbOSDFooter.narrowMenu .hideWhenSmall{
+    display:none;
+}
+.kbOSDFooter.narrowMenu .kbFastNav{
+    width:21%;
+}
+.kbOSDFooter.narrowMenu .kbFullscreen{
+    width:24%
+}
 .kbButtonOverlay{
     z-index:5;
     width:48px;
