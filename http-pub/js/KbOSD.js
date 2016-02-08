@@ -257,7 +257,7 @@ window.KbOSD = (function(window, undefined) {
                                         '</li>';
         if ((this.getPageCount() > 1) && !this.config.hidePageNav) { // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
             tmpFooterElemInnerHTML +=   '<li class="kbPrevNav">' +
-                                            '<div class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
+                                            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
                                         '</li>' +
                                         '<li class="kbFastNav">' +
                                             '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage) || 1) + '">' +
@@ -265,7 +265,7 @@ window.KbOSD = (function(window, undefined) {
                                             '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
                                         '</li>' +
                                         '<li>' +
-                                            '<div class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
+                                            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
                                         '</li>';
         } else {
             tmpFooterElemInnerHTML +=   '<li></li><li></li><li></li>';
@@ -344,16 +344,12 @@ window.KbOSD = (function(window, undefined) {
                 e.stopPropagation();
                 var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
                 kbosd.setCurrentPage(kbosd.getPrevPageNumber());
-                kbosd.updateFastNav();
-                kbosd.updateFragmentIdentifier();
             });
             // go to next page
             this.footerElem.querySelector('#' + this.uid + (this.pageNumNormalizer.rtl ? '-prev' : '-next')).parentElement.firstChild.addEventListener('click', function (e) {
                 e.stopPropagation();
                 var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
                 kbosd.setCurrentPage(kbosd.getNextPageNumber());
-                kbosd.updateFastNav();
-                kbosd.updateFragmentIdentifier();
             });
 
             // setting up eventHandlers for kbFastNav
@@ -406,6 +402,7 @@ window.KbOSD = (function(window, undefined) {
         },
         setCurrentPage: function (page) {
             page = this.pageNumNormalizer.setCurrentPage(page);
+            this.updateArrows(this, page);
             this.updateFragmentIdentifier();
             this.updateFastNav();
             return page;
@@ -415,6 +412,23 @@ window.KbOSD = (function(window, undefined) {
         },
         getPrevPageNumber: function () {
             return this.pageNumNormalizer.getPrevPageNumber();
+        },
+        updateArrows: function (kbosd, currentPage) {
+            currentPage = currentPage || kbosd.getCurrentPage();
+            var buttons = {
+                next : document.getElementById(kbosd.uid + '-kbNext'),
+                prev : document.getElementById(kbosd.uid + '-kbPrev')
+            };
+            if (currentPage === 1) {
+                buttons[(kbosd.pageNumNormalizer.rtl ? 'next' : 'prev')].style.opacity = '0.2';
+            } else {
+                buttons[(kbosd.pageNumNormalizer.rtl ? 'next' : 'prev')].style.opacity = '1'; // default/inherited?
+            }
+            if (currentPage === this.pageNumNormalizer.pageCount) {
+                buttons[(kbosd.pageNumNormalizer.rtl ? 'prev' : 'next')].style.opacity = '0.2';
+            } else {
+                buttons[(kbosd.pageNumNormalizer.rtl ? 'prev' : 'next')].style.opacity = '1';
+            }
         },
         updateFastNav: function () {
             this.fastNav.value = this.getCurrentPage();
