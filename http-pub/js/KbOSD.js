@@ -100,6 +100,8 @@ window.KbOSD = (function(window, undefined) {
                 KbOSD.prototype.instances.push(new KbOSD(config)); // handle to all KbOSD objects in KbOSD.prototype.instances
 
             }, this);
+
+            KbOSD.prototype.checkMenuWidth();
         } else {
             if ('undefined' !== typeof window.console) {
                 console.error('No kbOSDconfig found - aborting.');
@@ -370,6 +372,9 @@ window.KbOSD = (function(window, undefined) {
                     }
                 }
             });
+
+            // setup window resize listener that sets menu to narrow, if an OSD instance gets to narrow for the full menu
+            window.addEventListener('resize', this.checkMenuWidth);
         }
     };
 
@@ -412,6 +417,25 @@ window.KbOSD = (function(window, undefined) {
         },
         getPrevPageNumber: function () {
             return this.pageNumNormalizer.getPrevPageNumber();
+        },
+        /**
+         *  This method is supposed to be called from the prototype. It runs through all OSD instances and meassures if they are too narrow to contain the full menu bar
+         *  If they are too narrow, it sets the narrowMenu class so selected buttons disappear and visa versa.
+         */
+        checkMenuWidth: function () {
+            KbOSD.prototype.instances.forEach(function (kbosd) {
+                var footerWidth =  parseInt(window.getComputedStyle(kbosd.footerElem).width, 10),
+                    menuIsNarrow = kbosd.footerElem.className.indexOf(' narrowMenu') >= 0;
+                if (footerWidth < 726) {
+                    if (!menuIsNarrow) {
+                        kbosd.footerElem.className = kbosd.footerElem.className + ' narrowMenu';
+                    }
+                } else {
+                    if (menuIsNarrow) {
+                        kbosd.footerElem.className = kbosd.footerElem.className.replace(/\snarrowMenu/,'');
+                    }
+                }
+            });
         },
         updateArrows: function (kbosd, currentPage) {
             currentPage = currentPage || kbosd.getCurrentPage();
