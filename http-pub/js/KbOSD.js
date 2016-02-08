@@ -246,10 +246,10 @@ window.KbOSD = (function(window, undefined) {
                                         '<li>' +
                                             '<a id="' + this.uid + '-home" href="" class="pull-left icon home"></a>' +
                                         '</li>' +
-                                        '<li>' +
+                                        '<li class="hideWhenSmall">' +
                                             '<a id="' + this.uid + '-zoomOut" href="" class="pull-right icon zoomOut"></a>' +
                                         '</li>' +
-                                        '<li>' +
+                                        '<li class="hideWhenSmall">' +
                                             '<a id="' + this.uid + '-zoomIn" href="" class="pull-left icon zoomIn"></a>' +
                                         '</li>' +
                                         '<li>' +
@@ -270,7 +270,7 @@ window.KbOSD = (function(window, undefined) {
         } else {
             tmpFooterElemInnerHTML +=   '<li></li><li></li><li></li>';
         }
-        tmpFooterElemInnerHTML +=       '<li>' +
+        tmpFooterElemInnerHTML +=       '<li class="kbFullscreen">' +
                                             '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximize"></a>' +
                                         '</li>' +
                                     '</ul>';

@@ -24,12 +24,23 @@
 .kbOSDFooter .kbFastNav{
     line-height:50px;
     width:7%;
+    white-space:nowrap;
 }
 .kbOSDHeader .kbFastNav input{
     width:30px;
     text-align:right;
 }
-
+@media screen and (max-width:768px){ /* rearrange footer buttons on small screens */
+    .kbOSDFooter .hideWhenSmall{
+        display:none;
+    }
+    .kbOSDFooter .kbFastNav{
+        width:21%;
+    }
+    .kbOSDFooter .kbFullscreen{
+        width:24%;
+    }
+}
 .kbButtonOverlay{
     z-index:5;
     width:48px;
