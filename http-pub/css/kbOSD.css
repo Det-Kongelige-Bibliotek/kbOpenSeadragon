@@ -26,10 +26,6 @@
     width:7%;
     white-space:nowrap;
 }
-.kbOSDHeader .kbFastNav input{
-    width:30px;
-    text-align:right;
-}
 @media screen and (max-width:768px){ /* rearrange footer buttons on small screens */
     .kbOSDFooter .hideWhenSmall{
         display:none;
