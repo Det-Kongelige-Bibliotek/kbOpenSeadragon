@@ -93,6 +93,11 @@ window.KbOSD = (function(window, undefined) {
                 // prefetch the comming uid, in order to look for it in the fragment identifier (the uid is a unique indentifier for each KbOSD object on the page)
                 var uid = config.uid = config.uid || 'kbOSD-' + uidGen.generate();
 
+                if ('undefined' === typeof config.initialPage) {
+                    // if no initial page is given, set it here
+                    config.initialPage = 1;
+                }
+
                 if (fragmentHash[uid] && fragmentHash[uid].page) {
                     config.initialPage = fragmentHash[uid].page; // fragmentidentifier.page allways overrules config.initialPage
                 }
@@ -262,7 +267,7 @@ window.KbOSD = (function(window, undefined) {
                                             '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
                                         '</li>' +
                                         '<li class="kbFastNav">' +
-                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage || 1)) + '">' +
+                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
                                             '<span> / </span>' +
                                             '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
                                         '</li>' +
