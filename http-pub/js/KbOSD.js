@@ -262,7 +262,7 @@ window.KbOSD = (function(window, undefined) {
                                             '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
                                         '</li>' +
                                         '<li class="kbFastNav">' +
-                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage) || 1) + '">' +
+                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage || 1)) + '">' +
                                             '<span> / </span>' +
                                             '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
                                         '</li>' +
