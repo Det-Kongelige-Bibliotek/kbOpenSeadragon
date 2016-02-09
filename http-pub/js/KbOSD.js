@@ -102,7 +102,9 @@ window.KbOSD = (function(window, undefined) {
                     config.initialPage = fragmentHash[uid].page; // fragmentidentifier.page allways overrules config.initialPage
                 }
 
-                KbOSD.prototype.instances.push(new KbOSD(config)); // handle to all KbOSD objects in KbOSD.prototype.instances
+                var newKbOSD = new KbOSD(config);
+                KbOSD.prototype.instances.push(newKbOSD); // handle to all KbOSD objects in KbOSD.prototype.instances
+                newKbOSD.updateArrows(newKbOSD);
 
             }, this);
 
