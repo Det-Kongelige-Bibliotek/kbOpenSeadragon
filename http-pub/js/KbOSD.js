@@ -366,7 +366,7 @@ window.KbOSD = (function(window, undefined) {
             this.fastNav.addEventListener('focus', function (e) {
                 this.select();
             });
-            this.fastNav.addEventListener('change', function (e) {
+            var fastNavChangePage = function (e) {
                 var page = e.target.value;
                     //owner = this.attributes['data-owner'].value;
                 if (!/^\s*$/.test(page)) {
@@ -378,7 +378,15 @@ window.KbOSD = (function(window, undefined) {
                         e.target.value = kbosd.getCurrentPage();
                     }
                 }
+            };
+
+            // Listen to change events from the fastNav inputfield - either change or enter shall envoke a page change.
+            this.fastNav.addEventListener('keyup', function (e) {
+                if (e.keyCode === 13) {
+                    fastNavChangePage.call(e.target, e);
+                }
             });
+            this.fastNav.addEventListener('change', fastNavChangePage);
 
             // setup window resize listener that sets menu to narrow, if an OSD instance gets to narrow for the full menu
             window.addEventListener('resize', this.checkMenuWidth);
