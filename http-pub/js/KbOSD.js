@@ -477,7 +477,9 @@ window.KbOSD = (function(window, undefined) {
             var fragment = KbOSD.prototype.instances.map(function (kbosd) {
                 return kbosd.uid + '=page:' + kbosd.getCurrentPage();
             }).join('&');
-            history.replaceState(undefined, undefined, '#' + fragment);
+            if ('undefined' !== typeof history.replaceState) { // Note: IE9 does not support history.replaceState
+                history.replaceState(undefined, undefined, '#' + fragment);
+            }
         },
         toggleIndexPage: function () {
             if ('undefined' !== typeof this.indexElem) { // only do if there IS an indexPage
