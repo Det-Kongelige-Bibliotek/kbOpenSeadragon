@@ -121,7 +121,8 @@ window.KbOSD = (function(window, undefined) {
     link.href = 'http://localhost:8002/css/kbOSD.css';
     link.rel = 'stylesheet';
     link.type = 'text/css';
-    document.head.appendChild(link);
+    var headElement = ('undefined' !== typeof document.head) ?  document.head : document.getElementsByTagName('head')[0]; // Lex old IE :-/
+    headElement.appendChild(link);
 
     // +----------------------------+
     // | Object KbPageNumNormalizer |
