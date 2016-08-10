@@ -423,12 +423,15 @@ window.KbOSD = (function(window, undefined) {
         getCurrentPage: function () {
             return this.pageNumNormalizer.getCurrentPage();
         },
-        setCurrentPage: function (page) {
+        setCurrentPage: function (page, cb) {
             page = this.pageNumNormalizer.setCurrentPage(page);
             this.updateArrows(this, page);
             this.updateFragmentIdentifier();
             this.updateFastNav();
             $(this.contentElem).trigger('pagechange', page, this);
+            if (cb && 'function' === typeof cb) {
+                cb(page);
+            }
             return page;
         },
         getNextPageNumber: function () {
