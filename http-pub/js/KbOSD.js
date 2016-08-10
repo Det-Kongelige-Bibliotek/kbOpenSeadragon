@@ -106,6 +106,8 @@ window.KbOSD = (function(window, undefined) {
                 KbOSD.prototype.instances.push(newKbOSD); // handle to all KbOSD objects in KbOSD.prototype.instances
                 newKbOSD.updateArrows(newKbOSD);
 
+                $(document).trigger('kbosdready', newKbOSD); // tell the world that it's ready
+
             }, this);
 
             KbOSD.prototype.checkMenuWidth();
