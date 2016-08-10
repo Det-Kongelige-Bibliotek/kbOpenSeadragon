@@ -307,6 +307,14 @@ window.KbOSD = (function(window, undefined) {
 
         that.openSeadragon = OpenSeadragon(config);
 
+        that.openSeadragon.addHandler('full-screen', function (e) {
+            that.contentElem.dispatchEvent(new CustomEvent('fullScreen', {
+                detail : {
+                    fullScreen : e.fullScreen
+                }
+            }));
+        });
+
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
         document.getElementById(this.uid + '-prev').style.display='none';
         document.getElementById(this.uid + '-next').style.display='none';
