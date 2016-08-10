@@ -428,6 +428,7 @@ window.KbOSD = (function(window, undefined) {
             this.updateArrows(this, page);
             this.updateFragmentIdentifier();
             this.updateFastNav();
+            $(this.contentElem).trigger('pagechange', page, this);
             return page;
         },
         getNextPageNumber: function () {
