@@ -106,7 +106,11 @@ window.KbOSD = (function(window, undefined) {
                 KbOSD.prototype.instances.push(newKbOSD); // handle to all KbOSD objects in KbOSD.prototype.instances
                 newKbOSD.updateArrows(newKbOSD);
 
-                $(document).trigger('kbosdready', newKbOSD); // tell the world that it's ready
+                document.dispatchEvent(new CustomEvent('kbosdready', {
+                    detail : {
+                        kbosd : newKbOSD
+                    }
+                }));
 
             }, this);
 
@@ -428,7 +432,14 @@ window.KbOSD = (function(window, undefined) {
             this.updateArrows(this, page);
             this.updateFragmentIdentifier();
             this.updateFastNav();
-            $(this.contentElem).trigger('pagechange', page, this);
+
+            this.contentElem.dispatchEvent(new CustomEvent('pagechange', {
+                detail : {
+                    page : page,
+                    kbosd : this
+                }
+            }));
+
             if (cb && 'function' === typeof cb) {
                 cb(page);
             }
