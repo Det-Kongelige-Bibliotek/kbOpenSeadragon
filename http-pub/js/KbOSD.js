@@ -106,7 +106,10 @@ window.KbOSD = (function(window, undefined) {
 
                 var newKbOSD = new KbOSD(config);
                 KbOSD.prototype.instances.push(newKbOSD); // handle to all KbOSD objects in KbOSD.prototype.instances
-                newKbOSD.updateArrows(newKbOSD);
+                newKbOSD.pageCount = newKbOSD.pageNumNormalizer.pageCount;
+                if (newKbOSD.pageCount > 1) { // only update arrows if more than one page
+                    newKbOSD.updateArrows(newKbOSD);
+                }
 
                 document.dispatchEvent(new CustomEvent('kbosdready', {
                     detail : {
@@ -318,8 +321,10 @@ window.KbOSD = (function(window, undefined) {
         });
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
-        document.getElementById(this.uid + '-prev').style.display='none';
-        document.getElementById(this.uid + '-next').style.display='none';
+        if (that.pageCount > 1) { // only mess with prev/next if there is more than one page - otherwise they won't be in the DOM
+            document.getElementById(this.uid + '-prev').style.display='none';
+            document.getElementById(this.uid + '-next').style.display='none';
+        }
 
         that.pageNumNormalizer.setOsd(that.openSeadragon);
 
@@ -438,22 +443,24 @@ window.KbOSD = (function(window, undefined) {
             return this.pageNumNormalizer.getCurrentPage();
         },
         setCurrentPage: function (page, cb) {
-            page = this.pageNumNormalizer.setCurrentPage(page);
-            this.updateArrows(this, page);
-            this.updateFragmentIdentifier();
-            this.updateFastNav();
+            if (this.pageCount > 1) {
+                page = this.pageNumNormalizer.setCurrentPage(page);
+                this.updateArrows(this, page);
+                this.updateFragmentIdentifier();
+                this.updateFastNav();
 
-            this.contentElem.dispatchEvent(new CustomEvent('pagechange', {
-                detail : {
-                    page : page,
-                    kbosd : this
+                this.contentElem.dispatchEvent(new CustomEvent('pagechange', {
+                    detail : {
+                        page : page,
+                        kbosd : this
+                    }
+                }));
+
+                if (cb && 'function' === typeof cb) {
+                    cb(page);
                 }
-            }));
-
-            if (cb && 'function' === typeof cb) {
-                cb(page);
+                return page;
             }
-            return page;
         },
         getNextPageNumber: function () {
             return this.pageNumNormalizer.getNextPageNumber();
