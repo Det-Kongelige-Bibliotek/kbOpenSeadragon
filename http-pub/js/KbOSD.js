@@ -321,7 +321,7 @@ window.KbOSD = (function(window, undefined) {
         });
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
-        if (that.pageCount > 1) { // only mess with prev/next if there is more than one page - otherwise they won't be in the DOM
+        if (that.pageNumNormalizer.pageCount > 1) { // only mess with prev/next if there is more than one page - otherwise they won't be in the DOM
             document.getElementById(this.uid + '-prev').style.display='none';
             document.getElementById(this.uid + '-next').style.display='none';
         }
