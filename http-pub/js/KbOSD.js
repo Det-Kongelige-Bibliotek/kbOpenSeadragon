@@ -82,6 +82,8 @@ window.KbOSD = (function(window, undefined) {
         };
 
     // initialization
+    // delete History if it is already loaded (endlösung workaround for a 4 year old bug in History :-/ https://github.com/browserstate/history.js/issues/189 )
+    delete History;
     // add history polyfill
     loadAdditionalJavascript('http://localhost:8002/3rdparty/native.history.js');
     // add openSeaDragon script
@@ -553,10 +555,10 @@ window.KbOSD = (function(window, undefined) {
 
     // setting up version
     KbOSD.version = {
-        versionStr : '1.1.3',
+        versionStr : '1.1.5',
         major: 1,
         minor: 1,
-        revision: 3
+        revision: 5
     }
     return KbOSD;
 }(window));
