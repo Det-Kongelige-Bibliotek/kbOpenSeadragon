@@ -89,7 +89,9 @@ window.KbOSD = (function(window, undefined) {
     // add openSeaDragon script
     loadAdditionalJavascript('http://localhost:8002/3rdparty/openseadragon.js', function () {
         // This is run when openseadragon has loaded
-        KbOSD.version.openSeadragon = OpenSeadragon.version; // Flashing OpenSeadragon version in KbOSD.version
+        if ('undefined' !== typeof OpenSeadragon) {
+            KbOSD.version.openSeadragon = OpenSeadragon.version; // Flashing OpenSeadragon version in KbOSD.version
+        }
 
         if ('undefined' !== window.kbOSDconfig) {
             var fragmentHash = extractFragmentIdentifier();
