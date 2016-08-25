@@ -88,20 +88,20 @@
 }
 .indexPage{
     position:absolute;
-    left:0;
+    left:-200px;
     right:100%;
     top:0;
     bottom:48px; /* minus footer height */
     background-color:darkgreen;
     opacity:0.7;
-    transition: right 200ms ease-out;
+    transition: left 200ms ease-out, right 200ms ease-out;
     -webkit-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
     -moz-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
     box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
+    min-width:200px;
 }
 .indexPage.shown{
-    right:80%;
-    min-width:200px;
+    left:0px;
 }
 .indexFan{
     position:absolute;
