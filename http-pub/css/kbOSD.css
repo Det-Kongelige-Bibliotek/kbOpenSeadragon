@@ -103,7 +103,7 @@
 .indexPage.shown{
     left:0px;
 }
-.indexFan{
+.kbOSDContent .indexPage .indexFan{
     position:absolute;
     width:32px;
     height:32px;
@@ -120,11 +120,11 @@
     -moz-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     box-shadow:3px 3px 6px rgba(0,0,0,0.2);
 }
-.indexFan img{
+.kbOSDContent .indexPage .indexFan img{
     margin-top:6px;
     margin-left:5px;
 }
-.indexPage .indexFan .glyphicon{
+.kbOSDContent .indexPage .indexFan .glyphicon{
     display:block;
     margin-top:3px;
     margin-left:5px;
@@ -132,15 +132,15 @@
     height: 24px;
     background-repeat: no-repeat;
 }
-.indexPage .indexFan .glyphicon{
+.kbOSDContent .indexPage .indexFan .glyphicon{
     background-image: url(../images/glyphicons-list.png);
     background-position-y:3px;
 }
-.indexPage.shown .indexFan .glyphicon{
+.kbOSDContent .indexPage.shown .indexFan .glyphicon{
     background-image: url(../images/glyphicons-arrow-left.png);
     background-position-y:3px;
 }
-.indexContent{
+.kbOSDContent .indexPage .indexContent{
     position:absolute;
     top:20px;
     left:20px;
@@ -149,7 +149,7 @@
     overflow-x:hidden;
     overflow-y:auto;
 }
-.indexContent ul li .indexLink{
+.kbOSDContent .indexPage .indexContent ul li .indexLink{
     cursor:pointer;
     color:white;
     text-decoration:underline;
