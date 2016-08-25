@@ -309,7 +309,7 @@ window.KbOSD = (function(window, undefined) {
             rotateRightButton: this.uid + '-rotate',
             previousButton: this.uid + '-prev',
             nextButton: this.uid + '-next',
-            fullPageButton: this.uid + '-fullscreen',
+            fullPageButton: this.uid + '-fullscreen'
         });
 
         that.openSeadragon = OpenSeadragon(config);
