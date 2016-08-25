@@ -10,6 +10,32 @@ if (!Array.prototype.forEach) {
     }; 
 }
 
+if ('undefined' === typeof window.kbTriggerEvent) {
+    window.kbTriggerEvent = function (el, eventName, data) {
+        var event;
+        if (typeof window.CustomEvent === 'function') {
+            event = new CustomEvent(eventName, { detail : data });
+        } else if (document.createEvent) {
+            event = document.createEvent('HTMLEvents');
+            event.initEvent(eventName,true,true);
+        }else if(document.createEventObject){// IE < 9
+            event = document.createEventObject();
+            event.eventType = eventName;
+            event.data = { detail : data };
+        }
+        event.eventName = eventName;
+        if(el.dispatchEvent){
+            el.dispatchEvent(event);
+        }else if(el.fireEvent && htmlEvents['on'+eventName]){// IE < 9
+            el.fireEvent('on'+event.eventType,event);// can trigger only a real event (e.g. 'click')
+        }else if(el[eventName]){
+            el[eventName]();
+        }else if(el['on'+eventName]){
+            el['on'+eventName]();
+        }
+    };
+}
+
 window.KbOSD = (function(window, undefined) {
     // Make and prepare a uidGenerator
     var UIDGen = function (initial) {
@@ -115,12 +141,7 @@ window.KbOSD = (function(window, undefined) {
                     newKbOSD.updateArrows(newKbOSD);
                 }
 
-                document.dispatchEvent(new CustomEvent('kbosdready', {
-                    detail : {
-                        kbosd : newKbOSD
-                    }
-                }));
-
+                kbTriggerEvent(document, 'kbosdready', { kbosd : newKbOSD });
             }, this);
 
             KbOSD.prototype.checkMenuWidth();
@@ -317,11 +338,7 @@ window.KbOSD = (function(window, undefined) {
         that.openSeadragon = OpenSeadragon(config);
 
         that.openSeadragon.addHandler('full-screen', function (e) {
-            that.contentElem.dispatchEvent(new CustomEvent('fullScreen', {
-                detail : {
-                    fullScreen : e.fullScreen
-                }
-            }));
+            kbTriggerEvent(that.contentElem, 'fullScreen', {fullScreen : e.fullScreen });
         });
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
@@ -453,12 +470,7 @@ window.KbOSD = (function(window, undefined) {
                 this.updateFragmentIdentifier();
                 this.updateFastNav();
 
-                this.contentElem.dispatchEvent(new CustomEvent('pagechange', {
-                    detail : {
-                        page : page,
-                        kbosd : this
-                    }
-                }));
+                kbTriggerEvent(this.contentElem, 'pagechange', { page : page, kbosd : this });
 
                 if (cb && 'function' === typeof cb) {
                     cb(page);
