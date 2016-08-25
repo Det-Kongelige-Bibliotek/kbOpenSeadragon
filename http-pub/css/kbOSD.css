@@ -103,6 +103,10 @@
 .indexPage.shown{
     left:0px;
 }
+.kbOSDContent.fullpage .indexPage{
+    top:64px;
+    bottom:0;
+}
 .kbOSDContent .indexPage .indexFan{
     position:absolute;
     width:32px;
