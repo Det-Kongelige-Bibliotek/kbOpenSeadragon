@@ -153,9 +153,17 @@
     overflow-x:hidden;
     overflow-y:auto;
 }
+.kbOSDContent .indexPage .indexContent ul{
+    list-style:none;
+    padding:0;
+}
 .kbOSDContent .indexPage .indexContent ul li .indexLink{
     cursor:pointer;
-    color:white;
+    color:#bbb;
+    text-decoration:none;
+}
+.kbOSDContent .indexPage .indexContent ul li .indexLink:hover{
+    color:#fff;
     text-decoration:underline;
 }
 .kbOSDFooter{
