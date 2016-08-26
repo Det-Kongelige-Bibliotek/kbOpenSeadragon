@@ -571,10 +571,10 @@ window.KbOSD = (function(window, undefined) {
 
     // setting up version
     KbOSD.version = {
-        versionStr : '1.1.5',
+        versionStr : '1.1.6',
         major: 1,
         minor: 1,
-        revision: 5
+        revision: 6
     }
     return KbOSD;
 }(window));
