@@ -37,6 +37,8 @@ if ('undefined' === typeof window.kbTriggerEvent) {
 }
 
 window.KbOSD = (function(window, undefined) {
+    var rootURI = 'http://localhost:8002/';
+
     // Make and prepare a uidGenerator
     var UIDGen = function (initial) {
         initial = initial || 0;
@@ -111,9 +113,9 @@ window.KbOSD = (function(window, undefined) {
     // delete History if it is already loaded (endlösung workaround for a 4 year old bug in History :-/ https://github.com/browserstate/history.js/issues/189 )
     delete History;
     // add history polyfill
-    loadAdditionalJavascript('http://localhost:8002/3rdparty/native.history.js');
+    loadAdditionalJavascript(rootURI + '3rdparty/native.history.js');
     // add openSeaDragon script
-    loadAdditionalJavascript('http://localhost:8002/3rdparty/openseadragon.js', function () {
+    loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
         // This is run when openseadragon has loaded
         if ('undefined' !== typeof OpenSeadragon) {
             KbOSD.version.openSeadragon = OpenSeadragon.version; // Flashing OpenSeadragon version in KbOSD.version
@@ -154,7 +156,7 @@ window.KbOSD = (function(window, undefined) {
 
     // add kbOSD stylesheet
     var link = document.createElement('link');
-    link.href = 'http://localhost:8002/css/kbOSD.css';
+    link.href = rootURI + 'css/kbOSD.css';
     link.rel = 'stylesheet';
     link.type = 'text/css';
     var headElement = ('undefined' !== typeof document.head) ?  document.head : document.getElementsByTagName('head')[0]; // Lex old IE :-/
