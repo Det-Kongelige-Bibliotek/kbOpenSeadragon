@@ -88,22 +88,26 @@
 }
 .indexPage{
     position:absolute;
-    left:0;
+    left:-200px;
     right:100%;
     top:0;
     bottom:48px; /* minus footer height */
     background-color:darkgreen;
     opacity:0.7;
-    transition: right 200ms ease-out;
+    transition: left 200ms ease-out, right 200ms ease-out;
     -webkit-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
     -moz-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
     box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
-}
-.indexPage.shown{
-    right:80%;
     min-width:200px;
 }
-.indexFan{
+.indexPage.shown{
+    left:0px;
+}
+.kbOSDContent.fullpage .indexPage{
+    top:64px;
+    bottom:0;
+}
+.kbOSDContent .indexPage .indexFan{
     position:absolute;
     width:32px;
     height:32px;
@@ -120,11 +124,11 @@
     -moz-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     box-shadow:3px 3px 6px rgba(0,0,0,0.2);
 }
-.indexFan img{
+.kbOSDContent .indexPage .indexFan img{
     margin-top:6px;
     margin-left:5px;
 }
-.indexPage .indexFan .glyphicon{
+.kbOSDContent .indexPage .indexFan .glyphicon{
     display:block;
     margin-top:3px;
     margin-left:5px;
@@ -132,15 +136,15 @@
     height: 24px;
     background-repeat: no-repeat;
 }
-.indexPage .indexFan .glyphicon{
+.kbOSDContent .indexPage .indexFan .glyphicon{
     background-image: url(../images/glyphicons-list.png);
     background-position-y:3px;
 }
-.indexPage.shown .indexFan .glyphicon{
+.kbOSDContent .indexPage.shown .indexFan .glyphicon{
     background-image: url(../images/glyphicons-arrow-left.png);
     background-position-y:3px;
 }
-.indexContent{
+.kbOSDContent .indexPage .indexContent{
     position:absolute;
     top:20px;
     left:20px;
@@ -149,9 +153,17 @@
     overflow-x:hidden;
     overflow-y:auto;
 }
-.indexContent ul li .indexLink{
+.kbOSDContent .indexPage .indexContent ul{
+    list-style:none;
+    padding:0;
+}
+.kbOSDContent .indexPage .indexContent ul li .indexLink{
     cursor:pointer;
-    color:white;
+    color:#bbb;
+    text-decoration:none;
+}
+.kbOSDContent .indexPage .indexContent ul li .indexLink:hover{
+    color:#fff;
     text-decoration:underline;
 }
 .kbOSDFooter{

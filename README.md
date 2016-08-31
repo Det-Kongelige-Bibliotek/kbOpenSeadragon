@@ -6,11 +6,12 @@ This is an openSeadragon wrapper for [The Royal Library, Denmark](http://www.kb.
 It passes on an openSeadragon configuration object to openSeadragon.
 
 ## How to install it
-To set up your local machine to use it there are some prerequisites. You need to:
+You can set up a local instance and test it locally
 
+### Prerequisites
 1. have [nodeJs and npm](https://nodejs.org/en/) installed.
 
-2. install grunt-cli installed.
+2. install grunt-cli
 
   * npm install -g grunt-cli
 
@@ -18,11 +19,13 @@ To set up your local machine to use it there are some prerequisites. You need to
 
   * npm install -g gulp
 
-4. Create a library under http-pub called "__3rdparty__"
+Either run the install script in the root directory, or do the following steps manually:
 
-5. Stand in the 3rdparty library and:
+1. Create a library under http-pub called "__3rdparty__"
 
-6. clone [openSeadragon](https://github.com/openseadragon/openseadragon.git)
+2. Stand in the 3rdparty library and:
+
+3. clone [openSeadragon](https://github.com/openseadragon/openseadragon.git)
 
   * git clone https://github.com/openseadragon/openseadragon.git
 
@@ -36,13 +39,13 @@ To set up your local machine to use it there are some prerequisites. You need to
 
   * ln -s openseadragon/build/openseadragon/openseadragon.js openseadragon.js
 
-7. clone [history.js](https://github.com/browserstate/history.js.git)
+4. clone [history.js](https://github.com/browserstate/history.js.git)
 
   * ln -s history.js/scripts/bundled/html4+html5/native.history.js
 
 When all this is in place, go to the project root and do:
 
-8. npm install
+5. npm install
 
 ## How to start it
 
@@ -70,4 +73,4 @@ If you want to put the system up on a server, you can deploy it with:
 
 3. scp dist/kbOpenSeadragon.tar.gz myWebServer.com:
 
-4. ssh to the server, unpack the tar in a directory under the webroot (be aware that there is no parent dir in the tarball)
+4. ssh to the server, unpack the tar in a directory under the desired webroot (be aware that there is no parent dir in the tarball)

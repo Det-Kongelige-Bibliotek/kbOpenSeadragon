@@ -1,0 +1,25 @@
+echo "You are about to install KbOpenSeadragon (press <ctrl>+c if it was a mistake)."
+read -r -p "Do you want to install latest version of OpenSeadragon? [y/N] " response
+    rm -fr http-pub/3rdparty
+    mkdir -p http-pub/3rdparty
+#install openSeadragon
+echo installing openSeadragon
+    cd http-pub/3rdparty && git clone https://github.com/openseadragon/openseadragon.git
+if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
+    then
+        # use next line if you want the very latest version of openSeadragon
+        cd openseadragon && git co "$(git describe)" # get latest tagged version
+    else
+        # use next line to get a fixed version of openSeadragon
+        cd openseadragon && git co v2.2.1 # get version 2.2.1 - can be exchanged with whatever version desired
+fi
+    npm install
+    grunt
+    cd .. && ln -s openseadragon/build/openseadragon/openseadragon.js openseadragon.js
+#install history.js
+echo installing history.js
+    git clone https://github.com/browserstate/history.js.git
+    ln -s history.js/scripts/bundled/html4+html5/native.history.js native.history.js
+echo installing kbOpenSeadragon
+    cd ../.. && npm install
+echo "Start the server by typing ./server.js and direct your prefered browser to http://localhost:8001/"

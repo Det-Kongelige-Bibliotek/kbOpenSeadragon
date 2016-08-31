@@ -10,7 +10,35 @@ if (!Array.prototype.forEach) {
     }; 
 }
 
+if ('undefined' === typeof window.kbTriggerEvent) {
+    window.kbTriggerEvent = function (el, eventName, data) {
+        var event;
+        if (typeof window.CustomEvent === 'function') {
+            event = new CustomEvent(eventName, { detail : data });
+        } else if (document.createEvent) {
+            event = document.createEvent('HTMLEvents');
+            event.initEvent(eventName,true,true);
+        }else if(document.createEventObject){// IE < 9
+            event = document.createEventObject();
+            event.eventType = eventName;
+            event.data = { detail : data };
+        }
+        event.eventName = eventName;
+        if(el.dispatchEvent){
+            el.dispatchEvent(event);
+        }else if(el.fireEvent && htmlEvents['on'+eventName]){// IE < 9
+            el.fireEvent('on'+event.eventType,event);// can trigger only a real event (e.g. 'click')
+        }else if(el[eventName]){
+            el[eventName]();
+        }else if(el['on'+eventName]){
+            el['on'+eventName]();
+        }
+    };
+}
+
 window.KbOSD = (function(window, undefined) {
+    var rootURI = 'http://localhost:8002/';
+
     // Make and prepare a uidGenerator
     var UIDGen = function (initial) {
         initial = initial || 0;
@@ -85,11 +113,13 @@ window.KbOSD = (function(window, undefined) {
     // delete History if it is already loaded (endlösung workaround for a 4 year old bug in History :-/ https://github.com/browserstate/history.js/issues/189 )
     delete History;
     // add history polyfill
-    loadAdditionalJavascript('http://localhost:8002/3rdparty/native.history.js');
+    loadAdditionalJavascript(rootURI + '3rdparty/native.history.js');
     // add openSeaDragon script
-    loadAdditionalJavascript('http://localhost:8002/3rdparty/openseadragon.js', function () {
+    loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
         // This is run when openseadragon has loaded
-        KbOSD.version.openSeadragon = OpenSeadragon.version; // Flashing OpenSeadragon version in KbOSD.version
+        if ('undefined' !== typeof OpenSeadragon) {
+            KbOSD.version.openSeadragon = OpenSeadragon.version; // Flashing OpenSeadragon version in KbOSD.version
+        }
 
         if ('undefined' !== window.kbOSDconfig) {
             var fragmentHash = extractFragmentIdentifier();
@@ -113,12 +143,7 @@ window.KbOSD = (function(window, undefined) {
                     newKbOSD.updateArrows(newKbOSD);
                 }
 
-                document.dispatchEvent(new CustomEvent('kbosdready', {
-                    detail : {
-                        kbosd : newKbOSD
-                    }
-                }));
-
+                kbTriggerEvent(document, 'kbosdready', { kbosd : newKbOSD });
             }, this);
 
             KbOSD.prototype.checkMenuWidth();
@@ -131,7 +156,7 @@ window.KbOSD = (function(window, undefined) {
 
     // add kbOSD stylesheet
     var link = document.createElement('link');
-    link.href = 'http://localhost:8002/css/kbOSD.css';
+    link.href = rootURI + 'css/kbOSD.css';
     link.rel = 'stylesheet';
     link.type = 'text/css';
     var headElement = ('undefined' !== typeof document.head) ?  document.head : document.getElementsByTagName('head')[0]; // Lex old IE :-/
@@ -309,17 +334,13 @@ window.KbOSD = (function(window, undefined) {
             rotateRightButton: this.uid + '-rotate',
             previousButton: this.uid + '-prev',
             nextButton: this.uid + '-next',
-            fullPageButton: this.uid + '-fullscreen',
+            fullPageButton: this.uid + '-fullscreen'
         });
 
         that.openSeadragon = OpenSeadragon(config);
 
         that.openSeadragon.addHandler('full-screen', function (e) {
-            that.contentElem.dispatchEvent(new CustomEvent('fullScreen', {
-                detail : {
-                    fullScreen : e.fullScreen
-                }
-            }));
+            kbTriggerEvent(that.contentElem, 'fullScreen', {fullScreen : e.fullScreen });
         });
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
@@ -451,12 +472,7 @@ window.KbOSD = (function(window, undefined) {
                 this.updateFragmentIdentifier();
                 this.updateFastNav();
 
-                this.contentElem.dispatchEvent(new CustomEvent('pagechange', {
-                    detail : {
-                        page : page,
-                        kbosd : this
-                    }
-                }));
+                kbTriggerEvent(this.contentElem, 'pagechange', { page : page, kbosd : this });
 
                 if (cb && 'function' === typeof cb) {
                     cb(page);
@@ -555,10 +571,10 @@ window.KbOSD = (function(window, undefined) {
 
     // setting up version
     KbOSD.version = {
-        versionStr : '1.1.5',
+        versionStr : '1.1.7',
         major: 1,
         minor: 1,
-        revision: 5
+        revision: 7
     }
     return KbOSD;
 }(window));

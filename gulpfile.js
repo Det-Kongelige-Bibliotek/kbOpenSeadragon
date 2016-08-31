@@ -22,7 +22,7 @@ var DEST = 'production';
 var DEVDEST = 'development';
 var DISTDEST = 'dist';
 var LOCALHOSTURL = 'http://localhost:8002/';
-var STATICURL = argv.dest || 'https://static.kb.dk/~hafe/kbOpenSeadragon/';
+var STATICURL = argv.dest || 'https://static.kb.dk/kbOpenSeadragon/';
 
 if (STATICURL.charAt(STATICURL.length - 1) !== '/') {
     STATICURL = STATICURL + '/';
@@ -35,7 +35,7 @@ if (argv.help) {
     console.log('');
     console.log('gulp production - build production files for the KB flavor of OpenSeadragon.');
     console.log('gulp --dest=https://static.kb.dk/~hafe/kbOpenSeadragon/ - build productionfiles with all static urls pointing at https://static.kb.dk/~hafe/kbOpenSeadragon/');
-    console.log('gulp development - build a development setup with neither minification nor obfuscation.');
+    console.log('gulp development - build a development setup with neither minification nor obfuscation. *DEPRECATED*');
     console.log('gulp --help - print this message.');
     process.exit();
 }
