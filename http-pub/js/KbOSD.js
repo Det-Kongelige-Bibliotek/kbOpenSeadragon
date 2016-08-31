@@ -82,11 +82,15 @@ window.KbOSD = (function(window, undefined) {
         };
 
     // initialization
+    // delete History if it is already loaded (endlösung workaround for a 4 year old bug in History :-/ https://github.com/browserstate/history.js/issues/189 )
+    delete History;
     // add history polyfill
     loadAdditionalJavascript('http://localhost:8002/3rdparty/native.history.js');
     // add openSeaDragon script
     loadAdditionalJavascript('http://localhost:8002/3rdparty/openseadragon.js', function () {
         // This is run when openseadragon has loaded
+        KbOSD.version.openSeadragon = OpenSeadragon.version; // Flashing OpenSeadragon version in KbOSD.version
+
         if ('undefined' !== window.kbOSDconfig) {
             var fragmentHash = extractFragmentIdentifier();
             window.kbOSDconfig.forEach(function (config) {
@@ -104,7 +108,16 @@ window.KbOSD = (function(window, undefined) {
 
                 var newKbOSD = new KbOSD(config);
                 KbOSD.prototype.instances.push(newKbOSD); // handle to all KbOSD objects in KbOSD.prototype.instances
-                newKbOSD.updateArrows(newKbOSD);
+                newKbOSD.pageCount = newKbOSD.pageNumNormalizer.pageCount;
+                if (newKbOSD.pageCount > 1) { // only update arrows if more than one page
+                    newKbOSD.updateArrows(newKbOSD);
+                }
+
+                document.dispatchEvent(new CustomEvent('kbosdready', {
+                    detail : {
+                        kbosd : newKbOSD
+                    }
+                }));
 
             }, this);
 
@@ -301,9 +314,19 @@ window.KbOSD = (function(window, undefined) {
 
         that.openSeadragon = OpenSeadragon(config);
 
+        that.openSeadragon.addHandler('full-screen', function (e) {
+            that.contentElem.dispatchEvent(new CustomEvent('fullScreen', {
+                detail : {
+                    fullScreen : e.fullScreen
+                }
+            }));
+        });
+
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
-        document.getElementById(this.uid + '-prev').style.display='none';
-        document.getElementById(this.uid + '-next').style.display='none';
+        if (that.pageNumNormalizer.pageCount > 1) { // only mess with prev/next if there is more than one page - otherwise they won't be in the DOM
+            document.getElementById(this.uid + '-prev').style.display='none';
+            document.getElementById(this.uid + '-next').style.display='none';
+        }
 
         that.pageNumNormalizer.setOsd(that.openSeadragon);
 
@@ -421,12 +444,25 @@ window.KbOSD = (function(window, undefined) {
         getCurrentPage: function () {
             return this.pageNumNormalizer.getCurrentPage();
         },
-        setCurrentPage: function (page) {
-            page = this.pageNumNormalizer.setCurrentPage(page);
-            this.updateArrows(this, page);
-            this.updateFragmentIdentifier();
-            this.updateFastNav();
-            return page;
+        setCurrentPage: function (page, cb) {
+            if (this.pageCount > 1) {
+                page = this.pageNumNormalizer.setCurrentPage(page);
+                this.updateArrows(this, page);
+                this.updateFragmentIdentifier();
+                this.updateFastNav();
+
+                this.contentElem.dispatchEvent(new CustomEvent('pagechange', {
+                    detail : {
+                        page : page,
+                        kbosd : this
+                    }
+                }));
+
+                if (cb && 'function' === typeof cb) {
+                    cb(page);
+                }
+                return page;
+            }
         },
         getNextPageNumber: function () {
             return this.pageNumNormalizer.getNextPageNumber();
@@ -517,5 +553,12 @@ window.KbOSD = (function(window, undefined) {
     // setting up logo for watermark
     KbOSD.prototype.logo.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wECDQUXTqkHsAAAAytJREFUWMPNmD9I60Acx68iCailBB8UagZrWpKlHZK0Qp9DfUNRRARBGuHRSSgdHHV2duyS3cUUB9EihlCMUOjiNcLLcqGgIlEivFKkUohL32IgiH9aUl/9LRfufpDPfe/3Jxff1tZWFwzZRgEAYHd3VxwWwPb2dmEEfAPzDCFJUmKoEJIkJTRN472CeIIwTTPkHocCQZLkvXscCoSmaTxFUUjTNN5zin5mj4+P+Pn5OX17exuybRvHcdymafqGZVmIEKJZloWKojCGYUy712dnZ68DgYDtGcIwjB/7+/sLnU7HPzY21mYYxrBtG6vVajyGYXYqlYIQwhhCCA+Hw9c4jjcRQnSlUgnXajV+fX1dpmn6rycIRVF4hmEMTdP4jY2NI5Ik2y/qQEmSUpVKZZ6iKCQIQs3ZtWmaqFgs/mYYxlAUhadpWvYUE5ZlhaLR6B0AADw8PPid+UAgYOfzeRUAAPL5vOqW3fGLRqN3lmWFPAcmQRDNRqMxRVEUUlW1p3qgqmqCoijUaDSmCIJoeoaIx+OGruuxdDqtt1qtyWq1Gv7Iv1qthlut1mQ6ndZ1XY/F43HDM0Qmk0EEQTQVReGTySSUZXneNE3/O8XLL8vyfDKZhIqi8ARBNDOZDBpIigqCcCaK4hqGYTYAAOzt7S3MzMzcvO4fV1dX0y9xNGlZVqhQKBwMrE6QJNnO5XLHl5eX4VgsprvXWJaFzrMbLJfLHTuZNBAIAAB4enrC+qmMTkYNFCISiTSz2exRP/4Dh7Asyw8hpJeWluBHMpum6T88PPw5MTEBeynZfTWw8fFx+/n5GRdFce297wdJkhKiKK45/gNXgiTJ9ubmplyv10PlcvnXzs4Ovby8fMZx3L0zBwAAq6urMsdxfbX2UdCncRx3H4lEDk5PT+OlUmmlXC63O52On2VZuLi4+KfXI/AE4fQNQRAu5ubm0MnJCf9ZnPQK0QUA+D5yrNfroVKptPLWWrFYZF7PZbPZo16Pxa2Ecwl6EyYYDLbdhekzCwaDPSvzVnb89xvZezHhBvE52SEIwsVXXn4+2v2XKzPS48u6/wOiO0wQ33f4NfAPytlrOiwF3qUAAAAASUVORK5CYII=";
 
+    // setting up version
+    KbOSD.version = {
+        versionStr : '1.1.5',
+        major: 1,
+        minor: 1,
+        revision: 5
+    }
     return KbOSD;
 }(window));
