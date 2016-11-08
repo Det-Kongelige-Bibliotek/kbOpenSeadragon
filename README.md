@@ -41,7 +41,7 @@ Either run the install script in the root directory, or do the following steps m
 
   * ln -s openseadragon/build/openseadragon/openseadragon.js openseadragon.js
 
-5. clone [history.js](https://github.com/browserstate/history.js.git)
+5. clone (under http-pub/3rdparty) [history.js](https://github.com/browserstate/history.js.git)
 
   * ln -s history.js/scripts/bundled/html4+html5/native.history.js
 
