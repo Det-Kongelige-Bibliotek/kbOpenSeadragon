@@ -67,6 +67,9 @@ window.KbOSD = (function(window, undefined) {
      */
     var extractFragmentIdentifier = function () {
         try {
+            if (window.location.hash.length < 2) {
+                return [];
+            }
             var fragmentIdentifier = window.location.hash.substr(1).split('&');
             for (var i = 0; i < fragmentIdentifier.length; i += 1) {
                 fragmentIdentifier[i] = fragmentIdentifier[i].split('=');
