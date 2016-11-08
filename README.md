@@ -21,11 +21,13 @@ You can set up a local instance and test it locally
 
 Either run the install script in the root directory, or do the following steps manually:
 
-1. Create a library under http-pub called "__3rdparty__"
+1. git clone this project under your dersired working folder
 
-2. Stand in the 3rdparty library and:
+2. Create a folder under http-pub called "__3rdparty__"
 
-3. clone [openSeadragon](https://github.com/openseadragon/openseadragon.git)
+3. Stand in the 3rdparty library and:
+
+4. clone [openSeadragon](https://github.com/openseadragon/openseadragon.git)
 
   * git clone https://github.com/openseadragon/openseadragon.git
 
@@ -39,13 +41,13 @@ Either run the install script in the root directory, or do the following steps m
 
   * ln -s openseadragon/build/openseadragon/openseadragon.js openseadragon.js
 
-4. clone [history.js](https://github.com/browserstate/history.js.git)
+5. clone [history.js](https://github.com/browserstate/history.js.git)
 
   * ln -s history.js/scripts/bundled/html4+html5/native.history.js
 
 When all this is in place, go to the project root and do:
 
-5. npm install
+6. npm install
 
 ## How to start it
 
