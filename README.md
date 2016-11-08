@@ -75,4 +75,12 @@ If you want to put the system up on a server, you can deploy it with:
 
 3. scp dist/kbOpenSeadragon.tar.gz myWebServer.com:
 
-4. ssh to the server, unpack the tar in a directory under the desired webroot (be aware that there is no parent dir in the tarball)
+4. ssh to the server
+
+5. create a subfolder to your webroot for the project (like ~/public_html/kbOpenSeadragon), if you don't have one already.
+
+6. move the uploaded tar file into that subfolder.
+
+7. extract all files and folders from the tar file:
+   tar xvfz kbOpenSeadragon.tar.gz (or whatever the tar file is called)
+   (be aware that there is no parent dir in the tarball)
