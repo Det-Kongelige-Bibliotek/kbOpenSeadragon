@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 .kbOSDViewer{
     position:relative;
     overflow:hidden;
@@ -67,7 +69,7 @@
     background:url('../images/previous_hover.png') no-repeat 0 0;
 }
 .kbOSDHeader h1{
-    font-family: arial;
+    font-family: roboto;
     line-height:48px;
     font-size: 18px;
     font-weight: normal;
@@ -89,8 +91,8 @@
     left:-200px;
     right:100%;
     top:0;
-    bottom:48px; /* minus footer height */
-    background-color:darkgreen;
+    bottom:0; /* minus footer height */
+    background-color:darkgray;
     opacity:0.7;
     transition: left 200ms ease-out, right 200ms ease-out;
     -webkit-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
@@ -102,25 +104,27 @@
     left:0;
 }
 .kbOSDContent.fullpage .indexPage{
-    top:64px;
+    top:0;
     bottom:0;
 }
 .kbOSDContent .indexPage .indexFan{
     position:absolute;
     width:32px;
     height:32px;
-    background-color:darkgreen;
+    background-color:darkgray;
     cursor:pointer;
     right:0;
     margin-right:-32px;
     top:100px;
-    border:1px solid black;
+    /*border:1px solid black;*/
     border-left-width:0;
     border-radius:0 5px 5px 0;
     z-index:9999;
     -webkit-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     -moz-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     box-shadow:3px 3px 6px rgba(0,0,0,0.2);
+    font-family: roboto !important;
+    font-weight: bold !important;
 }
 .kbOSDContent .indexPage .indexFan img{
     margin-top:6px;
@@ -157,8 +161,10 @@
 }
 .kbOSDContent .indexPage .indexContent ul li .indexLink{
     cursor:pointer;
-    color:#bbb;
+    color:#4c4c4c;
     text-decoration:none;
+    font-family: roboto;
+    font-weight: bold;
 }
 .kbOSDContent .indexPage .indexContent ul li .indexLink:hover{
     color:#fff;
@@ -248,7 +254,7 @@
 .kbOSDFooter{
     position: absolute !important;
     top: 0;
-    width: 315px;
+    width: 380px;
     margin-left: auto;
     margin-right: auto;
     z-index: 999;
