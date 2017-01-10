@@ -37,7 +37,7 @@ if ('undefined' === typeof window.kbTriggerEvent) {
 }
 
 window.KbOSD = (function(window, undefined) {
-    var rootURI = 'http://localhost:8002/';
+    var rootURI = '/';
 
     // Make and prepare a uidGenerator
     var UIDGen = function (initial) {

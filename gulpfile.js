@@ -21,7 +21,7 @@ var HTMLSRC = 'http-pub/*.html';
 var DEST = 'production';
 var DEVDEST = 'development';
 var DISTDEST = 'dist';
-var LOCALHOSTURL = 'http://localhost:8002/';
+var LOCALHOSTURL = '/';
 var STATICURL = argv.dest || 'https://static.kb.dk/kbOpenSeadragon/';
 
 if (STATICURL.charAt(STATICURL.length - 1) !== '/') {
