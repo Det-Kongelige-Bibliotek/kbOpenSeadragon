@@ -56,17 +56,17 @@
 }
 .kbButtonOverlay.kbLeft{
     float:left;
-    background-position:-192px 0;
+    background:url('../images/next_grouphover.png') no-repeat 0 0;
 }
 .kbButtonOverlay.kbLeft:hover{
-    background-position:-192px -48px;
+    background:url('../images/next_hover.png') no-repeat 0 0;
 }
 .kbButtonOverlay.kbRight{
     float:right;
-    background-position:-144px 0;
+    background:url('../images/previous_grouphover.png') no-repeat 0 0;
 }
 .kbButtonOverlay.kbRight:hover{
-    background-position:-144px -48px;
+    background:url('../images/previous_hover.png') no-repeat 0 0;
 }
 .kbOSDHeader h1{
     font-family: arial;
@@ -193,52 +193,52 @@
     width:48px;
 }
 .kbOSDFooter ul li .home{
-    background-position:0 0;
+    background:url('../images/home_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .home:hover{
-    background-position:0 -48px;
+    background:url('../images/home_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .zoomOut{
-    background-position:-48px 0;
+    background:url('../images/zoomout_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .zoomOut:hover{
-    background-position:-48px -48px;
+    background:url('../images/zoomout_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .zoomIn{
-    background-position:-96px 0;
+    background:url('../images/zoomin_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .zoomIn:hover{
-    background-position:-96px -48px;
+    background:url('../images/zoomin_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .previous{
-    background-position:-144px 0;
+    background:url('../images/previous_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .previous:hover{
-    background-position:-144px -48px;
+    background:url('../images/previous_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .next{
-    background-position:-192px 0;
+    background:url('../images/next_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .next:hover{
-    background-position:-192px -48px;
+    background:url('../images/next_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .rotate{
-    background-position:-240px 0;
+    background:url('../images/rotateright_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .rotate:hover{
-    background-position:-240px -48px;
+    background:url('../images/rotateright_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .minimize{
-    background-position:-288px 0;
+    background:url('../images/fullpage_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .minimize:hover{
-    background-position:-288px -48px;
+    background:url('../images/fullpage_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .maximize{
-    background-position:-336px 0;
+    background:url('../images/fullpage_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .maximize:hover{
-    background-position: -336px -48px;
+    background:url('../images/fullpage_hover.png') no-repeat 0 0;
 }
 .kbOSDHeader .icon.kbLogo{
     background-position:-384px 0;
