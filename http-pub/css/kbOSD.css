@@ -4,9 +4,9 @@
     height:100%;
 }
 .kbOSDViewer *{
-    padding:0px;
-    margin:0px;
-    border:0px;
+    padding:0;
+    margin:0;
+    border:0;
 }
 .kbOSDHeader, .kbOSDFooter{
     height:48px;
@@ -52,18 +52,18 @@
     z-index:5;
     width:48px;
     height:48px;
-    background:transparent url(../images/icon.png) no-repeat 0px 0px;
+    background:transparent url(../images/icon.png) no-repeat 0 0;
 }
 .kbButtonOverlay.kbLeft{
     float:left;
-    background-position:-192px 0px;
+    background-position:-192px 0;
 }
 .kbButtonOverlay.kbLeft:hover{
     background-position:-192px -48px;
 }
 .kbButtonOverlay.kbRight{
     float:right;
-    background-position:-144px 0px;
+    background-position:-144px 0;
 }
 .kbButtonOverlay.kbRight:hover{
     background-position:-144px -48px;
@@ -101,7 +101,7 @@
     min-width:200px;
 }
 .indexPage.shown{
-    left:0px;
+    left:0;
 }
 .kbOSDContent.fullpage .indexPage{
     top:64px;
@@ -169,6 +169,7 @@
 .kbOSDFooter{
     /*position:absolute !important; /* Apparently OpenSeadragon insist on making the toolbar position relative? */
     /*bottom:0;*/
+    background-color: transparent;
 }
 
 .kbOSDFooter ul{
@@ -187,60 +188,60 @@
 }
 .kbOSDViewer .icon, .kbOSDFooter .icon, .kbOSDHeader .icon{
     display:inline-block;
-    background:transparent url('../images/icon.png') no-repeat 0px 0px;
+    background:transparent url('../images/icon.png') no-repeat 0 0;
     height:48px;
     width:48px;
 }
 .kbOSDFooter ul li .home{
-    background-position:0px 0px;
+    background-position:0 0;
 }
 .kbOSDFooter ul li .home:hover{
-    background-position:0px -48px;
+    background-position:0 -48px;
 }
 .kbOSDFooter ul li .zoomOut{
-    background-position:-48px 0px;
+    background-position:-48px 0;
 }
 .kbOSDFooter ul li .zoomOut:hover{
     background-position:-48px -48px;
 }
 .kbOSDFooter ul li .zoomIn{
-    background-position:-96px 0px;
+    background-position:-96px 0;
 }
 .kbOSDFooter ul li .zoomIn:hover{
     background-position:-96px -48px;
 }
 .kbOSDFooter ul li .previous{
-    background-position:-144px 0px;
+    background-position:-144px 0;
 }
 .kbOSDFooter ul li .previous:hover{
     background-position:-144px -48px;
 }
 .kbOSDFooter ul li .next{
-    background-position:-192px 0px;
+    background-position:-192px 0;
 }
 .kbOSDFooter ul li .next:hover{
     background-position:-192px -48px;
 }
 .kbOSDFooter ul li .rotate{
-    background-position:-240px 0px;
+    background-position:-240px 0;
 }
 .kbOSDFooter ul li .rotate:hover{
     background-position:-240px -48px;
 }
 .kbOSDFooter ul li .minimize{
-    background-position:-288px 0px;
+    background-position:-288px 0;
 }
 .kbOSDFooter ul li .minimize:hover{
     background-position:-288px -48px;
 }
 .kbOSDFooter ul li .maximize{
-    background-position:-336px 0px;
+    background-position:-336px 0;
 }
 .kbOSDFooter ul li .maximize:hover{
     background-position: -336px -48px;
 }
 .kbOSDHeader .icon.kbLogo{
-    background-position:-384px 0px;
+    background-position:-384px 0;
 }
 .pull-left{
     float:left;
