@@ -9,6 +9,10 @@ var rename = require('gulp-rename');
 var chmod = require('gulp-chmod');
 var tar = require('gulp-tar');
 var gzip = require('gulp-gzip');
+var jshint = require('gulp-jshint');
+var gulpprint = require('gulp-print');
+var gulpif = require('gulp-if');
+var args = require('yargs').argv;
 
 var del = require('del');
 var argv = require('optimist').argv;
@@ -41,6 +45,15 @@ if (argv.help) {
 }
 
 gulp.task('default', ['production'], function () {});
+
+gulp.task('validate', function(){
+   return gulp
+       .src([JSSRC, './*.js']) // we want to check both the js files and the gulpfile.js in the root
+       .pipe(gulpif(args.verbose, gulpprint())) // print the files that are being validated if one uses --verbose
+       .pipe(jshint())
+       .pipe(jshint.reporter('jshint-stylish', {verbose: true}));
+
+});
 
 gulp.task('clean', function (cb) {
     del([DEST, DEVDEST, DISTDEST]).then(function (paths) {
@@ -141,7 +154,7 @@ gulp.task('production', ['clean'], function (cb) {
     gulp.src(IMGSRC)
     .pipe(gulp.dest(DEST + '/images'));
 
-    gutil.log('Production files done. Use', gutil.colors.green('gulp dist'), 'to create a tarball for distribution.')
+    gutil.log('Production files done. Use', gutil.colors.green('gulp dist'), 'to create a tarball for distribution.');
 
     if ('undefined' !== typeof cb) {
         cb();
