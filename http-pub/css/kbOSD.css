@@ -9,8 +9,8 @@
     border:0;
 }
 .kbOSDHeader, .kbOSDFooter{
-    height:48px;
-    background:#1B1B1B;
+    height:35px;
+    background:transparent;
     color:#757575;
     width:100%;
     min-width:230px;
@@ -20,11 +20,9 @@
     top:0;*/
 }
 .kbOSDFooter .kbPrevNav{
-    width: 17.5%;
 }
 .kbOSDFooter .kbFastNav{
-    line-height:50px;
-    width:7%;
+    line-height:35px;
     white-space:nowrap;
 }
 @media screen and (max-width:768px){ /* rearrange footer buttons on small screens */
@@ -32,26 +30,26 @@
         display:none;
     }
     .kbOSDFooter .kbFastNav{
-        width:21%;
+        /*width:21%;*/
     }
     .kbOSDFooter .kbFullscreen{
-        width:24%;
+        /*width:24%;*/
     }
 }
 /* These next three are in here because we can not use a media query, if the viewer is on a huge page, but in a narrow container */
-.kbOSDFooter.narrowMenu .hideWhenSmall{
+/*.kbOSDFooter.narrowMenu .hideWhenSmall{
     display:none;
-}
+}*/
 .kbOSDFooter.narrowMenu .kbFastNav{
-    width:21%;
+    /*width:21%;*/
 }
 .kbOSDFooter.narrowMenu .kbFullscreen{
-    width:24%
+    /*width:24%*/
 }
 .kbButtonOverlay{
     z-index:5;
-    width:48px;
-    height:48px;
+    width:35px;
+    height:35px;
     background:transparent url(../images/icon.png) no-repeat 0 0;
 }
 .kbButtonOverlay.kbLeft{
@@ -178,7 +176,6 @@
 .kbOSDFooter ul li{
     display:inline-block;
     min-height:1px;
-    width:12.5%;
     float:left;
     text-align: center;
 }
@@ -189,8 +186,8 @@
 .kbOSDViewer .icon, .kbOSDFooter .icon, .kbOSDHeader .icon{
     display:inline-block;
     background:transparent url('../images/icon.png') no-repeat 0 0;
-    height:48px;
-    width:48px;
+    height:35px;
+    width:35px;
 }
 .kbOSDFooter ul li .home{
     background:url('../images/home_grouphover.png') no-repeat 0 0;
@@ -241,11 +238,22 @@
     background:url('../images/fullpage_hover.png') no-repeat 0 0;
 }
 .kbOSDHeader .icon.kbLogo{
-    background-position:-384px 0;
 }
 .pull-left{
     float:left;
 }
 .pull-right{
     float:right;
+}
+.kbOSDFooter{
+    position: absolute !important;
+    top: 0;
+    width: 315px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 999;
+    /* To center the bar*/
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
 }
