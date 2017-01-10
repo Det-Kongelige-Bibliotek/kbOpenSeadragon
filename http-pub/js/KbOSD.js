@@ -77,7 +77,7 @@ window.KbOSD = (function(window, undefined) {
                 for (var j = 0; j < fragmentIdentifier[i][1].length; j += 1) {
                     fragmentIdentifier[i][1][j] = fragmentIdentifier[i][1][j].split(':');
                 }
-            };
+            }
             var fragmentHash = [];
             fragmentIdentifier.forEach(function (fragIdent) {
                 var params = [];
@@ -578,6 +578,6 @@ window.KbOSD = (function(window, undefined) {
         major: 1,
         minor: 1,
         revision: 7
-    }
+    };
     return KbOSD;
 }(window));
