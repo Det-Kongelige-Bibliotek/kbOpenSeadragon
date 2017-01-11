@@ -52,7 +52,6 @@
     z-index:5;
     width:35px;
     height:35px;
-    background:transparent url(../images/icon.png) no-repeat 0 0;
 }
 .kbButtonOverlay.kbLeft{
     float:left;
@@ -195,7 +194,6 @@
 }
 .kbOSDViewer .icon, .kbOSDFooter .icon, .kbOSDHeader .icon{
     display:inline-block;
-    background:transparent url('../images/icon.png') no-repeat 0 0;
     height:35px;
     width:35px;
 }
@@ -229,11 +227,17 @@
 .kbOSDFooter ul li .next:hover{
     background:url('../images/next_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotate{
+.kbOSDFooter ul li .rotateRight{
     background:url('../images/rotateright_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotate:hover{
+.kbOSDFooter ul li .rotateRight:hover{
     background:url('../images/rotateright_hover.png') no-repeat 0 0;
+}
+.kbOSDFooter ul li .rotateLeft{
+    background:url('../images/rotateleft_grouphover.png') no-repeat 0 0;
+}
+.kbOSDFooter ul li .rotateLeft:hover{
+    background:url('../images/rotateleft_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .minimize{
     background:url('../images/fullpage_grouphover.png') no-repeat 0 0;

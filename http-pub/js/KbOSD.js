@@ -77,7 +77,7 @@ window.KbOSD = (function(window, undefined) {
                 for (var j = 0; j < fragmentIdentifier[i][1].length; j += 1) {
                     fragmentIdentifier[i][1][j] = fragmentIdentifier[i][1][j].split(':');
                 }
-            };
+            }
             var fragmentHash = [];
             fragmentIdentifier.forEach(function (fragIdent) {
                 var params = [];
@@ -304,7 +304,10 @@ window.KbOSD = (function(window, undefined) {
                                             '<a id="' + this.uid + '-zoomIn" href="" class="pull-left icon zoomIn"></a>' +
                                         '</li>' +
                                         '<li>' +
-                                            '<a id="' + this.uid + '-rotate" href="" class="icon rotate"></a>' +
+                                            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeft"></a>' +
+                                        '</li>'+
+                                        '<li>' +
+                                         '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRight"></a>' +
                                         '</li>';
         if ((this.getPageCount() > 1) && !this.config.hidePageNav) { // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
             tmpFooterElemInnerHTML +=   '<li class="kbPrevNav">' +
@@ -334,7 +337,8 @@ window.KbOSD = (function(window, undefined) {
             homeButton: this.uid + '-home',
             zoomOutButton: this.uid + '-zoomOut',
             zoomInButton: this.uid + '-zoomIn',
-            rotateRightButton: this.uid + '-rotate',
+            rotateRightButton: this.uid + '-rotateRight',
+            rotateLeftButton: this.uid + '-rotateLeft',
             previousButton: this.uid + '-prev',
             nextButton: this.uid + '-next',
             fullPageButton: this.uid + '-fullscreen'
@@ -411,7 +415,7 @@ window.KbOSD = (function(window, undefined) {
 
             // setting up eventHandlers for kbFastNav
             this.fastNav = this.footerElem.getElementsByTagName('input')[0];
-            this.fastNav.addEventListener('focus', function (e) {
+            this.fastNav.addEventListener('focus', function () {
                 this.select();
             });
             var fastNavChangePage = function (e) {
