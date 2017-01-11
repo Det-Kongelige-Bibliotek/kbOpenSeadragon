@@ -17,8 +17,10 @@ module.exports = function() {
         HTMLSRC: 'http-pub/*.html',
         // name of the production destination folder
         DEST: 'production',
-        // deveopment folder
+        // development folder
         DEVDEST: 'development',
+        // test folder
+        TEST_IE_DEST: 'testIE',
         // dist folder
         DISTDEST: 'dist',
         // localhost URL

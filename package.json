@@ -21,6 +21,7 @@
     "gulp-if": "^2.0.2",
     "gulp-jscs": "^4.0.0",
     "gulp-jshint": "^2.0.4",
+    "gulp-nodemon": "^2.2.1",
     "gulp-print": "^2.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "~0.4",

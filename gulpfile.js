@@ -17,6 +17,7 @@ var gzip = require('gulp-gzip');
 var jshint = require('gulp-jshint');
 var gulpprint = require('gulp-print');
 var gulpif = require('gulp-if');
+var nodemon = require('gulp-nodemon');
 
 var STATICURL = argv.dest || 'https://static.kb.dk/kbOpenSeadragon/';
 
@@ -91,6 +92,41 @@ gulp.task('development', ['clean'], function (cb) {
     if ('undefined' !== typeof cb) {
         cb();
     }
+});
+
+gulp.task('testIE', ['clean'], function () {
+    gutil.log('Moving html...');
+    gulp.src(config.HTMLSRC)
+        .pipe(replace(config.LOCALHOSTURL, config.IP_LOCALHOSTURL))
+        .pipe(gulp.dest(config.TEST_IE_DEST));
+
+    // move js files
+    gutil.log('Moving js ...');
+    gulp.src(config.JSSRC)
+        .pipe(replace(config.LOCALHOSTURL, config.IP_LOCALHOSTURL))
+        .pipe(gulp.dest(config.TEST_IE_DEST + '/js'));
+
+    // move 3rdpartyJS
+    gulp.src(config.externalJSSRC)
+        .pipe(chmod(664))
+        .pipe(gulp.dest(config.TEST_IE_DEST + '/3rdparty'));
+
+    // moving unminified version of css
+    gutil.log('Moving non minified version of css ...');
+    gulp.src(config.CSSSRC)
+        .pipe(replace(config.LOCALHOSTURL, config.IP_LOCALHOSTURL))
+        .pipe(gulp.dest(config.TEST_IE_DEST + '/css'));
+
+    // moving images
+    gutil.log('Moving images ...');
+    gulp.src(config.IMGSRC)
+        .pipe(gulp.dest(config.TEST_IE_DEST + '/images'));
+
+    gulp.src('server.js')
+        .pipe(replace('http-pub','testIE'))
+        .pipe(gulp.dest(''));
+
+    return nodemon('./server.js');
 });
 
 gulp.task('production', ['clean'], function (cb) {
