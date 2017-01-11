@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 .kbOSDViewer{
     position:relative;
     overflow:hidden;
@@ -50,7 +52,6 @@
     z-index:5;
     width:35px;
     height:35px;
-    background:transparent url(../images/icon.png) no-repeat 0 0;
 }
 .kbButtonOverlay.kbLeft{
     float:left;
@@ -67,7 +68,7 @@
     background:url('../images/previous_hover.png') no-repeat 0 0;
 }
 .kbOSDHeader h1{
-    font-family: arial;
+    font-family: roboto;
     line-height:48px;
     font-size: 18px;
     font-weight: normal;
@@ -89,8 +90,8 @@
     left:-200px;
     right:100%;
     top:0;
-    bottom:48px; /* minus footer height */
-    background-color:darkgreen;
+    bottom:0; /* minus footer height */
+    background-color:darkgray;
     opacity:0.7;
     transition: left 200ms ease-out, right 200ms ease-out;
     -webkit-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
@@ -102,25 +103,27 @@
     left:0;
 }
 .kbOSDContent.fullpage .indexPage{
-    top:64px;
+    top:0;
     bottom:0;
 }
 .kbOSDContent .indexPage .indexFan{
     position:absolute;
     width:32px;
     height:32px;
-    background-color:darkgreen;
+    background-color:darkgray;
     cursor:pointer;
     right:0;
     margin-right:-32px;
     top:100px;
-    border:1px solid black;
+    /*border:1px solid black;*/
     border-left-width:0;
     border-radius:0 5px 5px 0;
     z-index:9999;
     -webkit-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     -moz-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     box-shadow:3px 3px 6px rgba(0,0,0,0.2);
+    font-family: roboto !important;
+    font-weight: bold !important;
 }
 .kbOSDContent .indexPage .indexFan img{
     margin-top:6px;
@@ -128,7 +131,7 @@
 }
 .kbOSDContent .indexPage .indexFan .glyphicon{
     display:block;
-    margin-top:3px;
+    margin-top:6px;
     margin-left:5px;
     width: 21px;
     height: 24px;
@@ -140,7 +143,7 @@
 }
 .kbOSDContent .indexPage.shown .indexFan .glyphicon{
     background-image: url(../images/glyphicons-arrow-left.png);
-    background-position-y:3px;
+    background-position-y:4px;
 }
 .kbOSDContent .indexPage .indexContent{
     position:absolute;
@@ -157,8 +160,14 @@
 }
 .kbOSDContent .indexPage .indexContent ul li .indexLink{
     cursor:pointer;
-    color:#bbb;
+    color:#4c4c4c;
     text-decoration:none;
+    font-family: roboto;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.indexContent li{
+    padding-bottom: 10px !important;
 }
 .kbOSDContent .indexPage .indexContent ul li .indexLink:hover{
     color:#fff;
@@ -185,7 +194,6 @@
 }
 .kbOSDViewer .icon, .kbOSDFooter .icon, .kbOSDHeader .icon{
     display:inline-block;
-    background:transparent url('../images/icon.png') no-repeat 0 0;
     height:35px;
     width:35px;
 }
@@ -219,11 +227,17 @@
 .kbOSDFooter ul li .next:hover{
     background:url('../images/next_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotate{
+.kbOSDFooter ul li .rotateRight{
     background:url('../images/rotateright_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotate:hover{
+.kbOSDFooter ul li .rotateRight:hover{
     background:url('../images/rotateright_hover.png') no-repeat 0 0;
+}
+.kbOSDFooter ul li .rotateLeft{
+    background:url('../images/rotateleft_grouphover.png') no-repeat 0 0;
+}
+.kbOSDFooter ul li .rotateLeft:hover{
+    background:url('../images/rotateleft_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .minimize{
     background:url('../images/fullpage_grouphover.png') no-repeat 0 0;
@@ -248,7 +262,7 @@
 .kbOSDFooter{
     position: absolute !important;
     top: 0;
-    width: 315px;
+    width: 380px;
     margin-left: auto;
     margin-right: auto;
     z-index: 999;
