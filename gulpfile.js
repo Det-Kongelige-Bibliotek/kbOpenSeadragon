@@ -37,6 +37,7 @@ if (argv.help) {
     console.log('USAGE:');
     console.log('gulp [development|production][--dest=<destinationURL>]');
     console.log('');
+    console.log('gulp validate - Check the quality of the code with jshint.');
     console.log('gulp production - build production files for the KB flavor of OpenSeadragon.');
     console.log('gulp --dest=https://static.kb.dk/~hafe/kbOpenSeadragon/ - build productionfiles with all static urls pointing at https://static.kb.dk/~hafe/kbOpenSeadragon/');
     console.log('gulp development - build a development setup with neither minification nor obfuscation. *DEPRECATED*');
