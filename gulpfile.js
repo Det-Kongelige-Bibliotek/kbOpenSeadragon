@@ -1,6 +1,5 @@
 /* global require, console, process */
 var gulp = require('gulp');
-var args = require('yargs').argv;
 var del = require('del');
 var argv = require('optimist').argv;
 var config = require('./gulp.config')(); // require and run the local config file/function
@@ -43,7 +42,7 @@ gulp.task('default', ['production'], function () {});
 gulp.task('validate', function(){
    return gulp
        .src(config.alljs) // we want to check both the js files and the gulpfile.js in the root
-       .pipe(gulpif(args.verbose, gulpprint())) // print the files that are being validated if one uses --verbose
+       .pipe(gulpif(argv.verbose, gulpprint())) // print the files that are being validated if one uses --verbose
        .pipe(jshint())
        .pipe(jshint.reporter('jshint-stylish', {verbose: true}));
 
