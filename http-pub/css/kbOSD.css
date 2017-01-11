@@ -132,7 +132,7 @@
 }
 .kbOSDContent .indexPage .indexFan .glyphicon{
     display:block;
-    margin-top:3px;
+    margin-top:6px;
     margin-left:5px;
     width: 21px;
     height: 24px;
@@ -144,7 +144,7 @@
 }
 .kbOSDContent .indexPage.shown .indexFan .glyphicon{
     background-image: url(../images/glyphicons-arrow-left.png);
-    background-position-y:3px;
+    background-position-y:4px;
 }
 .kbOSDContent .indexPage .indexContent{
     position:absolute;
