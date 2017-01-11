@@ -18,6 +18,8 @@ if ('undefined' === typeof window.kbTriggerEvent) {
         } else if (document.createEvent) {
             event = document.createEvent('HTMLEvents');
             event.initEvent(eventName,true,true);
+            event.eventType = eventName;
+            event.detail = data;
         }else if(document.createEventObject){// IE < 9
             event = document.createEventObject();
             event.eventType = eventName;
@@ -77,7 +79,7 @@ window.KbOSD = (function(window, undefined) {
                 for (var j = 0; j < fragmentIdentifier[i][1].length; j += 1) {
                     fragmentIdentifier[i][1][j] = fragmentIdentifier[i][1][j].split(':');
                 }
-            };
+            }
             var fragmentHash = [];
             fragmentIdentifier.forEach(function (fragIdent) {
                 var params = [];
@@ -411,7 +413,7 @@ window.KbOSD = (function(window, undefined) {
 
             // setting up eventHandlers for kbFastNav
             this.fastNav = this.footerElem.getElementsByTagName('input')[0];
-            this.fastNav.addEventListener('focus', function (e) {
+            this.fastNav.addEventListener('focus', function () {
                 this.select();
             });
             var fastNavChangePage = function (e) {
@@ -459,7 +461,7 @@ window.KbOSD = (function(window, undefined) {
                 }
                 return this.getInstance(elem.id);
             } else {
-                return;
+                return null;
             }
         },
         getPageCount: function () {
@@ -578,6 +580,7 @@ window.KbOSD = (function(window, undefined) {
         major: 1,
         minor: 1,
         revision: 7
-    }
+    };
+
     return KbOSD;
 }(window));
