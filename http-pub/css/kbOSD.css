@@ -1,16 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 .kbOSDViewer{
     position:relative;
     overflow:hidden;
     height:100%;
 }
 .kbOSDViewer *{
-    padding:0px;
-    margin:0px;
-    border:0px;
+    padding:0;
+    margin:0;
+    border:0;
 }
 .kbOSDHeader, .kbOSDFooter{
-    height:48px;
-    background:#1B1B1B;
+    height:35px;
+    background:transparent;
     color:#757575;
     width:100%;
     min-width:230px;
@@ -20,11 +22,9 @@
     top:0;*/
 }
 .kbOSDFooter .kbPrevNav{
-    width: 17.5%;
 }
 .kbOSDFooter .kbFastNav{
-    line-height:50px;
-    width:7%;
+    line-height:35px;
     white-space:nowrap;
 }
 @media screen and (max-width:768px){ /* rearrange footer buttons on small screens */
@@ -32,44 +32,43 @@
         display:none;
     }
     .kbOSDFooter .kbFastNav{
-        width:21%;
+        /*width:21%;*/
     }
     .kbOSDFooter .kbFullscreen{
-        width:24%;
+        /*width:24%;*/
     }
 }
 /* These next three are in here because we can not use a media query, if the viewer is on a huge page, but in a narrow container */
-.kbOSDFooter.narrowMenu .hideWhenSmall{
+/*.kbOSDFooter.narrowMenu .hideWhenSmall{
     display:none;
-}
+}*/
 .kbOSDFooter.narrowMenu .kbFastNav{
-    width:21%;
+    /*width:21%;*/
 }
 .kbOSDFooter.narrowMenu .kbFullscreen{
-    width:24%
+    /*width:24%*/
 }
 .kbButtonOverlay{
     z-index:5;
-    width:48px;
-    height:48px;
-    background:transparent url(../images/icon.png) no-repeat 0px 0px;
+    width:35px;
+    height:35px;
 }
 .kbButtonOverlay.kbLeft{
     float:left;
-    background-position:-192px 0px;
+    background:url('../images/next_grouphover.png') no-repeat 0 0;
 }
 .kbButtonOverlay.kbLeft:hover{
-    background-position:-192px -48px;
+    background:url('../images/next_hover.png') no-repeat 0 0;
 }
 .kbButtonOverlay.kbRight{
     float:right;
-    background-position:-144px 0px;
+    background:url('../images/previous_grouphover.png') no-repeat 0 0;
 }
 .kbButtonOverlay.kbRight:hover{
-    background-position:-144px -48px;
+    background:url('../images/previous_hover.png') no-repeat 0 0;
 }
 .kbOSDHeader h1{
-    font-family: arial;
+    font-family: roboto;
     line-height:48px;
     font-size: 18px;
     font-weight: normal;
@@ -91,8 +90,8 @@
     left:-200px;
     right:100%;
     top:0;
-    bottom:48px; /* minus footer height */
-    background-color:darkgreen;
+    bottom:0; /* minus footer height */
+    background-color:darkgray;
     opacity:0.7;
     transition: left 200ms ease-out, right 200ms ease-out;
     -webkit-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
@@ -101,28 +100,30 @@
     min-width:200px;
 }
 .indexPage.shown{
-    left:0px;
+    left:0;
 }
 .kbOSDContent.fullpage .indexPage{
-    top:64px;
+    top:0;
     bottom:0;
 }
 .kbOSDContent .indexPage .indexFan{
     position:absolute;
     width:32px;
     height:32px;
-    background-color:darkgreen;
+    background-color:darkgray;
     cursor:pointer;
     right:0;
     margin-right:-32px;
     top:100px;
-    border:1px solid black;
+    /*border:1px solid black;*/
     border-left-width:0;
     border-radius:0 5px 5px 0;
     z-index:9999;
     -webkit-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     -moz-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     box-shadow:3px 3px 6px rgba(0,0,0,0.2);
+    font-family: roboto !important;
+    font-weight: bold !important;
 }
 .kbOSDContent .indexPage .indexFan img{
     margin-top:6px;
@@ -130,7 +131,7 @@
 }
 .kbOSDContent .indexPage .indexFan .glyphicon{
     display:block;
-    margin-top:3px;
+    margin-top:6px;
     margin-left:5px;
     width: 21px;
     height: 24px;
@@ -142,7 +143,7 @@
 }
 .kbOSDContent .indexPage.shown .indexFan .glyphicon{
     background-image: url(../images/glyphicons-arrow-left.png);
-    background-position-y:3px;
+    background-position-y:4px;
 }
 .kbOSDContent .indexPage .indexContent{
     position:absolute;
@@ -159,8 +160,14 @@
 }
 .kbOSDContent .indexPage .indexContent ul li .indexLink{
     cursor:pointer;
-    color:#bbb;
+    color:#4c4c4c;
     text-decoration:none;
+    font-family: roboto;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.indexContent li{
+    padding-bottom: 10px !important;
 }
 .kbOSDContent .indexPage .indexContent ul li .indexLink:hover{
     color:#fff;
@@ -169,6 +176,7 @@
 .kbOSDFooter{
     /*position:absolute !important; /* Apparently OpenSeadragon insist on making the toolbar position relative? */
     /*bottom:0;*/
+    background-color: transparent;
 }
 
 .kbOSDFooter ul{
@@ -177,7 +185,6 @@
 .kbOSDFooter ul li{
     display:inline-block;
     min-height:1px;
-    width:12.5%;
     float:left;
     text-align: center;
 }
@@ -187,64 +194,80 @@
 }
 .kbOSDViewer .icon, .kbOSDFooter .icon, .kbOSDHeader .icon{
     display:inline-block;
-    background:transparent url('../images/icon.png') no-repeat 0px 0px;
-    height:48px;
-    width:48px;
+    height:35px;
+    width:35px;
 }
 .kbOSDFooter ul li .home{
-    background-position:0px 0px;
+    background:url('../images/home_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .home:hover{
-    background-position:0px -48px;
+    background:url('../images/home_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .zoomOut{
-    background-position:-48px 0px;
+    background:url('../images/zoomout_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .zoomOut:hover{
-    background-position:-48px -48px;
+    background:url('../images/zoomout_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .zoomIn{
-    background-position:-96px 0px;
+    background:url('../images/zoomin_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .zoomIn:hover{
-    background-position:-96px -48px;
+    background:url('../images/zoomin_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .previous{
-    background-position:-144px 0px;
+    background:url('../images/previous_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .previous:hover{
-    background-position:-144px -48px;
+    background:url('../images/previous_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .next{
-    background-position:-192px 0px;
+    background:url('../images/next_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .next:hover{
-    background-position:-192px -48px;
+    background:url('../images/next_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotate{
-    background-position:-240px 0px;
+.kbOSDFooter ul li .rotateRight{
+    background:url('../images/rotateright_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotate:hover{
-    background-position:-240px -48px;
+.kbOSDFooter ul li .rotateRight:hover{
+    background:url('../images/rotateright_hover.png') no-repeat 0 0;
+}
+.kbOSDFooter ul li .rotateLeft{
+    background:url('../images/rotateleft_grouphover.png') no-repeat 0 0;
+}
+.kbOSDFooter ul li .rotateLeft:hover{
+    background:url('../images/rotateleft_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .minimize{
-    background-position:-288px 0px;
+    background:url('../images/fullpage_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .minimize:hover{
-    background-position:-288px -48px;
+    background:url('../images/fullpage_hover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .maximize{
-    background-position:-336px 0px;
+    background:url('../images/fullpage_grouphover.png') no-repeat 0 0;
 }
 .kbOSDFooter ul li .maximize:hover{
-    background-position: -336px -48px;
+    background:url('../images/fullpage_hover.png') no-repeat 0 0;
 }
 .kbOSDHeader .icon.kbLogo{
-    background-position:-384px 0px;
 }
 .pull-left{
     float:left;
 }
 .pull-right{
     float:right;
+}
+.kbOSDFooter{
+    position: absolute !important;
+    top: 0;
+    width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 999;
+    /* To center the bar*/
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
 }
