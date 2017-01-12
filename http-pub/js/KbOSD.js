@@ -7,38 +7,38 @@ if (!Array.prototype.forEach) {
         for (var i = 0; i < this.length; i += 1) {
             fn.call(context, this[i], i, this);
         }
-    }; 
+    };
 }
 
 if ('undefined' === typeof window.kbTriggerEvent) {
     window.kbTriggerEvent = function (el, eventName, data) {
         var event;
         if (typeof window.CustomEvent === 'function') {
-            event = new CustomEvent(eventName, { detail : data });
+            event = new CustomEvent(eventName, {detail: data});
         } else if (document.createEvent) {
             event = document.createEvent('HTMLEvents');
-            event.initEvent(eventName,true,true);
+            event.initEvent(eventName, true, true);
             event.eventType = eventName;
             event.detail = data;
-        }else if(document.createEventObject){// IE < 9
+        } else if (document.createEventObject) {// IE < 9
             event = document.createEventObject();
             event.eventType = eventName;
-            event.data = { detail : data };
+            event.data = {detail: data};
         }
         event.eventName = eventName;
-        if(el.dispatchEvent){
+        if (el.dispatchEvent) {
             el.dispatchEvent(event);
-        }else if(el.fireEvent && htmlEvents['on'+eventName]){// IE < 9
-            el.fireEvent('on'+event.eventType,event);// can trigger only a real event (e.g. 'click')
-        }else if(el[eventName]){
+        } else if (el.fireEvent && htmlEvents['on' + eventName]) {// IE < 9
+            el.fireEvent('on' + event.eventType, event);// can trigger only a real event (e.g. 'click')
+        } else if (el[eventName]) {
             el[eventName]();
-        }else if(el['on'+eventName]){
-            el['on'+eventName]();
+        } else if (el['on' + eventName]) {
+            el['on' + eventName]();
         }
     };
 }
 
-window.KbOSD = (function(window, undefined) {
+window.KbOSD = (function (window, undefined) {
     var rootURI = 'http://localhost:8002/';
 
     // Make and prepare a uidGenerator
@@ -55,17 +55,17 @@ window.KbOSD = (function(window, undefined) {
      * Turns a fragmentIdentifier of the form #id0=attrib0Key:attrib0Value;attrib1Key:attrib1Value&id1=attrib0Key:attrib0Value;attrib1Key:attrib1Value;attrib2Key:attrib2Value
      * into this structure:
      * instances[id0]
-               [attrib0Key]:attrib0Value
-               [attrib1Key]:attrib1Value
-           [id1]
-               [attrib0Key]:attrib0Value
-               [attrib1Key]:attrib1Value
-               [attrib2Key]:attrib2Value
+     [attrib0Key]:attrib0Value
+     [attrib1Key]:attrib1Value
+     [id1]
+     [attrib0Key]:attrib0Value
+     [attrib1Key]:attrib1Value
+     [attrib2Key]:attrib2Value
 
-       So after running through this function, the result can be asked as follows:
-       var myHash = extractFragmentIdentifier();
-       myHash[id0][attrib1Key]; // = attrib1Value
-       as in: that.setCurrentPage(myHash[that.uid].page);
+     So after running through this function, the result can be asked as follows:
+     var myHash = extractFragmentIdentifier();
+     myHash[id0][attrib1Key]; // = attrib1Value
+     as in: that.setCurrentPage(myHash[that.uid].page);
      */
     var extractFragmentIdentifier = function () {
         try {
@@ -97,22 +97,22 @@ window.KbOSD = (function(window, undefined) {
 
     // Inject script method
     var loadAdditionalJavascript = function (url, callback) {
-            var script = document.createElement('script');
-            script.async = true;
-            script.src = url;
-            var entry = document.getElementsByTagName('script')[0];
-            entry.parentNode.insertBefore(script, entry);
-            script.onload = script.onreadystatechange = function () {
-                var rdyState = script.readyState;
-                if (!rdyState || /complete|loaded/.test(rdyState)) {
-                    if (callback) {
-                        callback();
-                    }
-                    // avoid IE memoryleak http://mng.bz/W8fx
-                    script.onload = null;
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = url;
+        var entry = document.getElementsByTagName('script')[0];
+        entry.parentNode.insertBefore(script, entry);
+        script.onload = script.onreadystatechange = function () {
+            var rdyState = script.readyState;
+            if (!rdyState || /complete|loaded/.test(rdyState)) {
+                if (callback) {
+                    callback();
                 }
-            };
+                // avoid IE memoryleak http://mng.bz/W8fx
+                script.onload = null;
+            }
         };
+    };
 
     // initialization
     // delete History if it is already loaded (endlösung workaround for a 4 year old bug in History :-/ https://github.com/browserstate/history.js/issues/189 )
@@ -148,10 +148,8 @@ window.KbOSD = (function(window, undefined) {
                     newKbOSD.updateArrows(newKbOSD);
                 }
 
-                kbTriggerEvent(document, 'kbosdready', { kbosd : newKbOSD });
+                kbTriggerEvent(document, 'kbosdready', {kbosd: newKbOSD});
             }, this);
-
-            KbOSD.prototype.checkMenuWidth();
         } else {
             if ('undefined' !== typeof window.console) {
                 console.error('No kbOSDconfig found - aborting.');
@@ -164,7 +162,7 @@ window.KbOSD = (function(window, undefined) {
     link.href = rootURI + 'css/kbOSD.css';
     link.rel = 'stylesheet';
     link.type = 'text/css';
-    var headElement = ('undefined' !== typeof document.head) ?  document.head : document.getElementsByTagName('head')[0]; // Lex old IE :-/
+    var headElement = ('undefined' !== typeof document.head) ? document.head : document.getElementsByTagName('head')[0]; // Lex old IE :-/
     headElement.appendChild(link);
 
     // +----------------------------+
@@ -296,40 +294,40 @@ window.KbOSD = (function(window, undefined) {
         this.toolbarElem.id = this.uid + '-toolbar';
         // assembling toolbar content
         var tmpToolbarElemInnerHTML = '<ul>' +
-                                        '<li>' +
-                                            '<a id="' + this.uid + '-home" href="" class="pull-left icon homex" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
-                                        '</li>' +
-                                        '<li class="hideWhenSmall">' +
-                                            '<a id="' + this.uid + '-zoomOut" href="" class="pull-right icon zoomOutx"><i class="fa fa-search-minus fa-lg"></i></a>' +
-                                        '</li>' +
-                                        '<li class="hideWhenSmall">' +
-                                            '<a id="' + this.uid + '-zoomIn" href="" class="pull-left icon zoomInx"><i class="fa fa-search-plus fa-lg"></i></a>' +
-                                        '</li>' +
-                                        '<li>' +
-                                            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeftx"><i class="fa fa-undo fa-lg"></i></a>' +
-                                        '</li>'+
-                                        '<li>' +
-                                         '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRightx"><i class="fa fa-repeat fa-lg"></i></a>' +
-                                        '</li>';
-        if ((this.getPageCount() > 1) && !this.config.hidePageNav) { // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
-            tmpToolbarElemInnerHTML +=   '<li class="kbPrevNav">' +
-                                            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRightx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-left fa-lg"></i></a></div><a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
-                                        '</li>' +
-                                        '<li class="kbFastNav">' +
-                                            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
-                                            '<span> / </span>' +
-                                            '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
-                                        '</li>' +
-                                        '<li>' +
-                                            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeftx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-right fa-lg"></i></a></div><a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
-                                        '</li>';
-        } else {
-            tmpToolbarElemInnerHTML +=   '<li></li><li></li><li></li>';
+            '<li>' +
+            '<a id="' + this.uid + '-home" href="" class="icon homex" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
+            '</li>' +
+            '<li class="hideWhenSmall">' +
+            '<a id="' + this.uid + '-zoomOut" href="" class=" icon zoomOutx"><i class="fa fa-search-minus fa-lg"></i></a>' +
+            '</li>' +
+            '<li class="hideWhenSmall">' +
+            '<a id="' + this.uid + '-zoomIn" href="" class="icon zoomInx"><i class="fa fa-search-plus fa-lg"></i></a>' +
+            '</li>' +
+            '<li>' +
+            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeftx"><i class="fa fa-undo fa-lg"></i></a>' +
+            '</li>' +
+            '<li>' +
+            '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRightx"><i class="fa fa-repeat fa-lg"></i></a>' +
+            '</li>';
+        // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
+        if ((this.getPageCount() > 1) && !this.config.hidePageNav) {
+            tmpToolbarElemInnerHTML += '<li class="kbPrevNav">' +
+                '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRightx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-left fa-lg"></i></a></div><a id="' + this.uid + '-prev" href="" class=" icon previous"></a>' +
+                '</li>' +
+                '<li class="kbFastNav">' +
+                '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
+                '<span> / </span>' +
+                '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
+                '</li>' +
+                '<li>' +
+                '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeftx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-right fa-lg"></i></a></div><a id="' + this.uid + '-next" href="" class="icon next"></a>' +
+                '</li>';
         }
-        tmpToolbarElemInnerHTML +=       '<li class="kbFullscreen">' +
-                                            '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximizex"><i id="full-screen_expand" class="fa fa-expand fa-lg"></i><i id="full-screen_compress" class="fa fa-compress fa-lg"></i></a>' +
-                                        '</li>' +
-                                    '</ul>';
+
+        tmpToolbarElemInnerHTML += '<li class="kbFullscreen">' +
+            '<a id="' + this.uid + '-fullscreen" href="" class=" icon maximizex"><i id="full-screen" class="fa fa-expand fa-lg"></i></a>' +
+            '</li>' +
+            '</ul>';
         this.toolbarElem.innerHTML = tmpToolbarElemInnerHTML;
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
@@ -349,21 +347,19 @@ window.KbOSD = (function(window, undefined) {
         that.openSeadragon = OpenSeadragon(config);
 
         that.openSeadragon.addHandler('full-screen', function (e) {
-            kbTriggerEvent(that.contentElem, 'fullScreen', {fullScreen : e.fullScreen });
+            kbTriggerEvent(that.contentElem, 'fullScreen', {fullScreen: e.fullScreen});
             //change the fullscreen icon from expand to compress
-            if (e.fullScreen){
-                document.getElementById('full-screen_expand').style.display='none';
-                document.getElementById('full-screen_compress').style.display=' inline-block';
-            }else{
-                document.getElementById('full-screen_expand').style.display='inline-block';
-                document.getElementById('full-screen_compress').style.display='none';
+            if (e.fullScreen) {
+                document.getElementById('full-screen').className = "fa fa-compress fa-lg";
+            } else {
+                document.getElementById('full-screen').className = "fa fa-expand fa-lg";
             }
         });
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
         if (that.pageNumNormalizer.pageCount > 1) { // only mess with prev/next if there is more than one page - otherwise they won't be in the DOM
-            document.getElementById(this.uid + '-prev').style.display='none';
-            document.getElementById(this.uid + '-next').style.display='none';
+            document.getElementById(this.uid + '-prev').style.display = 'none';
+            document.getElementById(this.uid + '-next').style.display = 'none';
         }
 
         that.pageNumNormalizer.setOsd(that.openSeadragon);
@@ -405,11 +401,11 @@ window.KbOSD = (function(window, undefined) {
             });
         }
 
-        if (this.toolbarElem.querySelector('#' +this.uid + '-prev')) {
+        if (this.toolbarElem.querySelector('#' + this.uid + '-prev')) {
             // set up listeners for the preview && next to keep the fastNav index updated.
             // NOTE: Notice that the prev/next buttons are swapped if rtl!
             // go to previous page
-            this.toolbarElem.querySelector('#' +this.uid + (this.pageNumNormalizer.rtl ? '-next' : '-prev')).parentElement.firstChild.addEventListener('click', function (e) {
+            this.toolbarElem.querySelector('#' + this.uid + (this.pageNumNormalizer.rtl ? '-next' : '-prev')).parentElement.firstChild.addEventListener('click', function (e) {
                 e.stopPropagation();
                 var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
                 kbosd.setCurrentPage(kbosd.getPrevPageNumber());
@@ -428,7 +424,7 @@ window.KbOSD = (function(window, undefined) {
             });
             var fastNavChangePage = function (e) {
                 var page = e.target.value;
-                    //owner = this.attributes['data-owner'].value;
+                //owner = this.attributes['data-owner'].value;
                 if (!/^\s*$/.test(page)) {
                     // go to page requested FIXME: We might just wanna do this on change, or maybe with a delay?
                     var kbosd = KbOSD.prototype.instances[this.id.split('-')[1]];
@@ -448,8 +444,6 @@ window.KbOSD = (function(window, undefined) {
             });
             this.fastNav.addEventListener('change', fastNavChangePage);
 
-            // setup window resize listener that sets menu to narrow, if an OSD instance gets to narrow for the full menu
-            window.addEventListener('resize', this.checkMenuWidth);
         }
     };
 
@@ -486,7 +480,7 @@ window.KbOSD = (function(window, undefined) {
                 this.updateFragmentIdentifier();
                 this.updateFastNav();
 
-                kbTriggerEvent(this.contentElem, 'pagechange', { page : page, kbosd : this });
+                kbTriggerEvent(this.contentElem, 'pagechange', {page: page, kbosd: this});
 
                 if (cb && 'function' === typeof cb) {
                     cb(page);
@@ -500,30 +494,11 @@ window.KbOSD = (function(window, undefined) {
         getPrevPageNumber: function () {
             return this.pageNumNormalizer.getPrevPageNumber();
         },
-        /**
-         *  This method is supposed to be called from the prototype. It runs through all OSD instances and meassures if they are too narrow to contain the full menu bar
-         *  If they are too narrow, it sets the narrowMenu class so selected buttons disappear and visa versa.
-         */
-        checkMenuWidth: function () {
-            KbOSD.prototype.instances.forEach(function (kbosd) {
-                var toolbarWidth =  parseInt(window.getComputedStyle(kbosd.toolbarElem).width, 10),
-                    menuIsNarrow = kbosd.toolbarElem.className.indexOf(' narrowMenu') >= 0;
-                if (toolbarWidth < 726) {
-                    if (!menuIsNarrow) {
-                        kbosd.toolbarElem.className = kbosd.toolbarElem.className + ' narrowMenu';
-                    }
-                } else {
-                    if (menuIsNarrow) {
-                        kbosd.toolbarElem.className = kbosd.toolbarElem.className.replace(/\snarrowMenu/,'');
-                    }
-                }
-            });
-        },
         updateArrows: function (kbosd, currentPage) {
             currentPage = currentPage || kbosd.getCurrentPage();
             var buttons = {
-                next : document.getElementById(kbosd.uid + '-kbNext'),
-                prev : document.getElementById(kbosd.uid + '-kbPrev')
+                next: document.getElementById(kbosd.uid + '-kbNext'),
+                prev: document.getElementById(kbosd.uid + '-kbPrev')
             };
             if (currentPage === 1) {
                 buttons[(kbosd.pageNumNormalizer.rtl ? 'next' : 'prev')].style.opacity = '0.2';
@@ -561,7 +536,7 @@ window.KbOSD = (function(window, undefined) {
 
     // setting up version
     KbOSD.version = {
-        versionStr : '1.1.7',
+        versionStr: '1.1.7',
         major: 1,
         minor: 1,
         revision: 7
