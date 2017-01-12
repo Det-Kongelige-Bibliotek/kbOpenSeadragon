@@ -14,7 +14,6 @@ var rename = require('gulp-rename');
 var chmod = require('gulp-chmod');
 var tar = require('gulp-tar');
 var gzip = require('gulp-gzip');
-var gulpif = require('gulp-if');
 var nodemon = require('gulp-nodemon');
 var bump = require('gulp-bump');
 
@@ -100,6 +99,14 @@ gulp.task('testLocal',['clean'], function () {
     return nodemon('./server.js');
 });
 
+/**
+ * Bump the version
+ * --type=pre will bump the prerelease version *.*.*-x
+ * --type=patch or no flag will bump the patch version *.*.x
+ * --type=minor will bump the minor version *.x.*
+ * --type=major will bump the major version x.*.*
+ * --version=1.2.3 will bump to a specific version and ignore other flags
+ */
 gulp.task('bump', function () {
    gutil.log('Bumping versions');
    var type = argv.type;
