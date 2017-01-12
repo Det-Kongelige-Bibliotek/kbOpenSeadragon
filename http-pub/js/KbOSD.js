@@ -397,8 +397,6 @@ window.KbOSD = (function(window, undefined) {
             });
         }
 
-        that.openSeadragon.addHandler('animation', that.paintWatermark, that); // FIXME: Optimization: this might be too excessive - it repaints the watermark on every animation step!)
-
         if (this.footerElem.querySelector('#' +this.uid + '-prev')) {
             // set up listeners for the preview && next to keep the fastNav index updated.
             // NOTE: Notice that the prev/next buttons are swapped if rtl!
@@ -449,7 +447,6 @@ window.KbOSD = (function(window, undefined) {
 
     KbOSD.prototype = {
         instances: [],
-        logo: new Image(),
         getInstance: function (uid) {
             return this.instances.filter(function (instance) {
                 return instance.uid === uid;
@@ -550,33 +547,9 @@ window.KbOSD = (function(window, undefined) {
                     this.indexElem.className = 'indexPage shown';
                 }
             }
-        },
-        getCanvas: function (returnAll) {
-            var canvases = this.openSeadragon.element.getElementsByTagName('canvas');
-            if (returnAll) {
-                return canvases;
-            }
-            var i = 0,
-                widestCanvas = canvases[i];
-            i += 1;
-            while (canvases[i]) {
-                if (canvases[i].width > widestCanvas.width) {
-                    widestCanvas = canvases[i];
-                }
-                i += 1;
-            }
-            return widestCanvas;
-        },
-        paintWatermark: function (conf) {
-            var canvas = conf.userData.getCanvas(),
-                height = canvas.height;
-            //canvas.getContext('2d').drawImage(conf.userData.logo, 8, (height - 40 - 48)); // unoutcomment to test watermark
-            canvas.getContext('2d').drawImage(conf.userData.logo, 8, (height - 40));
         }
     };
 
-    // setting up logo for watermark
-    KbOSD.prototype.logo.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wECDQUXTqkHsAAAAytJREFUWMPNmD9I60Acx68iCailBB8UagZrWpKlHZK0Qp9DfUNRRARBGuHRSSgdHHV2duyS3cUUB9EihlCMUOjiNcLLcqGgIlEivFKkUohL32IgiH9aUl/9LRfufpDPfe/3Jxff1tZWFwzZRgEAYHd3VxwWwPb2dmEEfAPzDCFJUmKoEJIkJTRN472CeIIwTTPkHocCQZLkvXscCoSmaTxFUUjTNN5zin5mj4+P+Pn5OX17exuybRvHcdymafqGZVmIEKJZloWKojCGYUy712dnZ68DgYDtGcIwjB/7+/sLnU7HPzY21mYYxrBtG6vVajyGYXYqlYIQwhhCCA+Hw9c4jjcRQnSlUgnXajV+fX1dpmn6rycIRVF4hmEMTdP4jY2NI5Ik2y/qQEmSUpVKZZ6iKCQIQs3ZtWmaqFgs/mYYxlAUhadpWvYUE5ZlhaLR6B0AADw8PPid+UAgYOfzeRUAAPL5vOqW3fGLRqN3lmWFPAcmQRDNRqMxRVEUUlW1p3qgqmqCoijUaDSmCIJoeoaIx+OGruuxdDqtt1qtyWq1Gv7Iv1qthlut1mQ6ndZ1XY/F43HDM0Qmk0EEQTQVReGTySSUZXneNE3/O8XLL8vyfDKZhIqi8ARBNDOZDBpIigqCcCaK4hqGYTYAAOzt7S3MzMzcvO4fV1dX0y9xNGlZVqhQKBwMrE6QJNnO5XLHl5eX4VgsprvXWJaFzrMbLJfLHTuZNBAIAAB4enrC+qmMTkYNFCISiTSz2exRP/4Dh7Asyw8hpJeWluBHMpum6T88PPw5MTEBeynZfTWw8fFx+/n5GRdFce297wdJkhKiKK45/gNXgiTJ9ubmplyv10PlcvnXzs4Ovby8fMZx3L0zBwAAq6urMsdxfbX2UdCncRx3H4lEDk5PT+OlUmmlXC63O52On2VZuLi4+KfXI/AE4fQNQRAu5ubm0MnJCf9ZnPQK0QUA+D5yrNfroVKptPLWWrFYZF7PZbPZo16Pxa2Ecwl6EyYYDLbdhekzCwaDPSvzVnb89xvZezHhBvE52SEIwsVXXn4+2v2XKzPS48u6/wOiO0wQ33f4NfAPytlrOiwF3qUAAAAASUVORK5CYII=";
 
     // setting up version
     KbOSD.version = {

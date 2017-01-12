@@ -251,8 +251,7 @@
 .kbOSDFooter ul li .maximize:hover{
     background:url('../images/fullpage_hover.png') no-repeat 0 0;
 }
-.kbOSDHeader .icon.kbLogo{
-}
+
 .pull-left{
     float:left;
 }
