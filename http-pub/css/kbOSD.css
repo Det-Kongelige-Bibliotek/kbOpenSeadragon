@@ -1,5 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('../font-awesome-4.7.0/css/font-awesome.min.css');
+.fa{
+    cursor: pointer;
+}
 
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 .kbOSDViewer{
     position:relative;
     overflow:hidden;
@@ -10,7 +14,7 @@
     margin:0;
     border:0;
 }
-.kbOSDHeader, .kbOSDFooter{
+.kbOSDHeader, .kbOSDToolbar{
     height:35px;
     background:transparent;
     color:#757575;
@@ -21,31 +25,31 @@
 /*    position:absolute;
     top:0;*/
 }
-.kbOSDFooter .kbPrevNav{
+.kbOSDToolbar .kbPrevNav{
 }
-.kbOSDFooter .kbFastNav{
+.kbOSDToolbar .kbFastNav{
     line-height:35px;
     white-space:nowrap;
 }
 @media screen and (max-width:768px){ /* rearrange footer buttons on small screens */
-    .kbOSDFooter .hideWhenSmall{
+    .kbOSDToolbar .hideWhenSmall{
         display:none;
     }
-    .kbOSDFooter .kbFastNav{
+    .kbOSDToolbar .kbFastNav{
         /*width:21%;*/
     }
-    .kbOSDFooter .kbFullscreen{
+    .kbOSDToolbar .kbFullscreen{
         /*width:24%;*/
     }
 }
 /* These next three are in here because we can not use a media query, if the viewer is on a huge page, but in a narrow container */
-/*.kbOSDFooter.narrowMenu .hideWhenSmall{
+/*.kbOSDToolbar.narrowMenu .hideWhenSmall{
     display:none;
 }*/
-.kbOSDFooter.narrowMenu .kbFastNav{
+.kbOSDToolbar.narrowMenu .kbFastNav{
     /*width:21%;*/
 }
-.kbOSDFooter.narrowMenu .kbFullscreen{
+.kbOSDToolbar.narrowMenu .kbFullscreen{
     /*width:24%*/
 }
 .kbButtonOverlay{
@@ -81,11 +85,13 @@
     /*position:absolute;
     top:48px;
     bottom:48px;*/
-    height:100%;
-    margin: 0 0 -48px 0;
+    height:95%;
+    margin: 0 0 0 0;
     width:100%;
+    border: 1px gray solid;
 }
 .indexPage{
+    margin-top: 35px;
     position:absolute;
     left:-200px;
     right:100%;
@@ -173,82 +179,82 @@
     color:#fff;
     text-decoration:underline;
 }
-.kbOSDFooter{
+.kbOSDToolbar{
     /*position:absolute !important; /* Apparently OpenSeadragon insist on making the toolbar position relative? */
     /*bottom:0;*/
     background-color: transparent;
 }
 
-.kbOSDFooter ul{
+.kbOSDToolbar ul{
     text-decoration: none;
 }
-.kbOSDFooter ul li{
+.kbOSDToolbar ul li{
     display:inline-block;
     min-height:1px;
     float:left;
     text-align: center;
 }
-.kbOSDFooter .kbOSDCurrentPage{
+.kbOSDToolbar .kbOSDCurrentPage{
     width:30px;
     text-align:right;
 }
-.kbOSDViewer .icon, .kbOSDFooter .icon, .kbOSDHeader .icon{
+.kbOSDViewer .icon, .kbOSDToolbar .icon, .kbOSDHeader .icon{
     display:inline-block;
     height:35px;
     width:35px;
 }
-.kbOSDFooter ul li .home{
+.kbOSDToolbar ul li .home{
     background:url('../images/home_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .home:hover{
+.kbOSDToolbar ul li .home:hover{
     background:url('../images/home_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .zoomOut{
+.kbOSDToolbar ul li .zoomOut{
     background:url('../images/zoomout_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .zoomOut:hover{
+.kbOSDToolbar ul li .zoomOut:hover{
     background:url('../images/zoomout_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .zoomIn{
+.kbOSDToolbar ul li .zoomIn{
     background:url('../images/zoomin_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .zoomIn:hover{
+.kbOSDToolbar ul li .zoomIn:hover{
     background:url('../images/zoomin_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .previous{
+.kbOSDToolbar ul li .previous{
     background:url('../images/previous_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .previous:hover{
+.kbOSDToolbar ul li .previous:hover{
     background:url('../images/previous_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .next{
+.kbOSDToolbar ul li .next{
     background:url('../images/next_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .next:hover{
+.kbOSDToolbar ul li .next:hover{
     background:url('../images/next_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotateRight{
+.kbOSDToolbar ul li .rotateRight{
     background:url('../images/rotateright_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotateRight:hover{
+.kbOSDToolbar ul li .rotateRight:hover{
     background:url('../images/rotateright_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotateLeft{
+.kbOSDToolbar ul li .rotateLeft{
     background:url('../images/rotateleft_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .rotateLeft:hover{
+.kbOSDToolbar ul li .rotateLeft:hover{
     background:url('../images/rotateleft_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .minimize{
+.kbOSDToolbar ul li .minimize{
     background:url('../images/fullpage_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .minimize:hover{
+.kbOSDToolbar ul li .minimize:hover{
     background:url('../images/fullpage_hover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .maximize{
+.kbOSDToolbar ul li .maximize{
     background:url('../images/fullpage_grouphover.png') no-repeat 0 0;
 }
-.kbOSDFooter ul li .maximize:hover{
+.kbOSDToolbar ul li .maximize:hover{
     background:url('../images/fullpage_hover.png') no-repeat 0 0;
 }
 .kbOSDHeader .icon.kbLogo{
@@ -259,9 +265,9 @@
 .pull-right{
     float:right;
 }
-.kbOSDFooter{
-    position: absolute !important;
-    top: 0;
+.kbOSDToolbar{
+    /*position: absolute !important;*/
+    /*top: 0;*/
     width: 380px;
     margin-left: auto;
     margin-right: auto;
@@ -271,3 +277,4 @@
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
+

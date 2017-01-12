@@ -290,30 +290,30 @@ window.KbOSD = (function(window, undefined) {
         this.outerContainer = document.getElementById(this.config.id);
         this.viewerElem = this.outerContainer.getElementsByClassName('kbOSDViewer')[0];
         this.contentElem = this.viewerElem.getElementsByClassName('kbOSDContent')[0];
-        this.footerElem = this.viewerElem.getElementsByClassName('kbOSDFooter')[0];
+        this.footerElem = this.viewerElem.getElementsByClassName('kbOSDToolbar')[0];
         this.contentElem.id = this.uid;
         this.contentElem.innerHTML = ''; // emptying the openSeaDragon element so there is no content in it besides OpenSeadragon (due to a hack to aviod empty divs which were stripped somewhere in the server flow)
         this.footerElem.id = this.uid + '-footer';
         // assembling footer content
         var tmpFooterElemInnerHTML = '<ul>' +
                                         '<li>' +
-                                            '<a id="' + this.uid + '-home" href="" class="pull-left icon home"></a>' +
+                                            '<a id="' + this.uid + '-home" href="" class="pull-left icon homex"><i class="fa fa-home fa-lg"></i></a>' +
                                         '</li>' +
                                         '<li class="hideWhenSmall">' +
-                                            '<a id="' + this.uid + '-zoomOut" href="" class="pull-right icon zoomOut"></a>' +
+                                            '<a id="' + this.uid + '-zoomOut" href="" class="pull-right icon zoomOutx"><i class="fa fa-search-minus fa-lg"></i></a>' +
                                         '</li>' +
                                         '<li class="hideWhenSmall">' +
-                                            '<a id="' + this.uid + '-zoomIn" href="" class="pull-left icon zoomIn"></a>' +
+                                            '<a id="' + this.uid + '-zoomIn" href="" class="pull-left icon zoomInx"><i class="fa fa-search-plus fa-lg"></i></a>' +
                                         '</li>' +
                                         '<li>' +
-                                            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeft"></a>' +
+                                            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeftx"><i class="fa fa-undo fa-lg"></i></a>' +
                                         '</li>'+
                                         '<li>' +
-                                         '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRight"></a>' +
+                                         '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRightx"><i class="fa fa-repeat fa-lg"></i></a>' +
                                         '</li>';
         if ((this.getPageCount() > 1) && !this.config.hidePageNav) { // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
             tmpFooterElemInnerHTML +=   '<li class="kbPrevNav">' +
-                                            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
+                                            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRightx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-left fa-lg"></i></a></div><a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
                                         '</li>' +
                                         '<li class="kbFastNav">' +
                                             '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
@@ -321,13 +321,13 @@ window.KbOSD = (function(window, undefined) {
                                             '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
                                         '</li>' +
                                         '<li>' +
-                                            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"></div><a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
+                                            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeftx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-right fa-lg"></i></a></div><a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
                                         '</li>';
         } else {
             tmpFooterElemInnerHTML +=   '<li></li><li></li><li></li>';
         }
         tmpFooterElemInnerHTML +=       '<li class="kbFullscreen">' +
-                                            '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximize"></a>' +
+                                            '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximizex"><i class="fa fa-expand fa-lg"></i><i class="fa fa-compress fa-lg"></i></a>' +
                                         '</li>' +
                                     '</ul>';
         this.footerElem.innerHTML = tmpFooterElemInnerHTML;
