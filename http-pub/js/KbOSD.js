@@ -290,12 +290,12 @@ window.KbOSD = (function(window, undefined) {
         this.outerContainer = document.getElementById(this.config.id);
         this.viewerElem = this.outerContainer.getElementsByClassName('kbOSDViewer')[0];
         this.contentElem = this.viewerElem.getElementsByClassName('kbOSDContent')[0];
-        this.footerElem = this.viewerElem.getElementsByClassName('kbOSDToolbar')[0];
+        this.toolbarElem = this.viewerElem.getElementsByClassName('kbOSDToolbar')[0];
         this.contentElem.id = this.uid;
         this.contentElem.innerHTML = ''; // emptying the openSeaDragon element so there is no content in it besides OpenSeadragon (due to a hack to aviod empty divs which were stripped somewhere in the server flow)
-        this.footerElem.id = this.uid + '-footer';
-        // assembling footer content
-        var tmpFooterElemInnerHTML = '<ul>' +
+        this.toolbarElem.id = this.uid + '-toolbar';
+        // assembling toolbar content
+        var tmpToolbarElemInnerHTML = '<ul>' +
                                         '<li>' +
                                             '<a id="' + this.uid + '-home" href="" class="pull-left icon homex"><i class="fa fa-home fa-lg"></i></a>' +
                                         '</li>' +
@@ -312,7 +312,7 @@ window.KbOSD = (function(window, undefined) {
                                          '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRightx"><i class="fa fa-repeat fa-lg"></i></a>' +
                                         '</li>';
         if ((this.getPageCount() > 1) && !this.config.hidePageNav) { // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
-            tmpFooterElemInnerHTML +=   '<li class="kbPrevNav">' +
+            tmpToolbarElemInnerHTML +=   '<li class="kbPrevNav">' +
                                             '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRightx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-left fa-lg"></i></a></div><a id="' + this.uid + '-prev" href="" class="pull-right icon previous"></a>' +
                                         '</li>' +
                                         '<li class="kbFastNav">' +
@@ -324,18 +324,18 @@ window.KbOSD = (function(window, undefined) {
                                             '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeftx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-right fa-lg"></i></a></div><a id="' + this.uid + '-next" href="" class="pull-left icon next"></a>' +
                                         '</li>';
         } else {
-            tmpFooterElemInnerHTML +=   '<li></li><li></li><li></li>';
+            tmpToolbarElemInnerHTML +=   '<li></li><li></li><li></li>';
         }
-        tmpFooterElemInnerHTML +=       '<li class="kbFullscreen">' +
-                                            '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximizex"><i class="fa fa-expand fa-lg"></i><i class="fa fa-compress fa-lg"></i></a>' +
+        tmpToolbarElemInnerHTML +=       '<li class="kbFullscreen">' +
+                                            '<a id="' + this.uid + '-fullscreen" href="" class="pull-right icon maximizex"><i id="full-screen_expand" class="fa fa-expand fa-lg"></i><i id="full-screen_compress" class="fa fa-compress fa-lg"></i></a>' +
                                         '</li>' +
                                     '</ul>';
-        this.footerElem.innerHTML = tmpFooterElemInnerHTML;
+        this.toolbarElem.innerHTML = tmpToolbarElemInnerHTML;
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
             id: this.uid,
             showRotationControl: true,
-            toolbar: this.uid + '-footer',
+            toolbar: this.uid + '-toolbar',
             homeButton: this.uid + '-home',
             zoomOutButton: this.uid + '-zoomOut',
             zoomInButton: this.uid + '-zoomIn',
@@ -350,6 +350,14 @@ window.KbOSD = (function(window, undefined) {
 
         that.openSeadragon.addHandler('full-screen', function (e) {
             kbTriggerEvent(that.contentElem, 'fullScreen', {fullScreen : e.fullScreen });
+            //change the fullscreen icon from expand to compress
+            if (e.fullScreen){
+                document.getElementById('full-screen_expand').style.display='none';
+                document.getElementById('full-screen_compress').style.display=' inline-block';
+            }else{
+                document.getElementById('full-screen_expand').style.display='inline-block';
+                document.getElementById('full-screen_compress').style.display='none';
+            }
         });
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
@@ -397,24 +405,24 @@ window.KbOSD = (function(window, undefined) {
             });
         }
 
-        if (this.footerElem.querySelector('#' +this.uid + '-prev')) {
+        if (this.toolbarElem.querySelector('#' +this.uid + '-prev')) {
             // set up listeners for the preview && next to keep the fastNav index updated.
             // NOTE: Notice that the prev/next buttons are swapped if rtl!
             // go to previous page
-            this.footerElem.querySelector('#' +this.uid + (this.pageNumNormalizer.rtl ? '-next' : '-prev')).parentElement.firstChild.addEventListener('click', function (e) {
+            this.toolbarElem.querySelector('#' +this.uid + (this.pageNumNormalizer.rtl ? '-next' : '-prev')).parentElement.firstChild.addEventListener('click', function (e) {
                 e.stopPropagation();
                 var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
                 kbosd.setCurrentPage(kbosd.getPrevPageNumber());
             });
             // go to next page
-            this.footerElem.querySelector('#' + this.uid + (this.pageNumNormalizer.rtl ? '-prev' : '-next')).parentElement.firstChild.addEventListener('click', function (e) {
+            this.toolbarElem.querySelector('#' + this.uid + (this.pageNumNormalizer.rtl ? '-prev' : '-next')).parentElement.firstChild.addEventListener('click', function (e) {
                 e.stopPropagation();
                 var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
                 kbosd.setCurrentPage(kbosd.getNextPageNumber());
             });
 
             // setting up eventHandlers for kbFastNav
-            this.fastNav = this.footerElem.getElementsByTagName('input')[0];
+            this.fastNav = this.toolbarElem.getElementsByTagName('input')[0];
             this.fastNav.addEventListener('focus', function () {
                 this.select();
             });
@@ -498,15 +506,15 @@ window.KbOSD = (function(window, undefined) {
          */
         checkMenuWidth: function () {
             KbOSD.prototype.instances.forEach(function (kbosd) {
-                var footerWidth =  parseInt(window.getComputedStyle(kbosd.footerElem).width, 10),
-                    menuIsNarrow = kbosd.footerElem.className.indexOf(' narrowMenu') >= 0;
-                if (footerWidth < 726) {
+                var toolbarWidth =  parseInt(window.getComputedStyle(kbosd.toolbarElem).width, 10),
+                    menuIsNarrow = kbosd.toolbarElem.className.indexOf(' narrowMenu') >= 0;
+                if (toolbarWidth < 726) {
                     if (!menuIsNarrow) {
-                        kbosd.footerElem.className = kbosd.footerElem.className + ' narrowMenu';
+                        kbosd.toolbarElem.className = kbosd.toolbarElem.className + ' narrowMenu';
                     }
                 } else {
                     if (menuIsNarrow) {
-                        kbosd.footerElem.className = kbosd.footerElem.className.replace(/\snarrowMenu/,'');
+                        kbosd.toolbarElem.className = kbosd.toolbarElem.className.replace(/\snarrowMenu/,'');
                     }
                 }
             });
