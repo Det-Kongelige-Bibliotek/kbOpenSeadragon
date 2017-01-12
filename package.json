@@ -1,11 +1,16 @@
 {
-  "name": "2http-servers",
-  "version": "0.0.3",
-  "description": "2 http-servers pointing to the same webroot. Works as local cross domain testing environment",
-  "author": "Hasse Feldthaus <hafe@kb.dk>",
+  "name": "kbOpenSeadragon",
+  "version": "1.1.7",
+  "main": "http-pub/js/KbOSD.js",
+  "description": "KbOpenSeadragon is a KB wrapper for the OpenSeadragon opensource deepzoom imaging viewer.",
+  "author": "DUF",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Det-Kongelige-Bibliotek/kbOpenSeadragon.git"
+  },
   "keywords": [
-    "http-server",
-    "xDomain"
+    "OpenSeadragon",
+    "KB"
   ],
   "dependencies": {
     "express": "~4.8",
