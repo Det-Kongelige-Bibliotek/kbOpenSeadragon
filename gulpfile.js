@@ -189,7 +189,7 @@ gulp.task('dist', function (cb) {
     // tar/zipping distribution file
     gutil.log('Creating a distribution tarball ...');
     gulp.src(config.DEST + '/**/*')
-    .pipe(tar('kbOpenSeadragon.tar'))
+    .pipe(tar('kbOpenSeadragon_v'+package.version+'.tar'))
     .pipe(gzip())
     .pipe(gulp.dest(config.DISTDEST));
 
