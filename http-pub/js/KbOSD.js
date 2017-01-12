@@ -297,7 +297,7 @@ window.KbOSD = (function(window, undefined) {
         // assembling footer content
         var tmpFooterElemInnerHTML = '<ul>' +
                                         '<li>' +
-                                            '<a id="' + this.uid + '-home" href="" class="pull-left icon homex"><i class="fa fa-home fa-lg"></i></a>' +
+                                            '<a id="' + this.uid + '-home" href="" class="pull-left icon homex" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
                                         '</li>' +
                                         '<li class="hideWhenSmall">' +
                                             '<a id="' + this.uid + '-zoomOut" href="" class="pull-right icon zoomOutx"><i class="fa fa-search-minus fa-lg"></i></a>' +
