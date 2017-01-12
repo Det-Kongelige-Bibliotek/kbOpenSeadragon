@@ -1,6 +1,10 @@
 @import url('../font-awesome-4.7.0/css/font-awesome.min.css');
 .fa{
     cursor: pointer;
+    color:#337ab7
+}
+.fa:hover{
+    color:#adc9e2;
 }
 
 @import url('https://fonts.googleapis.com/css?family=Roboto');
@@ -21,6 +25,7 @@
     width:100%;
     min-width:230px;
 }
+
 .kbOSDViewer .kbOSDHeader{
 /*    position:absolute;
     top:0;*/
@@ -28,8 +33,12 @@
 .kbOSDToolbar .kbPrevNav{
 }
 .kbOSDToolbar .kbFastNav{
-    line-height:35px;
+    line-height:23px;
     white-space:nowrap;
+
+}
+.kbOSDToolbar .kbFastNav input{
+    border: 1px solid lightgrey;
 }
 @media screen and (max-width:768px){ /* rearrange footer buttons on small screens */
     .kbOSDToolbar .hideWhenSmall{
@@ -88,7 +97,9 @@
     height:95%;
     margin: 0 0 0 0;
     width:100%;
-    border: 1px gray solid;
+}
+.kbOSDViewer .kbOSDContent canvas {
+    border:1px gray solid !important;
 }
 .indexPage{
     margin-top: 35px;
