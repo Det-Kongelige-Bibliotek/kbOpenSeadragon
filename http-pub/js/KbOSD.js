@@ -295,24 +295,24 @@ window.KbOSD = (function (window, undefined) {
         // assembling toolbar content
         var tmpToolbarElemInnerHTML = '<ul>' +
             '<li>' +
-            '<a id="' + this.uid + '-home" href="" class="icon homex" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-home" href="" class="icon home" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
             '</li>' +
             '<li class="hideWhenSmall">' +
-            '<a id="' + this.uid + '-zoomOut" href="" class=" icon zoomOutx"><i class="fa fa-search-minus fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-zoomOut" href="" class=" icon zoomOut"><i class="fa fa-search-minus fa-lg"></i></a>' +
             '</li>' +
             '<li class="hideWhenSmall">' +
-            '<a id="' + this.uid + '-zoomIn" href="" class="icon zoomInx"><i class="fa fa-search-plus fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-zoomIn" href="" class="icon zoomIn"><i class="fa fa-search-plus fa-lg"></i></a>' +
             '</li>' +
             '<li>' +
-            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeftx"><i class="fa fa-undo fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeft"><i class="fa fa-undo fa-lg"></i></a>' +
             '</li>' +
             '<li>' +
-            '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRightx"><i class="fa fa-repeat fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRight"><i class="fa fa-repeat fa-lg"></i></a>' +
             '</li>';
         // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
         if ((this.getPageCount() > 1) && !this.config.hidePageNav) {
             tmpToolbarElemInnerHTML += '<li class="kbPrevNav">' +
-                '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRightx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-left fa-lg"></i></a></div><a id="' + this.uid + '-prev" href="" class=" icon previous"></a>' +
+                '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-left fa-lg"></i></a></div><a id="' + this.uid + '-prev" href="" class=" icon previous"></a>' +
                 '</li>' +
                 '<li class="kbFastNav">' +
                 '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
@@ -320,12 +320,12 @@ window.KbOSD = (function (window, undefined) {
                 '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
                 '</li>' +
                 '<li>' +
-                '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeftx" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-right fa-lg"></i></a></div><a id="' + this.uid + '-next" href="" class="icon next"></a>' +
+                '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-right fa-lg"></i></a></div><a id="' + this.uid + '-next" href="" class="icon next"></a>' +
                 '</li>';
         }
 
         tmpToolbarElemInnerHTML += '<li class="kbFullscreen">' +
-            '<a id="' + this.uid + '-fullscreen" href="" class=" icon maximizex"><i id="full-screen" class="fa fa-expand fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-fullscreen" href="" class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></a>' +
             '</li>' +
             '</ul>';
         this.toolbarElem.innerHTML = tmpToolbarElemInnerHTML;
