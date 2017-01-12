@@ -16,6 +16,7 @@ var tar = require('gulp-tar');
 var gzip = require('gulp-gzip');
 var gulpif = require('gulp-if');
 var nodemon = require('gulp-nodemon');
+var bump = require('gulp-bump');
 
 var STATICURL = argv.dest || 'https://static.kb.dk/kbOpenSeadragon/';
 
@@ -97,6 +98,24 @@ gulp.task('testLocal',['clean'], function () {
         .pipe(gulp.dest(''));
 
     return nodemon('./server.js');
+});
+
+gulp.task('bump', function () {
+   gutil.log('Bumping versions');
+   var type = argv.type;
+   var version = argv.version;
+   var options = {};
+   if (version){
+       options.version = version;
+       gutil.log('To' + version);
+   } else {
+       options.type = type;
+       gutil.log('For type:' + type);
+   }
+   return gulp
+       .src(config.PACKAGES)
+       .pipe(bump(options))
+       .pipe(gulp.dest(config.ROOT));
 });
 
 gulp.task('production', ['clean'], function (cb) {
