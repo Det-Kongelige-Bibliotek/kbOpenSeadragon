@@ -14,8 +14,6 @@ var rename = require('gulp-rename');
 var chmod = require('gulp-chmod');
 var tar = require('gulp-tar');
 var gzip = require('gulp-gzip');
-var jshint = require('gulp-jshint');
-var gulpprint = require('gulp-print');
 var gulpif = require('gulp-if');
 var nodemon = require('gulp-nodemon');
 
@@ -44,15 +42,6 @@ if (argv.help) {
 
 gulp.task('default', ['production'], function () {});
 
-gulp.task('validate', function(){
-   return gulp
-       .src(config.alljs) // we want to check both the js files and the gulpfile.js in the root
-       .pipe(gulpif(argv.verbose, gulpprint())) // print the files that are being validated if one uses --verbose
-       .pipe(jshint())
-       .pipe(jshint.reporter('jshint-stylish', {verbose: true}));
-
-});
-
 gulp.task('clean', function (cb) {
     del([config.DEST, config.DEVDEST, config.DISTDEST, config.TEST_IE_DEST]).then(function (paths) {
         gutil.log('deleted paths:', paths);
@@ -60,42 +49,6 @@ gulp.task('clean', function (cb) {
             cb();
         }
     });
-});
-
-gulp.task('development', ['clean'], function (cb) {
-    gutil.log('Building a ', gutil.colors.cyan('development'), 'build for', gutil.colors.green('"' + STATICURL + '"'));
-    // move html files
-    gutil.log('Moving html...');
-    gulp.src(config.HTMLSRC)
-    .pipe(replace(config.LOCALHOSTURL, STATICURL))
-    .pipe(gulp.dest(config.DEVDEST));
-
-    // bundle, minify and move js files
-    gutil.log('Moving js ...');
-    gulp.src(config.JSSRC)
-    .pipe(replace(config.LOCALHOSTURL, STATICURL))
-    .pipe(concat('KbOSD_bundle.js'))
-    .pipe(gulp.dest(config.DEVDEST));
-
-    // move 3rdpartyJS
-    gulp.src(config.externalJSSRC)
-    .pipe(chmod(664))
-    .pipe(gulp.dest(config.DEVDEST + '/3rdparty'));
-
-    // minify and move css
-    gutil.log('Moving css ...');
-    gulp.src(config.CSSSRC)
-    .pipe(replace(config.LOCALHOSTURL, STATICURL))
-    .pipe(gulp.dest(config.DEVDEST));
-
-    // moving images
-    gutil.log('Moving images ...');
-    gulp.src(config.IMGSRC)
-    .pipe(gulp.dest(config.DEST + '/images'));
-
-    if ('undefined' !== typeof cb) {
-        cb();
-    }
 });
 
 gulp.task('testIE', ['clean'], function () {
