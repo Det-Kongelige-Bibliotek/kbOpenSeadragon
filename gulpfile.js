@@ -31,8 +31,12 @@ if (argv.help) {
     console.log('gulp [development|production][--dest=<destinationURL>]');
     console.log('');
     console.log('gulp validate - Check the quality of the code with jshint.');
+    console.log('gulp testLocal - Serve files from http-pub to test it locally.');
+    console.log('gulp testIE - Build a development setup in testIE folder to test it cross-platform. Change the ' +
+        'IP_LOCALHOSTURL in the gulp.config file. Serve files from this folder.');
     console.log('gulp production - build production files for the KB flavor of OpenSeadragon.');
-    console.log('gulp --dest=https://static.kb.dk/~hafe/kbOpenSeadragon/ - build productionfiles with all static urls pointing at https://static.kb.dk/~hafe/kbOpenSeadragon/');
+    console.log('gulp --dest=https://static.kb.dk/~hafe/kbOpenSeadragon/ - build productionfiles with all ' +
+        'static urls pointing at https://static.kb.dk/~hafe/kbOpenSeadragon/');
     console.log('gulp development - build a development setup with neither minification nor obfuscation. *DEPRECATED*');
     console.log('gulp --help - print this message.');
     process.exit();
