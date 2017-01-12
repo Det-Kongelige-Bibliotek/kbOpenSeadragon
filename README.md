@@ -97,12 +97,12 @@ If you want to put the system up on a server, you can deploy it with:
 
 2. In the .erb file where you want to have an osd instance:
 
-  * add : <div id="kbOSDInstance">
+  * add : '<div id="kbOSDInstance">
             <div class="kbOSDViewer">
                 <div class="kbOSDToolbar"></div>
                 <div class="kbOSDContent"></div>
             </div>
-           </div>
+           </div>'
     Please note that the name footer has been change to toolbar in newer release.
 
   * add the link to the release you want to use   <script src="http://static.kb.dk/release-*.*.*/js/KbOSD.js" ></script>
