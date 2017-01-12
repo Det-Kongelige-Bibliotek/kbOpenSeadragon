@@ -84,3 +84,29 @@ If you want to put the system up on a server, you can deploy it with:
 7. extract all files and folders from the tar file:
    tar xvfz kbOpenSeadragon.tar.gz (or whatever the tar file is called)
    (be aware that there is no parent dir in the tarball)
+
+## How to use it on a blacklight application
+
+1. Include font awesome
+
+ * Include gem 'font-awesome-rails' to Gemfile
+
+ * Run bundle install
+
+ * Add import @import "font-awesome"; to your application.css.scss file
+
+ 2. In the .erb file where you want to have an osd instance:
+
+  * add : <div id="kbOSDInstance">
+            <div class="kbOSDViewer">
+                <div class="kbOSDToolbar"></div>
+                <div class="kbOSDContent"></div>
+            </div>
+           </div>
+    Please note that the name footer has been change to toolbar in newer release.
+
+  * add the link to the release you want to use   <script src="http://static.kb.dk/release-*.*.*/js/KbOSD.js" ></script>
+
+
+
+

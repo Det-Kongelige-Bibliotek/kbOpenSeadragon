@@ -1,7 +1,7 @@
 // File to keep our configuration settings
 
 module.exports = function() {
-    var config = {
+    return config = {
 
         // the js source code
         JSSRC: 'http-pub/js/*.js',
@@ -26,8 +26,7 @@ module.exports = function() {
         // localhost URL
         LOCALHOSTURL: 'http://localhost:8002/',
         // local IP address
-        IP_LOCALHOSTURL: 'http://10.6.1.83:8001/' // TO BE CHANGED BY DEVELOPERS
+        IP_LOCALHOSTURL: 'http://192.168.109.128:8001/' // TO BE CHANGED BY DEVELOPERS
 
     };
-    return config;
 };
