@@ -74,6 +74,11 @@ gulp.task('testIE', ['clean'], function () {
         .pipe(replace(config.LOCALHOSTURL, config.IP_LOCALHOSTURL))
         .pipe(gulp.dest(config.TEST_IE_DEST + '/css'));
 
+    // moving font
+    gutil.log('Moving font package ...');
+    gulp.src('http-pub/font-awesome-4.7.0/*/*')
+        .pipe(gulp.dest(config.TEST_IE_DEST + '/font-awesome-4.7.0'));
+
     // moving images
     gutil.log('Moving images ...');
     gulp.src(config.IMGSRC)
