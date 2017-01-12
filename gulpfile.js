@@ -76,7 +76,7 @@ gulp.task('development', ['clean'], function (cb) {
     // move 3rdpartyJS
     gulp.src(config.externalJSSRC)
     .pipe(chmod(664))
-    .pipe(gulp.dest(config.DEST + '/3rdparty'));
+    .pipe(gulp.dest(config.DEVDEST + '/3rdparty'));
 
     // minify and move css
     gutil.log('Moving css ...');
