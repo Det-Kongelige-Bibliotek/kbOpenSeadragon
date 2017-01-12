@@ -129,6 +129,14 @@ gulp.task('testIE', ['clean'], function () {
     return nodemon('./server.js');
 });
 
+gulp.task('testLocal',['clean'], function () {
+    gulp.src('server.js')
+        .pipe(replace('testIE', 'http-pub'))
+        .pipe(gulp.dest(''));
+
+    return nodemon('./server.js');
+});
+
 gulp.task('production', ['clean'], function (cb) {
     gutil.log('Building a ', gutil.colors.cyan('production'), 'build for', gutil.colors.green('"' + STATICURL + '"'));
     // move html files
