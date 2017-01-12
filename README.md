@@ -95,7 +95,7 @@ If you want to put the system up on a server, you can deploy it with:
 
  * Add import @import "font-awesome"; to your application.css.scss file
 
- 2. In the .erb file where you want to have an osd instance:
+2. In the .erb file where you want to have an osd instance:
 
   * add : <div id="kbOSDInstance">
             <div class="kbOSDViewer">
