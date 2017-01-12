@@ -50,7 +50,7 @@ gulp.task('validate', function(){
 });
 
 gulp.task('clean', function (cb) {
-    del([config.DEST, config.DEVDEST, config.DISTDEST]).then(function (paths) {
+    del([config.DEST, config.DEVDEST, config.DISTDEST, config.TEST_IE_DEST]).then(function (paths) {
         gutil.log('deleted paths:', paths);
         if ('undefined' !== typeof cb) {
             cb();
