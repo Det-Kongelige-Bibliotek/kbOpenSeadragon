@@ -1,3 +1,6 @@
+@import url('../font-awesome-4.7.0/css/font-awesome.min.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 .fa{
     cursor: pointer;
     color:#337ab7
@@ -6,7 +9,6 @@
     color:#adc9e2;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Roboto');
 .kbOSDViewer{
     position:relative;
     overflow:hidden;
@@ -39,7 +41,7 @@
 .kbOSDToolbar .kbFastNav input{
     border: 1px solid lightgrey;
 }
-@media screen and (max-width:768px){ /* rearrange footer buttons on small screens */
+@media screen and (max-width:768px){ /* rearrange toolbar buttons on small screens */
     .kbOSDToolbar .hideWhenSmall{
         display:none;
     }
@@ -50,16 +52,7 @@
         /*width:24%;*/
     }
 }
-/* These next three are in here because we can not use a media query, if the viewer is on a huge page, but in a narrow container */
-/*.kbOSDToolbar.narrowMenu .hideWhenSmall{
-    display:none;
-}*/
-.kbOSDToolbar.narrowMenu .kbFastNav{
-    /*width:21%;*/
-}
-.kbOSDToolbar.narrowMenu .kbFullscreen{
-    /*width:24%*/
-}
+
 .kbButtonOverlay{
     z-index:5;
     width:35px;
@@ -80,7 +73,7 @@
     background:url('../images/previous_hover.png') no-repeat 0 0;
 }
 .kbOSDHeader h1{
-    font-family: roboto;
+    font-family: roboto,Arial;
     line-height:48px;
     font-size: 18px;
     font-weight: normal;
@@ -93,7 +86,7 @@
     /*position:absolute;
     top:48px;
     bottom:48px;*/
-    height:95%;
+    height:90%;
     margin: 0 0 0 0;
     width:100%;
 }
@@ -106,7 +99,7 @@
     left:-200px;
     right:100%;
     top:0;
-    bottom:0; /* minus footer height */
+    bottom:0; /* minus toolbar height */
     background-color:darkgray;
     opacity:0.7;
     transition: left 200ms ease-out, right 200ms ease-out;
@@ -178,7 +171,7 @@
     cursor:pointer;
     color:#4c4c4c;
     text-decoration:none;
-    font-family: roboto;
+    font-family: roboto,Arial;
     font-weight: bold;
     white-space: nowrap;
 }
@@ -268,12 +261,6 @@
     background:url('../images/fullpage_hover.png') no-repeat 0 0;
 }
 
-.pull-left{
-    float:left;
-}
-.pull-right{
-    float:right;
-}
 .kbOSDToolbar{
     /*position: absolute !important;*/
     /*top: 0;*/
@@ -286,4 +273,3 @@
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
-
