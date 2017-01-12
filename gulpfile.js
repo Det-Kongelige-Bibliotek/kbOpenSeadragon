@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var del = require('del');
 var argv = require('optimist').argv;
 var config = require('./gulp.config')(); // require and run the local config file/function
+var package = require('./package.json');
 
 // gulp plugins
 var gutil = require('gulp-util');
@@ -16,12 +17,6 @@ var tar = require('gulp-tar');
 var gzip = require('gulp-gzip');
 var nodemon = require('gulp-nodemon');
 var bump = require('gulp-bump');
-
-var STATICURL = argv.dest || 'https://static.kb.dk/kbOpenSeadragon/';
-
-if (STATICURL.charAt(STATICURL.length - 1) !== '/') {
-    STATICURL = STATICURL + '/';
-}
 
 if (argv.help) {
     console.log('Build kbOpenSeadragon project.');
@@ -126,11 +121,15 @@ gulp.task('bump', function () {
 });
 
 gulp.task('production', ['clean'], function (cb) {
-    gutil.log('Building a ', gutil.colors.cyan('production'), 'build for', gutil.colors.green('"' + STATICURL + '"'));
+    gutil.log('Building a ', gutil.colors.cyan('production'), 'build for', gutil.colors.green('"' + config.STATICURL + '"'));
+    gutil.log('Createing the full URL with the version number in the path.');
+
+    var finalURL = config.STATICURL + package.version + '/';
+
     // move html files
     gutil.log('Moving html...');
     gulp.src(config.HTMLSRC)
-    .pipe(replace(config.LOCALHOSTURL, STATICURL))
+    .pipe(replace(config.LOCALHOSTURL, finalURL))
     .pipe(replace('KbOSD.js','KbOSD_bundle_min.js')) // FIXME: This ought to be more generic, but gulp-replace does not work with regExp on streams??
     .pipe(gulp.dest(config.DEST));
 
@@ -138,7 +137,7 @@ gulp.task('production', ['clean'], function (cb) {
     gutil.log('Bundling and moving js ...');
     gulp.src(config.JSSRC)
     .pipe(concat('KbOSD_bundle.js'))
-    .pipe(replace(config.LOCALHOSTURL, STATICURL))
+    .pipe(replace(config.LOCALHOSTURL, finalURL))
     .pipe(gulp.dest(config.DEST + '/js'));
 
     // minify and move js files
@@ -150,7 +149,7 @@ gulp.task('production', ['clean'], function (cb) {
         path.basename += '_min';
     }))
     .pipe(replace('kbOSD.css','kbOSD_min.css')) // FIXME: This ought to be more generic, but gulp-replace does not work with regExp on streams??
-    .pipe(replace(config.LOCALHOSTURL, STATICURL))
+    .pipe(replace(config.LOCALHOSTURL, finalURL))
     .pipe(gulp.dest(config.DEST + '/js'));
 
     // move 3rdpartyJS
@@ -161,7 +160,7 @@ gulp.task('production', ['clean'], function (cb) {
     // moving unminified version of css
     gutil.log('Moving non minified version of css ...');
     gulp.src(config.CSSSRC)
-    .pipe(replace(config.LOCALHOSTURL, STATICURL))
+    .pipe(replace(config.LOCALHOSTURL, finalURL))
     .pipe(gulp.dest(config.DEST + '/css'));
 
     // minify and move css
@@ -171,7 +170,7 @@ gulp.task('production', ['clean'], function (cb) {
     .pipe(rename(function (path) {
         path.basename += '_min';
     }))
-    .pipe(replace(config.LOCALHOSTURL, STATICURL))
+    .pipe(replace(config.LOCALHOSTURL, finalURL))
     .pipe(gulp.dest(config.DEST + '/css'));
 
     // moving images
