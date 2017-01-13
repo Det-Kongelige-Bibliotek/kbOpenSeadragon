@@ -87,30 +87,52 @@ If you want to put the system up on a server, you can deploy it with:
 
 ## How to use it on a blacklight application
 
-1. Include font awesome
-
- * Include gem 'font-awesome-rails' to Gemfile
-
- * Run bundle install
-
- * Add import @import "font-awesome"; to your application.css.scss file
-
+1. Include font awesome 
+    
+    * Add this to your Gemfile:
+ 
+      ```ruby
+         gem "font-awesome-rails"
+      ```
+ 
+        and run `bundle install`.
+ 
+    * Usage:
+ 
+       In your `application.css`, include the css file:
+ 
+       ```css
+         /*
+            *= require font-awesome
+         */
+       ```
+      Then restart your webserver if it was previously running. 
+  
+    * Sass Support:
+ 
+        Add this to your `application.css.sass` file: 
+        
+        ```sass
+           @import font-awesome
+        ```
+         
+         
 2. In the .erb file where you want to have an osd instance:
 
-  * add :
-    ```html
-        <div id="kbOSDInstance">
+    * add :
+     ```html
+          <div id="kbOSDInstance">
             <div class="kbOSDViewer">
                 <div class="kbOSDToolbar"></div>
                 <div class="kbOSDContent"></div>
             </div>
-        </div>
+           </div>
      ```
    Please note that the name footer has been change to toolbar in newer release.
 
-  * add the link to the release you want to use:
-    ```html
-     <script src="http://static.kb.dk/release-*.*.*/js/KbOSD.js" ></script>
+    * add the link to the release you want to use:
+     ```html
+        <script src="http://static.kb.dk/release-*.*.*/js/KbOSD.js" ></script>
      ```
 
 
