@@ -97,18 +97,17 @@ If you want to put the system up on a server, you can deploy it with:
  
         and run `bundle install`.
  
-    * Usage, do one of this:
+    * Do one of this:
  
-       1 - In your `application.css`, include the css file:
+       a - In your `application.css`, include the css file:
  
-       ```css
-         /*
-            *= require font-awesome
-         */
-       ```
-      Then restart your webserver if it was previously running. 
-  
-      2 - You can also choose Sass Support:
+        ```css
+          /*
+          *= require font-awesome
+          */
+        ```
+ 
+       b - You can also choose Sass Support:
  
         Then you will have to add this instead to your `application.css.sass` file: 
         
@@ -116,6 +115,7 @@ If you want to put the system up on a server, you can deploy it with:
            @import font-awesome
         ```
          
+       Then restart your webserver if it was previously running. 
          
 2. In the .erb file where you want to have an osd instance:
 
