@@ -108,9 +108,9 @@ If you want to put the system up on a server, you can deploy it with:
        ```
       Then restart your webserver if it was previously running. 
   
-    * Sass Support:
+      You can also choose Sass Support:
  
-        Add this to your `application.css.sass` file: 
+        Then you will have to add this instead to your `application.css.sass` file: 
         
         ```sass
            @import font-awesome
