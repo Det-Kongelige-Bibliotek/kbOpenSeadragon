@@ -127,20 +127,21 @@ gulp.task('production', ['clean'], function (cb) {
     gutil.log('Createing the full URL with the version number in the path.');
 
     var finalURL = config.STATICURL + package.version + '/';
+    var release_dest = config.DEST + "/" + package.version;
 
     // move html files
     gutil.log('Moving html...');
     gulp.src(config.HTMLSRC)
     .pipe(replace(config.LOCALHOSTURL, finalURL))
     .pipe(replace('KbOSD.js','KbOSD_bundle_min.js')) // FIXME: This ought to be more generic, but gulp-replace does not work with regExp on streams??
-    .pipe(gulp.dest(config.DEST));
+    .pipe(gulp.dest(release_dest));
 
     // bundling a non minified version and move js files
     gutil.log('Bundling and moving js ...');
     gulp.src(config.JSSRC)
     .pipe(concat('KbOSD_bundle.js'))
     .pipe(replace(config.LOCALHOSTURL, finalURL))
-    .pipe(gulp.dest(config.DEST + '/js'));
+    .pipe(gulp.dest(release_dest + '/js'));
 
     // minify and move js files
     gutil.log('Minifying and moving js ...');
@@ -152,18 +153,18 @@ gulp.task('production', ['clean'], function (cb) {
     }))
     .pipe(replace('kbOSD.css','kbOSD_min.css')) // FIXME: This ought to be more generic, but gulp-replace does not work with regExp on streams??
     .pipe(replace(config.LOCALHOSTURL, finalURL))
-    .pipe(gulp.dest(config.DEST + '/js'));
+    .pipe(gulp.dest(release_dest + '/js'));
 
     // move 3rdpartyJS
     gulp.src(config.externalJSSRC)
     .pipe(chmod(664))
-    .pipe(gulp.dest(config.DEST + '/3rdparty'));
+    .pipe(gulp.dest(release_dest + '/3rdparty'));
 
     // moving unminified version of css
     gutil.log('Moving non minified version of css ...');
     gulp.src(config.CSSSRC)
     .pipe(replace(config.LOCALHOSTURL, finalURL))
-    .pipe(gulp.dest(config.DEST + '/css'));
+    .pipe(gulp.dest(release_dest + '/css'));
 
     // minify and move css
     gutil.log('Minifying and moving css ...');
@@ -173,12 +174,17 @@ gulp.task('production', ['clean'], function (cb) {
         path.basename += '_min';
     }))
     .pipe(replace(config.LOCALHOSTURL, finalURL))
-    .pipe(gulp.dest(config.DEST + '/css'));
+    .pipe(gulp.dest(release_dest + '/css'));
 
     // moving images
     gutil.log('Moving images ...');
     gulp.src(config.IMGSRC)
-    .pipe(gulp.dest(config.DEST + '/images'));
+    .pipe(gulp.dest(release_dest + '/images'));
+
+    // moving font
+    gutil.log('Moving font package ...');
+    gulp.src('http-pub/font-awesome-4.7.0/*/*')
+        .pipe(gulp.dest(release_dest + '/font-awesome-4.7.0'));
 
     gutil.log('Production files done. Use', gutil.colors.green('gulp dist'), 'to create a tarball for distribution.');
 
@@ -193,9 +199,9 @@ gulp.task('dist', function (cb) {
     // and puts it in the dist folder (from there you copy it to the server)
     gutil.log('Creating a distribution tarball ...');
     gulp.src(config.DEST + '/**/*')
-    .pipe(tar('kbOpenSeadragon_v'+package.version+'.tar'))
-    .pipe(gzip())
-    .pipe(gulp.dest(config.DISTDEST));
+        .pipe(tar(package.version+'.tar'))
+        .pipe(gzip())
+        .pipe(gulp.dest(config.DISTDEST));
 
     if ('undefined' !== typeof cb) {
         cb();
