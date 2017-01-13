@@ -58,22 +58,8 @@
     width:35px;
     height:35px;
 }
-.kbButtonOverlay.kbLeft{
-    float:left;
-    background:url('../images/next_grouphover.png') no-repeat 0 0;
-}
-.kbButtonOverlay.kbLeft:hover{
-    background:url('../images/next_hover.png') no-repeat 0 0;
-}
-.kbButtonOverlay.kbRight{
-    float:right;
-    background:url('../images/previous_grouphover.png') no-repeat 0 0;
-}
-.kbButtonOverlay.kbRight:hover{
-    background:url('../images/previous_hover.png') no-repeat 0 0;
-}
 .kbOSDHeader h1{
-    font-family: roboto,Arial;
+    font-family: roboto,Arial, Helvetica, sans-serif;
     line-height:48px;
     font-size: 18px;
     font-weight: normal;
@@ -132,7 +118,7 @@
     -webkit-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     -moz-box-shadow:3px 3px 6px rgba(0,0,0,0.2);
     box-shadow:3px 3px 6px rgba(0,0,0,0.2);
-    font-family: roboto !important;
+    font-family: roboto, Arial, Helvetica, sans-serif !important;
     font-weight: bold !important;
 }
 .kbOSDContent .indexPage .indexFan img{
@@ -172,7 +158,7 @@
     cursor:pointer;
     color:#4c4c4c;
     text-decoration:none;
-    font-family: roboto,Arial;
+    font-family: roboto,Arial, Helvetica, sans-serif;
     font-weight: bold;
     white-space: nowrap;
 }
@@ -208,61 +194,6 @@
     height:35px;
     width:35px;
 }
-.kbOSDToolbar ul li .home{
-    background:url('../images/home_grouphover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .home:hover{
-    background:url('../images/home_hover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .zoomOut{
-    background:url('../images/zoomout_grouphover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .zoomOut:hover{
-    background:url('../images/zoomout_hover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .zoomIn{
-    background:url('../images/zoomin_grouphover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .zoomIn:hover{
-    background:url('../images/zoomin_hover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .previous{
-    background:url('../images/previous_grouphover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .previous:hover{
-    background:url('../images/previous_hover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .next{
-    background:url('../images/next_grouphover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .next:hover{
-    background:url('../images/next_hover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .rotateRight{
-    background:url('../images/rotateright_grouphover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .rotateRight:hover{
-    background:url('../images/rotateright_hover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .rotateLeft{
-    background:url('../images/rotateleft_grouphover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .rotateLeft:hover{
-    background:url('../images/rotateleft_hover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .minimize{
-    background:url('../images/fullpage_grouphover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .minimize:hover{
-    background:url('../images/fullpage_hover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .maximize{
-    background:url('../images/fullpage_grouphover.png') no-repeat 0 0;
-}
-.kbOSDToolbar ul li .maximize:hover{
-    background:url('../images/fullpage_hover.png') no-repeat 0 0;
-}
-
 .kbOSDToolbar{
     /*position: absolute !important;*/
     /*top: 0;*/
@@ -275,6 +206,6 @@
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
-.icon {
+a:hover, a:active, a:focus {
     outline: none;
 }
