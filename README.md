@@ -97,9 +97,9 @@ If you want to put the system up on a server, you can deploy it with:
  
         and run `bundle install`.
  
-    * Usage:
+    * Usage, do one of this:
  
-       In your `application.css`, include the css file:
+       1 - In your `application.css`, include the css file:
  
        ```css
          /*
@@ -108,7 +108,7 @@ If you want to put the system up on a server, you can deploy it with:
        ```
       Then restart your webserver if it was previously running. 
   
-      You can also choose Sass Support:
+      2 - You can also choose Sass Support:
  
         Then you will have to add this instead to your `application.css.sass` file: 
         
