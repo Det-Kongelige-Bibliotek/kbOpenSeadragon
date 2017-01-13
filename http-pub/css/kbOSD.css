@@ -107,6 +107,7 @@
     -moz-box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
     box-shadow : 3px 3px 6px rgba(0,0,0,0.2);
     min-width:200px;
+    height: 90%;
 }
 .indexPage.shown{
     left:0;
@@ -190,6 +191,7 @@
 
 .kbOSDToolbar ul{
     text-decoration: none;
+    float: right;
 }
 .kbOSDToolbar ul li{
     display:inline-block;
@@ -272,4 +274,7 @@
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
+}
+.icon {
+    outline: none;
 }
