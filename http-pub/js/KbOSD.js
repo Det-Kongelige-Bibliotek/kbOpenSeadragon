@@ -121,10 +121,6 @@ window.KbOSD = (function (window, undefined) {
     loadAdditionalJavascript(rootURI + '3rdparty/native.history.js');
     // add openSeaDragon script
     loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
-        // This is run when openseadragon has loaded
-        if ('undefined' !== typeof OpenSeadragon) {
-            KbOSD.version.openSeadragon = OpenSeadragon.version; // Flashing OpenSeadragon version in KbOSD.version
-        }
 
         if ('undefined' !== window.kbOSDconfig) {
             var fragmentHash = extractFragmentIdentifier();
@@ -531,15 +527,6 @@ window.KbOSD = (function (window, undefined) {
                 }
             }
         }
-    };
-
-
-    // setting up version
-    KbOSD.version = {
-        versionStr: '1.1.7',
-        major: 1,
-        minor: 1,
-        revision: 7
     };
 
     return KbOSD;
