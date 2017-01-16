@@ -71,6 +71,7 @@ index.html is a test page that contains a kbOpenSeadragon viewer feeded with som
 ```
 gulp bump --type=minor
 ```
+or
 ```
 gulp bump --version=2.0.1
 ```
