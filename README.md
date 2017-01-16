@@ -51,11 +51,13 @@ When all this is in place, go to the project root and do:
 
 ## How to start it
 
-When everything is installed, you can start the localhost testserver by typing:
+We use gulp and we have created 2 different tasks, one to run it locally, and one to see it in you host operating system (if you are running it inside a virtual machine).
 
-1. ./server.js
+To test it in your Windows system you have to udate the IP_LOCALHOSTURL in the gulp.config.js and run the testIE task: `gulp testIE`. This will create a testIE folder and update the server.js to serve files with this webroot.
 
-The server will listen both on port 8001 and 8002, and just serve files with webroot set to http-pub. The two ports is in order to test Xdomain requests.
+To test is in your local environment, you run: `gulp testLocal` (will serve files from http-pub)
+
+The server (in both commands) will listen both on port 8001 and 8002, in order to test Xdomain requests.
 
 ## How to see it
 
@@ -63,27 +65,34 @@ Open __http://localhost:8001/__ in you prefered browser, and there you go.
 
 index.html is a test page that contains a kbOpenSeadragon viewer feeded with some images from the KB IIIF image server.
 
+## How to create a new release
+
+1. Increase software version that is kept in package.json and it **SHOULD** get updated with the `bump` command. You can use it either by setting the type parameter to major/minor/patch, or the version parameter to a specific version number, ex:
+```
+gulp bump --type=minor
+```
+```
+gulp bump --version=2.0.1
+```
+2. Run `gulp production`, that will create a directory like that: _/production/'version_number'_, will all the needed files for production (minified, concatenated etc)
+
+3. Run `gulp dist`, which will create a tarball under _/dist_ with everything that is under _/production_.
+
 ## How to distribute it to a server
 
 If you want to put the system up on a server, you can deploy it with:
 
-1. gulp --dest=myProjectRootURL (which will give you working production files under _/production_ )
+1. scp dist/kbOpenSeadragon.tar.gz myWebServer.com:
 
-    * Note that there are some static absolute URLs in the production files that are pointed at the _dest_ URL (it defaults to https://static.kb.dk/~hafe/kbOpenSeadragon/ )
+2. ssh to the server
 
-2. gulp dist (which will create a tarball under _/dist_ )
+3. create a subfolder to your webroot for the project (like ~/public_html/kbOpenSeadragon), if you don't have one already.
 
-3. scp dist/kbOpenSeadragon.tar.gz myWebServer.com:
+4. move the uploaded tar file into that subfolder.
 
-4. ssh to the server
-
-5. create a subfolder to your webroot for the project (like ~/public_html/kbOpenSeadragon), if you don't have one already.
-
-6. move the uploaded tar file into that subfolder.
-
-7. extract all files and folders from the tar file:
-   tar xvfz kbOpenSeadragon.tar.gz (or whatever the tar file is called)
-   (be aware that there is no parent dir in the tarball)
+5. extract all files and folders from the tar file:
+   tar xvfz _VERSION_NUMBER_.tar.gz 
+   
 
 ## How to use it on a blacklight application
 
@@ -132,7 +141,7 @@ If you want to put the system up on a server, you can deploy it with:
 
     * add the link to the release you want to use:
      ```html
-        <script src="http://static.kb.dk/release-*.*.*/js/KbOSD.js" ></script>
+        <script src="http://static.kb.dk/kbOpenSeadragon/*.*.*/js/KbOSD_bundle_min.js" ></script>
      ```
 
 
