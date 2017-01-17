@@ -293,7 +293,7 @@ window.KbOSD = (function (window, undefined) {
         this.toolbarElem.innerHTML =
             '<ul>' +
             '<li>' +
-            '<a id="' + this.uid + '-home" href="" class="icon home" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-home" href="" class="icon home  hidden-xs" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
             '</li>' +
             '<li class="hideWhenSmall">' +
             '<a id="' + this.uid + '-zoomOut" href="" class=" icon zoomOut"><i class="fa fa-search-minus fa-lg"></i></a>' +
@@ -302,10 +302,10 @@ window.KbOSD = (function (window, undefined) {
             '<a id="' + this.uid + '-zoomIn" href="" class="icon zoomIn"><i class="fa fa-search-plus fa-lg"></i></a>' +
             '</li>' +
             '<li>' +
-            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeft"><i class="fa fa-undo fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeft  hidden-xs"><i class="fa fa-undo fa-lg"></i></a>' +
             '</li>' +
             '<li>' +
-            '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRight"><i class="fa fa-repeat fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRight  hidden-xs"><i class="fa fa-repeat fa-lg"></i></a>' +
             '</li>' +
             '<span id="' + this.uid + '-PageCount">' +
             '<li class="kbPrevNav">' +
