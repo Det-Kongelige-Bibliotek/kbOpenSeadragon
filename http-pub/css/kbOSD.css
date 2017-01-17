@@ -202,3 +202,7 @@
 a:hover, a:active, a:focus {
     outline: none;
 }
+
+.hidden {
+    display: none;
+}

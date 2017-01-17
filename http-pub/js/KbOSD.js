@@ -288,8 +288,10 @@ window.KbOSD = (function (window, undefined) {
         this.contentElem.id = this.uid;
         this.contentElem.innerHTML = ''; // emptying the openSeaDragon element so there is no content in it besides OpenSeadragon (due to a hack to aviod empty divs which were stripped somewhere in the server flow)
         this.toolbarElem.id = this.uid + '-toolbar';
+
         // assembling toolbar content
-        var tmpToolbarElemInnerHTML = '<ul>' +
+        this.toolbarElem.innerHTML =
+            '<ul>' +
             '<li>' +
             '<a id="' + this.uid + '-home" href="" class="icon home" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
             '</li>' +
@@ -304,27 +306,31 @@ window.KbOSD = (function (window, undefined) {
             '</li>' +
             '<li>' +
             '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRight"><i class="fa fa-repeat fa-lg"></i></a>' +
-            '</li>';
-        // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
-        if ((this.getPageCount() > 1) && !this.config.hidePageNav) {
-            tmpToolbarElemInnerHTML += '<li class="kbPrevNav">' +
-                '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-left fa-lg"></i></a></div><a id="' + this.uid + '-prev" href="" class=" icon previous"></a>' +
-                '</li>' +
-                '<li class="kbFastNav">' +
-                '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
-                '<span> / </span>' +
-                '<span class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
-                '</li>' +
-                '<li>' +
-                '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-right fa-lg"></i></a></div><a id="' + this.uid + '-next" href="" class="icon next"></a>' +
-                '</li>';
-        }
-
-        tmpToolbarElemInnerHTML += '<li class="kbFullscreen">' +
+            '</li>' +
+            '<span id="' + this.uid + '-PageCount">' +
+            '<li class="kbPrevNav">' +
+            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-left fa-lg"></i></a></div><a id="' + this.uid + '-prev" href="" class=" icon previous"></a>' +
+            '</li>' +
+            '<li>' +
+            '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
+            '<span> / </span>' +
+            '<span  class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
+            '</li>' +
+            '<li>' +
+            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-right fa-lg"></i></a></div><a id="' + this.uid + '-next" href="" class="icon next"></a>' +
+            '</li>' +
+            '</span>' +
+            '<li class="kbFullscreen">' +
             '<a id="' + this.uid + '-fullscreen" href="" class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></a>' +
             '</li>' +
             '</ul>';
-        this.toolbarElem.innerHTML = tmpToolbarElemInnerHTML;
+
+
+        // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
+        if ((this.getPageCount() <= 1) || this.config.hidePageNav) {
+            document.getElementById(this.uid + '-PageCount').className = "hidden";
+        }
+
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
             id: this.uid,
