@@ -67,23 +67,22 @@ index.html is a test page that contains a kbOpenSeadragon viewer feeded with som
 
 ## How to create a new release
 
-1. Increase software version that is kept in package.json and it **SHOULD** get updated with the `bump` command. You can use it either by setting the type parameter to major/minor/patch, or the version parameter to a specific version number, ex:
-```
-gulp bump --type=minor
-```
-or
-```
-gulp bump --version=2.0.1
-```
-2. Run `gulp production`, that will create a directory like that: _/production/'version_number'_, will all the needed files for production (minified, concatenated etc)
+1. Increase software version that is kept in package.json and it **SHOULD** get updated with the `bump` command. You can use it either by setting the type parameter to major/minor/patch, or the version parameter to a specific version number, e.g. do one of the followings:
+    ```
+    gulp bump --type=minor
+    ```
+    ```
+    gulp bump --version=2.0.1
+    ```
+2. Make sure that in the gulp.config.js, the the production folder is the correct: STATICURL: 'https://static.kb.dk/kbOpenSeadragon/'. Run `gulp production`, that will create a directory like that: _/production/'version_number'_, will all the needed files for production (minified, concatenated etc)
 
 3. Run `gulp dist`, which will create a tarball under _/dist_ with everything that is under _/production_.
 
-## How to distribute it to a server
+## How to distribute it to a test server
 
-If you want to put the system up on a server, you can deploy it with:
+If you want to put the system up on a test server, you can deploy it with:
 
-1. scp dist/kbOpenSeadragon.tar.gz myWebServer.com:
+1. scp dist/kbOpenSeadragon.tar.gz "test-static-01.k.dk:/...":
 
 2. ssh to the server
 
@@ -92,7 +91,7 @@ If you want to put the system up on a server, you can deploy it with:
 4. move the uploaded tar file into that subfolder.
 
 5. extract all files and folders from the tar file:
-   tar xvfz _VERSION_NUMBER_.tar.gz 
+   tar -xvfz _VERSION_NUMBER_.tar.gz 
    
 
 ## How to use it on a blacklight application

@@ -31,7 +31,7 @@ module.exports = function() {
         // local IP address
         IP_LOCALHOSTURL: 'http://192.168.109.128:8001/',     // TO BE CHANGED BY DEVELOPERS
         // Base URL in the static server
-        STATICURL: 'https://static.kb.dk/~poma/kbOpenSeadragon/',
+        STATICURL: 'https://static.kb.dk/kbOpenSeadragon/',
 
         // json files where we update the software version number
         PACKAGES: ['./package.json']
