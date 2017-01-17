@@ -76,9 +76,7 @@
     margin: 0 0 0 0;
     width:100%;
 }
-.kbOSDViewer .kbOSDContent canvas {
-    border:1px gray solid !important;
-}
+
 .indexPage{
     margin-top: 35px;
     position:absolute;
