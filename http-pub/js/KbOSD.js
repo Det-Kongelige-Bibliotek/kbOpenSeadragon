@@ -38,6 +38,7 @@ if ('undefined' === typeof window.kbTriggerEvent) {
     };
 }
 
+
 window.KbOSD = (function (window, undefined) {
     var rootURI = 'http://localhost:8002/';
 
@@ -293,7 +294,7 @@ window.KbOSD = (function (window, undefined) {
         this.toolbarElem.innerHTML =
             '<ul>' +
             '<li>' +
-            '<a id="' + this.uid + '-home" href="" class="icon home  hidden-xs" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-home" href="" class="icon home  hidden-xs" title="Hej"><i class="fa fa-arrows-h fa-lg"></i></a>' +
             '</li>' +
             '<li class="hideWhenSmall">' +
             '<a id="' + this.uid + '-zoomOut" href="" class=" icon zoomOut"><i class="fa fa-search-minus fa-lg"></i></a>' +
@@ -346,6 +347,8 @@ window.KbOSD = (function (window, undefined) {
             fullPageButton: this.uid + '-fullscreen'
         });
 
+        OpenSeadragon.setString("Tooltips.Home","Flipped");
+
         that.openSeadragon = OpenSeadragon(config);
 
         that.openSeadragon.addHandler('full-screen', function (e) {
@@ -357,6 +360,8 @@ window.KbOSD = (function (window, undefined) {
                 document.getElementById('full-screen').className = "fa fa-expand fa-lg";
             }
         });
+
+
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
         if (that.pageNumNormalizer.pageCount > 1) { // only mess with prev/next if there is more than one page - otherwise they won't be in the DOM
@@ -417,6 +422,15 @@ window.KbOSD = (function (window, undefined) {
                 e.stopPropagation();
                 var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
                 kbosd.setCurrentPage(kbosd.getNextPageNumber());
+            });
+            // override home button to enable flip/mirror image instead
+            this.toolbarElem.querySelector('#' + this.uid + '-home').parentElement.firstChild.addEventListener('click', function (e) {
+                var osdArray = document.getElementsByClassName("openseadragon-canvas")[0];
+                if (document.getElementsByClassName("openseadragon-canvas")[0].className.indexOf('flipped') < 0){
+                    document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas flipped";
+                }else{
+                    document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas";
+                }
             });
 
             // setting up eventHandlers for kbFastNav
