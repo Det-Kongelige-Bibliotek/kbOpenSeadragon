@@ -121,7 +121,7 @@
 }
 
 .flipped{
-    -webkit-transform: scalex(-1);
+    -webkit-transform: scalex(-1) ;
     -moz-transform: scalex(-1);
     -ms-transform: scalex(-1);
     -o-transform: scalex(-1);

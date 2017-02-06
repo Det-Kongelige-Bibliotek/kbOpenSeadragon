@@ -347,7 +347,14 @@ window.KbOSD = (function (window, undefined) {
             fullPageButton: this.uid + '-fullscreen'
         });
 
-        OpenSeadragon.setString("Tooltips.Home","Flipped");
+        OpenSeadragon.setString("Tooltips.FullPage","Fuld skærm");
+        OpenSeadragon.setString("Tooltips.Home","Spejlvend");
+        OpenSeadragon.setString("Tooltips.ZoomIn","Zoom ind");
+        OpenSeadragon.setString("Tooltips.ZoomOut","Zoom ud");
+        OpenSeadragon.setString("Tooltips.NextPage","Næste side");
+        OpenSeadragon.setString("Tooltips.PreviousPage","Forrige side");
+        OpenSeadragon.setString("Tooltips.RotateLeft","Rotér mod uret");
+        OpenSeadragon.setString("Tooltips.RotateRight","Rotér med uret");
 
         that.openSeadragon = OpenSeadragon(config);
 
@@ -428,10 +435,13 @@ window.KbOSD = (function (window, undefined) {
                 var osdArray = document.getElementsByClassName("openseadragon-canvas")[0];
                 if (document.getElementsByClassName("openseadragon-canvas")[0].className.indexOf('flipped') < 0){
                     document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas flipped";
+                    document.getElementsByClassName("navigator")[0].className = "navigator flipped";
                 }else{
                     document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas";
+                    document.getElementsByClassName("navigator")[0].className = "navigator";
                 }
             });
+
 
             // setting up eventHandlers for kbFastNav
             this.fastNav = this.toolbarElem.getElementsByTagName('input')[0];
