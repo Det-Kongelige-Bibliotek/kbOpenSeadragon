@@ -38,6 +38,7 @@ if ('undefined' === typeof window.kbTriggerEvent) {
     };
 }
 
+
 window.KbOSD = (function (window, undefined) {
     var rootURI = 'http://localhost:8002/';
 
@@ -293,19 +294,19 @@ window.KbOSD = (function (window, undefined) {
         this.toolbarElem.innerHTML =
             '<ul>' +
             '<li>' +
-            '<a id="' + this.uid + '-home" href="" class="icon home  hidden-xs" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-home" href="" class="icon home" title="Hej"><i class="fa fa-arrows-h fa-lg"></i></a>' +
             '</li>' +
-            '<li class="hideWhenSmall">' +
+            '<li>' +
             '<a id="' + this.uid + '-zoomOut" href="" class=" icon zoomOut"><i class="fa fa-search-minus fa-lg"></i></a>' +
             '</li>' +
-            '<li class="hideWhenSmall">' +
+            '<li>' +
             '<a id="' + this.uid + '-zoomIn" href="" class="icon zoomIn"><i class="fa fa-search-plus fa-lg"></i></a>' +
             '</li>' +
             '<li>' +
-            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeft  hidden-xs"><i class="fa fa-undo fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeft"><i class="fa fa-undo fa-lg"></i></a>' +
             '</li>' +
             '<li>' +
-            '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRight  hidden-xs"><i class="fa fa-repeat fa-lg"></i></a>' +
+            '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRight"><i class="fa fa-repeat fa-lg"></i></a>' +
             '</li>' +
             '<span id="' + this.uid + '-PageCount">' +
             '<li class="kbPrevNav">' +
@@ -346,6 +347,15 @@ window.KbOSD = (function (window, undefined) {
             fullPageButton: this.uid + '-fullscreen'
         });
 
+        OpenSeadragon.setString("Tooltips.FullPage","Fuld skærm");
+        OpenSeadragon.setString("Tooltips.Home","Spejlvend");
+        OpenSeadragon.setString("Tooltips.ZoomIn","Zoom ind");
+        OpenSeadragon.setString("Tooltips.ZoomOut","Zoom ud");
+        OpenSeadragon.setString("Tooltips.NextPage","Næste side");
+        OpenSeadragon.setString("Tooltips.PreviousPage","Forrige side");
+        OpenSeadragon.setString("Tooltips.RotateLeft","Rotér mod uret");
+        OpenSeadragon.setString("Tooltips.RotateRight","Rotér med uret");
+
         that.openSeadragon = OpenSeadragon(config);
 
         that.openSeadragon.addHandler('full-screen', function (e) {
@@ -357,6 +367,8 @@ window.KbOSD = (function (window, undefined) {
                 document.getElementById('full-screen').className = "fa fa-expand fa-lg";
             }
         });
+
+
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
         if (that.pageNumNormalizer.pageCount > 1) { // only mess with prev/next if there is more than one page - otherwise they won't be in the DOM
@@ -418,6 +430,18 @@ window.KbOSD = (function (window, undefined) {
                 var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
                 kbosd.setCurrentPage(kbosd.getNextPageNumber());
             });
+            // override home button to enable flip/mirror image instead
+            this.toolbarElem.querySelector('#' + this.uid + '-home').parentElement.firstChild.addEventListener('click', function (e) {
+                var osdArray = document.getElementsByClassName("openseadragon-canvas")[0];
+                if (document.getElementsByClassName("openseadragon-canvas")[0].className.indexOf('flipped') < 0){
+                    document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas flipped";
+                    document.getElementsByClassName("navigator")[0].className = "navigator flipped";
+                }else{
+                    document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas";
+                    document.getElementsByClassName("navigator")[0].className = "navigator";
+                }
+            });
+
 
             // setting up eventHandlers for kbFastNav
             this.fastNav = this.toolbarElem.getElementsByTagName('input')[0];
