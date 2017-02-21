@@ -283,26 +283,26 @@ window.KbOSD = (function (window, undefined) {
         this.toolbarElem.innerHTML =
             '<ul>' +
             '<li>' +
-            '<span id="' + this.uid + '-home" href="" class="icon home" title="Hej"><i class="fa fa-refresh fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-home"  class="icon home"><i class="fa fa-refresh fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-zoomOut" href="" class=" icon zoomOut"><i class="fa fa-search-minus fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-zoomOut"  class=" icon zoomOut"><i class="fa fa-search-minus fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-zoomIn" href="" class="icon zoomIn"><i class="fa fa-search-plus fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-zoomIn"  class="icon zoomIn"><i class="fa fa-search-plus fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeft"><i id="rotateLeftIcon" class="fa fa-undo fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-rotateLeft" class="icon rotateLeft"><i id="rotateLeftIcon" class="fa fa-undo fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-rotateRight" href="" class="icon rotateRight"><i id="rotateRightIcon" class="fa fa-repeat fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-rotateRight"  class="icon rotateRight"><i id="rotateRightIcon" class="fa fa-repeat fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-flip" href="" class="icon flip"><i class="fa fa-arrows-h fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-flip"  class="icon flip" tilte=""><i class="fa fa-arrows-h fa-lg"></i></span>' +
             '</li>' +
             '<span id="' + this.uid + '-PageCount">' +
             '<li class="kbPrevNav">' +
-            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-left fa-lg"></i></span></div><span id="' + this.uid + '-prev" href="" class=" icon previous"></span>' +
+            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-left fa-lg"></i></span></div><span id="' + this.uid + '-prev"  class=" icon previous"></span>' +
             '</li>' +
             '<li>' +
             '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
@@ -310,11 +310,11 @@ window.KbOSD = (function (window, undefined) {
             '<span  class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
             '</li>' +
             '<li>' +
-            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-right fa-lg"></i></span></div><span id="' + this.uid + '-next" href="" class="icon next"></span>' +
+            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-right fa-lg"></i></span></div><span id="' + this.uid + '-next"  class="icon next"></span>' +
             '</li>' +
             '</span>' +
             '<li class="kbFullscreen">' +
-            '<span id="' + this.uid + '-fullscreen" href="" class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-fullscreen"  class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></span>' +
             '</li>' +
             '</ul>';
 
@@ -348,7 +348,11 @@ window.KbOSD = (function (window, undefined) {
         OpenSeadragon.setString("Tooltips.PreviousPage", "Forrige side");
         OpenSeadragon.setString("Tooltips.RotateLeft", "Rotér mod uret");
         OpenSeadragon.setString("Tooltips.RotateRight", "Rotér med uret");
-        OpenSeadragon.setString("Tooltips.Flip", "Spejlvend");
+
+        document.getElementById(this.uid + '-flip').title="Spejlvend";
+        document.getElementById(this.uid + '-kbPrev').title="Forrige side";
+        document.getElementById(this.uid + '-kbNext').title="Næste side";
+
 
         that.openSeadragon = OpenSeadragon(config);
 
