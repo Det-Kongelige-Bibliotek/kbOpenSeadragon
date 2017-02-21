@@ -133,7 +133,6 @@ window.KbOSD = (function (window, undefined) {
                 if (newKbOSD.pageCount > 1) { // only update arrows if more than one page
                     newKbOSD.updateArrows(newKbOSD);
                 }
-
                 kbTriggerEvent(document, 'kbosdready', {kbosd: newKbOSD});
             }, this);
         } else {
@@ -326,8 +325,8 @@ window.KbOSD = (function (window, undefined) {
 
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
+            showRotationControl:true,
             id: this.uid,
-            showRotationControl: true,
             toolbar: this.uid + '-toolbar',
             homeButton: this.uid + '-home',
             zoomOutButton: this.uid + '-zoomOut',
@@ -353,7 +352,6 @@ window.KbOSD = (function (window, undefined) {
         document.getElementById(this.uid + '-kbPrev').title="Forrige side";
         document.getElementById(this.uid + '-kbNext').title="Næste side";
 
-
         that.openSeadragon = OpenSeadragon(config);
 
         that.openSeadragon.addHandler('full-screen', function (e) {
@@ -366,6 +364,12 @@ window.KbOSD = (function (window, undefined) {
             }
         });
 
+        //Hide rotation and flip if showRotationControl= false is set
+        if (config.showTransformationControl != null && !config.showTransformationControl){
+            document.getElementById(this.uid + '-flip').style.display = 'none';
+            document.getElementById(this.uid + '-rotateRight').style.display = 'none';
+            document.getElementById(this.uid + '-rotateLeft').style.display = 'none';
+        }
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
         if (that.pageNumNormalizer.pageCount > 1) { // only mess with prev/next if there is more than one page - otherwise they won't be in the DOM
