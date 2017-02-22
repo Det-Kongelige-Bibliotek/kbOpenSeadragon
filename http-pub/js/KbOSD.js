@@ -365,7 +365,7 @@ window.KbOSD = (function (window, undefined) {
         });
 
         //Override home button to reset both flip and rotation
-        that.openSeadragon.addHandler('home', function () {
+        this.toolbarElem.querySelector('#' + this.uid + '-home').parentElement.firstChild.addEventListener('click', function () {
            //reset flip
             document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas";
             document.getElementsByClassName("navigator")[0].className = "navigator";
