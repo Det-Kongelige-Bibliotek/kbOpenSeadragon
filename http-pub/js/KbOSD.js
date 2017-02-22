@@ -297,7 +297,7 @@ window.KbOSD = (function (window, undefined) {
             '<span id="' + this.uid + '-rotateRight"  class="icon rotateRight"><i id="rotateRightIcon" class="fa fa-repeat fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-flip"  class="icon flip" tilte=""><i class="fa fa-arrows-h fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-flip"  class="icon flip"><i class="fa fa-arrows-h fa-lg"></i></span>' +
             '</li>' +
             '<span id="' + this.uid + '-PageCount">' +
             '<li class="kbPrevNav">' +
@@ -362,6 +362,18 @@ window.KbOSD = (function (window, undefined) {
             } else {
                 document.getElementById('full-screen').className = "fa fa-expand fa-lg";
             }
+        });
+
+        //Override home button to reset both flip and rotation
+        this.toolbarElem.querySelector('#' + this.uid + '-home').parentElement.firstChild.addEventListener('click', function () {
+           //reset flip
+            document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas";
+            document.getElementsByClassName("navigator")[0].className = "navigator";
+            document.getElementById('rotateLeftIcon').className = "fa fa-undo fa-lg";
+            document.getElementById('rotateRightIcon').className = "fa fa-repeat fa-lg";
+            //reset rotation
+            that.openSeadragon.viewport.setRotation(0);
+
         });
 
         //Hide rotation and flip if showRotationControl= false is set
@@ -435,8 +447,7 @@ window.KbOSD = (function (window, undefined) {
                 }
             });
             // add flip/mirror image
-            this.toolbarElem.querySelector('#' + this.uid + '-flip').parentElement.firstChild.addEventListener('click', function (e) {
-                var osdArray = document.getElementsByClassName("openseadragon-canvas")[0];
+            this.toolbarElem.querySelector('#' + this.uid + '-flip').parentElement.firstChild.addEventListener('click', function () {
                 if (document.getElementsByClassName("openseadragon-canvas")[0].className.indexOf('flipped') < 0) {
                     document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas flipped";
                     document.getElementsByClassName("navigator")[0].className = "navigator flipped";
@@ -445,7 +456,6 @@ window.KbOSD = (function (window, undefined) {
                 } else {
                     document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas";
                     document.getElementsByClassName("navigator")[0].className = "navigator";
-
                     document.getElementById('rotateLeftIcon').className = "fa fa-undo fa-lg";
                     document.getElementById('rotateRightIcon').className = "fa fa-repeat fa-lg";
                 }
