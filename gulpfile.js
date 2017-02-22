@@ -35,7 +35,7 @@ gulp.task('default', ['production'], function () {});
 
 // Deletes all the folders created by gulp tasks and leaves the http-pub
 gulp.task('clean', function (cb) {
-    del([config.DEST, config.DEVDEST, config.DISTDEST, config.TEST_IE_DEST]).then(function (paths) {
+    del([config.DEST, config.TEST_DEST, config.DISTDEST, config.TEST_IE_DEST]).then(function (paths) {
         gutil.log('deleted paths:', paths);
         if ('undefined' !== typeof cb) {
             cb();
@@ -123,11 +123,19 @@ gulp.task('bump', function () {
 // Minifies and concatenate the js files and minifies the CSS, copies the fonts
 // and the 3rd party libraries and puts them in production folder
 gulp.task('production', ['clean'], function (cb) {
-    gutil.log('Building a ', gutil.colors.cyan('production'), 'build for', gutil.colors.green('"' + config.STATICURL + '"'));
-    gutil.log('Createing the full URL with the version number in the path.');
+    gutil.log('Building a ', gutil.colors.cyan('production'), 'build.');
+    gutil.log('Creating the full URL with the version number in the path:');
 
-    var finalURL = config.STATICURL + package.version + '/';
-    var release_dest = config.DEST + "/" + package.version;
+    var finalURL, release_dest;
+    // If there is a mode parameter set to 'test', then change the destination folders
+    if(argv.mode === 'test'){
+        finalURL = config.STATIC_TEST_URL + package.version + '/';
+        release_dest = config.TEST_DEST + "/" + package.version;
+    }else{
+        finalURL = config.STATICURL + package.version + '/';
+        release_dest = config.DEST + "/" + package.version;
+    }
+    gutil.log(finalURL);
 
     // move html files
     gutil.log('Moving html...');
@@ -195,13 +203,23 @@ gulp.task('production', ['clean'], function (cb) {
 
 gulp.task('dist', function (cb) {
     // tar/zipping distribution file
-    // Takes everything from the production folder, creates a zip with the version number
-    // and puts it in the dist folder (from there you copy it to the server)
-    gutil.log('Creating a distribution tarball ...');
-    gulp.src(config.DEST + '/**/*')
+    // Takes everything from the production or test folder, creates a zip with the version number
+    // and puts it in the dist or test_dist folder (from there you copy it to the server)
+
+    // If there is a mode parameter set to 'test', then change the destination folders
+    var source_folder, dist_folder;
+    if(argv.mode === 'test'){
+        source_folder = config.TEST_DEST;
+        dist_folder = config.DIST_TEST_DEST;
+    }else{
+        source_folder = config.DEST;
+        dist_folder = config.DISTDEST;
+    }
+    gutil.log('Creating a distribution tarball to this fodler: '+dist_folder);
+    gulp.src(source_folder + '/**/*')
         .pipe(tar(package.version+'.tar'))
         .pipe(gzip())
-        .pipe(gulp.dest(config.DISTDEST));
+        .pipe(gulp.dest(dist_folder));
 
     if ('undefined' !== typeof cb) {
         cb();
