@@ -42,14 +42,8 @@
     border: 1px solid lightgrey;
 }
 @media screen and (max-width:768px){ /* rearrange toolbar buttons on small screens */
-    .kbOSDToolbar .hideWhenSmall{
-        display:none;
-    }
-    .kbOSDToolbar .kbFastNav{
-        /*width:21%;*/
-    }
-    .kbOSDToolbar .kbFullscreen{
-        /*width:24%;*/
+    .hideWhenSmall{
+        display:none !important;
     }
 }
 
