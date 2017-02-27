@@ -82,16 +82,19 @@ index.html is a test page that contains a kbOpenSeadragon viewer feeded with som
 
 If you want to put the system up on a test server, you can deploy it with:
 
-1. scp dist/kbOpenSeadragon.tar.gz "test-static-01.k.dk:/...":
+1. Do the 1st step of [How to create a new release](#how-to-create-a-new-release) and for the steps 2 and 3: In a terminal run the gulp tasks: `gulp production --mode=test` and `gulp dist --mode=test`. This will create first a _test_ folder with the build files and then a _test_dist_ with the tar file.
 
-2. ssh to the server
+1. scp test_dist/2.2.0.tar.gz USERNAME@static-test-01:/home/USERNAME
 
-3. create a subfolder to your webroot for the project (like ~/public_html/kbOpenSeadragon), if you don't have one already.
+2. ssh to the test server
 
-4. move the uploaded tar file into that subfolder.
+3. Create a kbOpenSeadragon subfolder under /var/www/, if you don't have one already.
 
-5. extract all files and folders from the tar file:
-   tar -xvfz _VERSION_NUMBER_.tar.gz 
+4. Move the uploaded tar file into that subfolder.
+
+5. Extract all files and folders from the tar file:
+   `tar -xvfz _VERSION_NUMBER_.tar.gz `
+6. Go to a browser and hit: http://static-test-01.kb.dk/kbOpenSeadragon/2.2.0/
    
 
 ## How to use it on a blacklight application
