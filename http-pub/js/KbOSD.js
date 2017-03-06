@@ -112,7 +112,7 @@ window.KbOSD = (function (window, undefined) {
     // add openSeaDragon script
     loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
 
-        if ('undefined' !== window.kbOSDconfig) {
+        if ('undefined' !== window.kbOSDconfig && window.kbOSDconfig != null) {
             var fragmentHash = extractFragmentIdentifier();
             window.kbOSDconfig.forEach(function (config) {
                 // prefetch the comming uid, in order to look for it in the fragment identifier (the uid is a unique indentifier for each KbOSD object on the page)
@@ -315,6 +315,11 @@ window.KbOSD = (function (window, undefined) {
             '<li class="kbFullscreen">' +
             '<span id="' + this.uid + '-fullscreen"  class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></span>' +
             '</li>' +
+            '<li>' +
+            '<a id="download-direct-link">' +
+            '<span id="' + this.uid + '-download"  class=" icon maximize"><i id="full-download" class=" fa fa-lg fa-download"></i></span>' +
+            '</a>' +
+            '</li>' +
             '</ul>';
 
 
@@ -336,7 +341,8 @@ window.KbOSD = (function (window, undefined) {
             flipButton: this.uid + '-flip',
             previousButton: this.uid + '-prev',
             nextButton: this.uid + '-next',
-            fullPageButton: this.uid + '-fullscreen'
+            fullPageButton: this.uid + '-fullscreen',
+            downloadButton: this.uid + '-download'
         });
 
         OpenSeadragon.setString("Tooltips.FullPage", "Fuld skærm");
@@ -347,6 +353,7 @@ window.KbOSD = (function (window, undefined) {
         OpenSeadragon.setString("Tooltips.PreviousPage", "Forrige side");
         OpenSeadragon.setString("Tooltips.RotateLeft", "Rotér mod uret");
         OpenSeadragon.setString("Tooltips.RotateRight", "Rotér med uret");
+        OpenSeadragon.setString("Tooltips.Download", "Download");
 
         document.getElementById(this.uid + '-flip').title="Spejlvend";
         document.getElementById(this.uid + '-kbPrev').title="Forrige side";
@@ -445,6 +452,9 @@ window.KbOSD = (function (window, undefined) {
                 if (kbosd.getNextPageNumber() != kbosd.getCurrentPage()) {
                     kbosd.setCurrentPage(kbosd.getNextPageNumber());
                 }
+                console.log(document.getElementById('download-direct-link'));
+                document.getElementById('download-direct-link').setAttribute("download", 'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0003');
+
             });
             // add flip/mirror image
             this.toolbarElem.querySelector('#' + this.uid + '-flip').parentElement.firstChild.addEventListener('click', function () {
@@ -459,6 +469,13 @@ window.KbOSD = (function (window, undefined) {
                     document.getElementById('rotateLeftIcon').className = "fa fa-undo fa-lg";
                     document.getElementById('rotateRightIcon').className = "fa fa-repeat fa-lg";
                 }
+            });
+
+            // add download functionality
+            this.toolbarElem.querySelector('#' + this.uid + '-download').parentElement.firstChild.addEventListener('click', function (e) {
+
+                   console.log(that.openSeadragon.source['@id']);
+
             });
 
 
