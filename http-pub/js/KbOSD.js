@@ -316,9 +316,10 @@ window.KbOSD = (function (window, undefined) {
             '<span id="' + this.uid + '-fullscreen"  class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<a id="download-direct-link">' +
-            '<span id="' + this.uid + '-download"  class=" icon maximize"><i id="full-download" class=" fa fa-lg fa-download"></i></span>' +
-            '</a>' +
+            '<span id="' + this.uid + '-download"  class=" icon maximize">' +
+            '<a id="download-direct-link" title="download" download>' +
+            '<i id="full-download" class=" fa fa-lg fa-download"></i>' +
+            '</a></span>' +
             '</li>' +
             '</ul>';
 
@@ -330,7 +331,7 @@ window.KbOSD = (function (window, undefined) {
 
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
-            showRotationControl:true,
+            showRotationControl: true,
             id: this.uid,
             toolbar: this.uid + '-toolbar',
             homeButton: this.uid + '-home',
@@ -355,9 +356,9 @@ window.KbOSD = (function (window, undefined) {
         OpenSeadragon.setString("Tooltips.RotateRight", "Rotér med uret");
         OpenSeadragon.setString("Tooltips.Download", "Download");
 
-        document.getElementById(this.uid + '-flip').title="Spejlvend";
-        document.getElementById(this.uid + '-kbPrev').title="Forrige side";
-        document.getElementById(this.uid + '-kbNext').title="Næste side";
+        document.getElementById(this.uid + '-flip').title = "Spejlvend";
+        document.getElementById(this.uid + '-kbPrev').title = "Forrige side";
+        document.getElementById(this.uid + '-kbNext').title = "Næste side";
 
         that.openSeadragon = OpenSeadragon(config);
 
@@ -373,7 +374,7 @@ window.KbOSD = (function (window, undefined) {
 
         //Override home button to reset both flip and rotation
         this.toolbarElem.querySelector('#' + this.uid + '-home').parentElement.firstChild.addEventListener('click', function () {
-           //reset flip
+            //reset flip
             document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas";
             document.getElementsByClassName("navigator")[0].className = "navigator";
             document.getElementById('rotateLeftIcon').className = "fa fa-undo fa-lg";
@@ -384,7 +385,7 @@ window.KbOSD = (function (window, undefined) {
         });
 
         //Hide rotation and flip if showRotationControl= false is set
-        if (config.showTransformationControl != null && !config.showTransformationControl){
+        if (config.showTransformationControl != null && !config.showTransformationControl) {
             document.getElementById(this.uid + '-flip').style.display = 'none';
             document.getElementById(this.uid + '-rotateRight').style.display = 'none';
             document.getElementById(this.uid + '-rotateLeft').style.display = 'none';
@@ -452,9 +453,6 @@ window.KbOSD = (function (window, undefined) {
                 if (kbosd.getNextPageNumber() != kbosd.getCurrentPage()) {
                     kbosd.setCurrentPage(kbosd.getNextPageNumber());
                 }
-                console.log(document.getElementById('download-direct-link'));
-                document.getElementById('download-direct-link').setAttribute("download", 'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0003');
-
             });
             // add flip/mirror image
             this.toolbarElem.querySelector('#' + this.uid + '-flip').parentElement.firstChild.addEventListener('click', function () {
@@ -473,11 +471,8 @@ window.KbOSD = (function (window, undefined) {
 
             // add download functionality
             this.toolbarElem.querySelector('#' + this.uid + '-download').parentElement.firstChild.addEventListener('click', function (e) {
-
-                   console.log(that.openSeadragon.source['@id']);
-
+                document.getElementById('download-direct-link').href = that.openSeadragon.source['@id'] + '/full/full/0/native.jpg';
             });
-
 
             // setting up eventHandlers for kbFastNav
             this.fastNav = this.toolbarElem.getElementsByTagName('input')[0];
