@@ -316,7 +316,7 @@ window.KbOSD = (function (window, undefined) {
             '<span id="' + this.uid + '-fullscreen"  class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-download"  class=" icon maximize">' +
+            '<span id="' + this.uid + '-download" style="display: none;" class=" icon maximize">' +
             '<a id="download-direct-link" title="download" download>' +
             '<i id="full-download" class=" fa fa-lg fa-download"></i>' +
             '</a></span>' +
@@ -389,6 +389,11 @@ window.KbOSD = (function (window, undefined) {
             document.getElementById(this.uid + '-flip').style.display = 'none';
             document.getElementById(this.uid + '-rotateRight').style.display = 'none';
             document.getElementById(this.uid + '-rotateLeft').style.display = 'none';
+        }
+
+        //Show downlaod icon if showDownloadControl is set to true
+        if (config.showDownloadControl != null && config.showDownloadControl) {
+            document.getElementById(this.uid + '-download').style.display = 'block';
         }
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
