@@ -1,65 +1,62 @@
 <!doctype html>
 <html lang="en">
 <head>
-        <title>Example of KBs openSeadragon viewer</title>
-        <meta charset="utf-8">
+    <title>Example of KBs openSeadragon viewer</title>
+    <meta charset="utf-8">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <h4>Her kommer der en kbOpenSeadragon instans:</h4>
-    <div style="position:absolute;top:50px;left:20px;right:20px;bottom:20px">
-        <div id="myInstance" style="height:100%">
-            <div class="kbOSDViewer">
-                <div class="kbOSDToolbar"></div>
-                <div class="kbOSDContent"></div>
+<h4>Her kommer der en kbOpenSeadragon instans:</h4>
+<div style="position:absolute;top:50px;left:20px;right:20px;bottom:20px">
+    <div id="myInstance" style="height:100%">
+        <div class="kbOSDViewer">
+            <div class="kbOSDToolbar"></div>
+            <div class="kbOSDContent"></div>
 
-            </div>
         </div>
-        <script type="text/javascript">
-            var kbOSDconfig = [{
-                    id: 'myInstance',
-                    kbHeader: 'This is the title',
-                    showNavigator: true,
-                    rtl: true,
-                    //initialPage: 1,
-                    //hidePageNav: true,
-                    defaultZoomLevel: 0, // 0.34
-                    //minZoomLevel: 0.2,
-                    //maxZoomLevel: 2.0,
-                    sequenceMode: true,
-                    indexPage: [
-                        {'title' : 'Livet til søs genstand...', 'page' : 1},
-                        {'title' : 'Latimeria', 'page' : 4},
-                        {'title' : 'En regn', 'page' : 5},
-                        {'title' : 'Et 5-finnet blad', 'page' : 12},
-                        {'title' : 'Forholdsregler', 'page' : 14}
-                    ],
-                    tileSources: [
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_01/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_02/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_03/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_04/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_05/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_06/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_07/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_08/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_09/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_10/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_11/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_12/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_13/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_14/info.json',
-                        'http://dia-test-img-01.kb.dk/online_master_arkiv_3/non-archival/OJA/codheb32/codheb32_15/info.json'
-                    ]
-                }];
-        </script>
-        <script src="http://localhost:8002/js/KbOSD.js"></script>
     </div>
+    <script type="text/javascript">
+        var kbOSDconfig = [{
+            id: 'myInstance',
+            kbHeader: 'This is the title',
+            showNavigator: true,
+            showDownloadControl: true,
+            showTransformationControl: true,
+            rtl: true,
+            //initialPage: 1,
+            //hidePageNav: true,
+            defaultZoomLevel: 0, // 0.34
+            //minZoomLevel: 0.2,
+            //maxZoomLevel: 2.0,
+            sequenceMode: true,
+            indexPage: [
+                {'title': 'Livet til søs genstand...', 'page': 1},
+                {'title': 'Latimeria', 'page': 4},
+                {'title': 'En regn', 'page': 5},
+                {'title': 'Et 5-finnet blad', 'page': 12},
+                {'title': 'Forholdsregler', 'page': 14}
+            ],
+            tileSources: [
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0000/info.json',
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0001/info.json',
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0002/info.json',
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0003/info.json',
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0004/info.json',
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0005/info.json',
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0006/info.json',
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0007/info.json',
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0008/info.json',
+                'http://kb-images.kb.dk/online_master_arkiv/non-archival/HA/acc-2006_64_2_2//acc-2006_64_2_2_0009/info.json'
+            ]
+        }];
+    </script>
+    <script src="http://localhost:8002/js/KbOSD.js"></script>
+</div>
 </body>
 </html>

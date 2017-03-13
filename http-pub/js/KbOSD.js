@@ -38,6 +38,7 @@ if ('undefined' === typeof window.kbTriggerEvent) {
     };
 }
 
+
 window.KbOSD = (function (window, undefined) {
     var rootURI = 'http://localhost:8002/';
 
@@ -50,19 +51,8 @@ window.KbOSD = (function (window, undefined) {
     };
     var uidGen = new UIDGen();
 
-    // Local helper method Extract FragmentIdentifier // NOTE: This isn't your default trivial fragmentidentifier, since we can have more than one kbOSD on each page.
-    /**
-     * Turns a fragmentIdentifier of the form #id0=attrib0Key:attrib0Value;attrib1Key:attrib1Value&id1=attrib0Key:attrib0Value;attrib1Key:attrib1Value;attrib2Key:attrib2Value
-     * into this structure:
-     * instances[id0]
-     [attrib0Key]:attrib0Value
-     [attrib1Key]:attrib1Value
-     [id1]
-     [attrib0Key]:attrib0Value
-     [attrib1Key]:attrib1Value
-     [attrib2Key]:attrib2Value
 
-     So after running through this function, the result can be asked as follows:
+    /*     So after running through this function, the result can be asked as follows:
      var myHash = extractFragmentIdentifier();
      myHash[id0][attrib1Key]; // = attrib1Value
      as in: that.setCurrentPage(myHash[that.uid].page);
@@ -122,7 +112,7 @@ window.KbOSD = (function (window, undefined) {
     // add openSeaDragon script
     loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
 
-        if ('undefined' !== window.kbOSDconfig) {
+        if ('undefined' !== window.kbOSDconfig && window.kbOSDconfig != null) {
             var fragmentHash = extractFragmentIdentifier();
             window.kbOSDconfig.forEach(function (config) {
                 // prefetch the comming uid, in order to look for it in the fragment identifier (the uid is a unique indentifier for each KbOSD object on the page)
@@ -143,7 +133,6 @@ window.KbOSD = (function (window, undefined) {
                 if (newKbOSD.pageCount > 1) { // only update arrows if more than one page
                     newKbOSD.updateArrows(newKbOSD);
                 }
-
                 kbTriggerEvent(document, 'kbosdready', {kbosd: newKbOSD});
             }, this);
         } else {
@@ -293,23 +282,26 @@ window.KbOSD = (function (window, undefined) {
         this.toolbarElem.innerHTML =
             '<ul>' +
             '<li>' +
-            '<a id="' + this.uid + '-home" href="" class="icon home  hidden-xs" title="resetZoom"><i class="fa fa-refresh fa-lg"></i></a>' +
-            '</li>' +
-            '<li class="hideWhenSmall">' +
-            '<a id="' + this.uid + '-zoomOut" href="" class=" icon zoomOut"><i class="fa fa-search-minus fa-lg"></i></a>' +
-            '</li>' +
-            '<li class="hideWhenSmall">' +
-            '<a id="' + this.uid + '-zoomIn" href="" class="icon zoomIn"><i class="fa fa-search-plus fa-lg"></i></a>' +
+            '<span id="' + this.uid + '-home"  class="icon home hideWhenSmall"><i class="fa fa-refresh fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<a id="' + this.uid + '-rotateLeft" href="" class="icon rotateLeft  hidden-xs"><i class="fa fa-undo fa-lg"></i></a>' +
+            '<span id="' + this.uid + '-zoomOut"  class=" icon zoomOut hideWhenSmall"><i class="fa fa-search-minus fa-lg"></i></span>' +
             '</li>' +
             '<li>' +
-            '<a id="' + this.uid + '-rotateRight" href="" class="icon rotateRight  hidden-xs"><i class="fa fa-repeat fa-lg"></i></a>' +
+            '<span id="' + this.uid + '-zoomIn"  class="icon zoomIn hideWhenSmall"><i class="fa fa-search-plus fa-lg"></i></span>' +
+            '</li>' +
+            '<li>' +
+            '<span id="' + this.uid + '-rotateLeft" class="icon rotateLeft"><i id="rotateLeftIcon" class="fa fa-undo fa-lg"></i></span>' +
+            '</li>' +
+            '<li>' +
+            '<span id="' + this.uid + '-rotateRight"  class="icon rotateRight"><i id="rotateRightIcon" class="fa fa-repeat fa-lg"></i></span>' +
+            '</li>' +
+            '<li>' +
+            '<span id="' + this.uid + '-flip"  class="icon flip"><i class="fa fa-arrows-h fa-lg"></i></span>' +
             '</li>' +
             '<span id="' + this.uid + '-PageCount">' +
             '<li class="kbPrevNav">' +
-            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-left fa-lg"></i></a></div><a id="' + this.uid + '-prev" href="" class=" icon previous"></a>' +
+            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-left fa-lg"></i></span></div><span id="' + this.uid + '-prev"  class=" icon previous"></span>' +
             '</li>' +
             '<li>' +
             '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
@@ -317,11 +309,17 @@ window.KbOSD = (function (window, undefined) {
             '<span  class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
             '</li>' +
             '<li>' +
-            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><a><i class="fa fa-arrow-right fa-lg"></i></a></div><a id="' + this.uid + '-next" href="" class="icon next"></a>' +
+            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-right fa-lg"></i></span></div><span id="' + this.uid + '-next"  class="icon next"></span>' +
             '</li>' +
             '</span>' +
             '<li class="kbFullscreen">' +
-            '<a id="' + this.uid + '-fullscreen" href="" class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></a>' +
+            '<span id="' + this.uid + '-fullscreen"  class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></span>' +
+            '</li>' +
+            '<li>' +
+            '<span id="' + this.uid + '-download" style="display: none;" class=" icon maximize">' +
+            '<a id="download-direct-link" title="download" target="_blank" download>' +
+            '<i id="full-download" class=" fa fa-lg fa-download"></i>' +
+            '</a></span>' +
             '</li>' +
             '</ul>';
 
@@ -333,18 +331,34 @@ window.KbOSD = (function (window, undefined) {
 
         // overriding selected options with kb presets
         OpenSeadragon.extend(true, config, {
-            id: this.uid,
             showRotationControl: true,
+            id: this.uid,
             toolbar: this.uid + '-toolbar',
             homeButton: this.uid + '-home',
             zoomOutButton: this.uid + '-zoomOut',
             zoomInButton: this.uid + '-zoomIn',
             rotateRightButton: this.uid + '-rotateRight',
             rotateLeftButton: this.uid + '-rotateLeft',
+            flipButton: this.uid + '-flip',
             previousButton: this.uid + '-prev',
             nextButton: this.uid + '-next',
-            fullPageButton: this.uid + '-fullscreen'
+            fullPageButton: this.uid + '-fullscreen',
+            downloadButton: this.uid + '-download'
         });
+
+        OpenSeadragon.setString("Tooltips.FullPage", "Fuld skærm");
+        OpenSeadragon.setString("Tooltips.Home", "Reset");
+        OpenSeadragon.setString("Tooltips.ZoomIn", "Zoom ind");
+        OpenSeadragon.setString("Tooltips.ZoomOut", "Zoom ud");
+        OpenSeadragon.setString("Tooltips.NextPage", "Næste side");
+        OpenSeadragon.setString("Tooltips.PreviousPage", "Forrige side");
+        OpenSeadragon.setString("Tooltips.RotateLeft", "Rotér mod uret");
+        OpenSeadragon.setString("Tooltips.RotateRight", "Rotér med uret");
+        OpenSeadragon.setString("Tooltips.Download", "Download");
+
+        document.getElementById(this.uid + '-flip').title = "Spejlvend";
+        document.getElementById(this.uid + '-kbPrev').title = "Forrige side";
+        document.getElementById(this.uid + '-kbNext').title = "Næste side";
 
         that.openSeadragon = OpenSeadragon(config);
 
@@ -357,6 +371,30 @@ window.KbOSD = (function (window, undefined) {
                 document.getElementById('full-screen').className = "fa fa-expand fa-lg";
             }
         });
+
+        //Override home button to reset both flip and rotation
+        this.toolbarElem.querySelector('#' + this.uid + '-home').parentElement.firstChild.addEventListener('click', function () {
+            //reset flip
+            document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas";
+            document.getElementsByClassName("navigator")[0].className = "navigator";
+            document.getElementById('rotateLeftIcon').className = "fa fa-undo fa-lg";
+            document.getElementById('rotateRightIcon').className = "fa fa-repeat fa-lg";
+            //reset rotation
+            that.openSeadragon.viewport.setRotation(0);
+
+        });
+
+        //Hide rotation and flip if showRotationControl= false is set
+        if (config.showTransformationControl != null && !config.showTransformationControl) {
+            document.getElementById(this.uid + '-flip').style.display = 'none';
+            document.getElementById(this.uid + '-rotateRight').style.display = 'none';
+            document.getElementById(this.uid + '-rotateLeft').style.display = 'none';
+        }
+
+        //Show downlaod icon if showDownloadControl is set to true
+        if (config.showDownloadControl != null && config.showDownloadControl) {
+            document.getElementById(this.uid + '-download').style.display = 'block';
+        }
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
         if (that.pageNumNormalizer.pageCount > 1) { // only mess with prev/next if there is more than one page - otherwise they won't be in the DOM
@@ -398,7 +436,6 @@ window.KbOSD = (function (window, undefined) {
                     var page = parseInt(e.target.attributes.getNamedItem('data-page').value, 10),
                         kbOSD = KbOSD.prototype.getInstanceFromElem(e.target);
                     kbOSD.setCurrentPage(page);
-                    //kbOSD.toggleIndexPage();
                 }
             });
         }
@@ -410,13 +447,36 @@ window.KbOSD = (function (window, undefined) {
             this.toolbarElem.querySelector('#' + this.uid + (this.pageNumNormalizer.rtl ? '-next' : '-prev')).parentElement.firstChild.addEventListener('click', function (e) {
                 e.stopPropagation();
                 var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
-                kbosd.setCurrentPage(kbosd.getPrevPageNumber());
+                if (kbosd.getPrevPageNumber() != kbosd.getCurrentPage()) {
+                    kbosd.setCurrentPage(kbosd.getPrevPageNumber());
+                }
             });
             // go to next page
             this.toolbarElem.querySelector('#' + this.uid + (this.pageNumNormalizer.rtl ? '-prev' : '-next')).parentElement.firstChild.addEventListener('click', function (e) {
                 e.stopPropagation();
                 var kbosd = KbOSD.prototype.instances[this.attributes.getNamedItem('data-uid').value.split('-')[1]];
-                kbosd.setCurrentPage(kbosd.getNextPageNumber());
+                if (kbosd.getNextPageNumber() != kbosd.getCurrentPage()) {
+                    kbosd.setCurrentPage(kbosd.getNextPageNumber());
+                }
+            });
+            // add flip/mirror image
+            this.toolbarElem.querySelector('#' + this.uid + '-flip').parentElement.firstChild.addEventListener('click', function () {
+                if (document.getElementsByClassName("openseadragon-canvas")[0].className.indexOf('flipped') < 0) {
+                    document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas flipped";
+                    document.getElementsByClassName("navigator")[0].className = "navigator flipped";
+                    document.getElementById('rotateLeftIcon').className = "fa fa-repeat fa-lg";
+                    document.getElementById('rotateRightIcon').className = "fa fa-undo fa-lg";
+                } else {
+                    document.getElementsByClassName("openseadragon-canvas")[0].className = "openseadragon-canvas";
+                    document.getElementsByClassName("navigator")[0].className = "navigator";
+                    document.getElementById('rotateLeftIcon').className = "fa fa-undo fa-lg";
+                    document.getElementById('rotateRightIcon').className = "fa fa-repeat fa-lg";
+                }
+            });
+
+            // add download functionality
+            this.toolbarElem.querySelector('#' + this.uid + '-download').parentElement.firstChild.addEventListener('click', function () {
+                document.getElementById('download-direct-link').href = that.openSeadragon.source['@id'] + '/full/full/0/native.jpg';
             });
 
             // setting up eventHandlers for kbFastNav
