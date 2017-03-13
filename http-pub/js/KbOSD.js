@@ -317,7 +317,7 @@ window.KbOSD = (function (window, undefined) {
             '</li>' +
             '<li>' +
             '<span id="' + this.uid + '-download" style="display: none;" class=" icon maximize">' +
-            '<a id="download-direct-link" title="download" download>' +
+            '<a id="download-direct-link" title="download" target="_blank" download>' +
             '<i id="full-download" class=" fa fa-lg fa-download"></i>' +
             '</a></span>' +
             '</li>' +
@@ -475,7 +475,7 @@ window.KbOSD = (function (window, undefined) {
             });
 
             // add download functionality
-            this.toolbarElem.querySelector('#' + this.uid + '-download').parentElement.firstChild.addEventListener('click', function (e) {
+            this.toolbarElem.querySelector('#' + this.uid + '-download').parentElement.firstChild.addEventListener('click', function () {
                 document.getElementById('download-direct-link').href = that.openSeadragon.source['@id'] + '/full/full/0/native.jpg';
             });
 
