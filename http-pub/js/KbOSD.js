@@ -317,7 +317,7 @@ window.KbOSD = (function (window, undefined) {
             '</li>' +
             '<li>' +
             '<span id="' + this.uid + '-download" style="display: none;" class=" icon maximize">' +
-            '<a id="download-direct-link" title="download" target="_blank" download>' +
+            '<a id="download-direct-link" title="Download" target="_blank" download>' +
             '<i id="full-download" class=" fa fa-lg fa-download"></i>' +
             '</a></span>' +
             '</li>' +
