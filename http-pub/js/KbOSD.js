@@ -182,19 +182,11 @@ window.KbOSD = (function (window, undefined) {
             return this.pageCount; // Todo: this might go wrong if tiles can be added dynamically (but I don't think it can by now)
         },
         getCurrentPage: function () {
-            if (this.rtl) {
-                return this.pageCount - this.osd.currentPage();
-            } else {
-                return this.osd.currentPage() + 1;
-            }
+            return this.osd.currentPage() + 1;
         },
         setCurrentPage: function (number) {
             number = this.validatedPageNumber(number);
-            if (this.rtl) {
-                this.osd.goToPage(this.pageCount - number);
-            } else {
-                this.osd.goToPage(number - 1);
-            }
+            this.osd.goToPage(number - 1);
             return number;
         },
         validatedPageNumber: function (pageNumber, zeroBased) {
@@ -214,19 +206,11 @@ window.KbOSD = (function (window, undefined) {
         },
         calculateRealPageNumber: function (normalizedPageNumber) {
             normalizedPageNumber = this.validatedPageNumber(normalizedPageNumber);
-            if (this.rtl) {
-                return this.pageCount - normalizedPageNumber;
-            } else {
-                return normalizedPageNumber - 1;
-            }
+            return normalizedPageNumber - 1;
         },
         calculateNormalizedPageNumber: function (realPageNumber) {
             realPageNumber = this.validatedPageNumber(realPageNumber, true);
-            if (this.rtl) {
-                return this.pageCount - realPageNumber;
-            } else {
-                return realPageNumber + 1;
-            }
+            return realPageNumber + 1;
         },
         getNextPageNumber: function () {
             if (this.getCurrentPage() < this.pageCount) {
