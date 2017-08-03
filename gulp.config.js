@@ -1,6 +1,6 @@
 // File to keep our configuration settings
 
-module.exports = function() {
+module.exports = function () {
     var root = './';
 
     var config = {

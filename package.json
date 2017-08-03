@@ -1,6 +1,6 @@
 {
   "name": "kbOpenSeadragon",
-  "version": "2.4.0",
+  "version": "2.3.0",
   "main": "http-pub/js/KbOSD.js",
   "description": "KbOpenSeadragon is a KB wrapper for the OpenSeadragon opensource deepzoom imaging viewer.",
   "author": "DUF",
