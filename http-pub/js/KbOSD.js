@@ -109,6 +109,10 @@ window.KbOSD = (function (window, undefined) {
     delete History;
     // add history polyfill
     loadAdditionalJavascript(rootURI + '3rdparty/native.history.js');
+    loadAdditionalJavascript(rootURI + '3rdparty/bytescoutpdf1.16.153.js');
+    loadAdditionalJavascript(rootURI + '3rdparty/createpdf.js');
+    loadAdditionalJavascript(rootURI + '3rdparty/checkdatauri.js');
+
     // add openSeaDragon script
     loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
 
@@ -228,6 +232,33 @@ window.KbOSD = (function (window, undefined) {
         }
     };
 
+
+    // functon to create PDF object and make PDF document
+    function CreatePDF() {
+        // create BytescoutPDF object instance
+        var pdf = new BytescoutPDF();
+
+        // add new page
+        pdf.pageAdd();
+
+        // draw text
+        pdf.textAdd(20, 20, 'Hello Times Roman!');
+
+        // return BytescoutPDF object instance
+        return pdf;
+    }
+
+    // function to create link to view pdf
+    function CreatePDFDownloadLink(PDFContentBase64, id){
+        // find "getpdf" DIV element that we use to show the link to view or download PDF
+        var pdfdiv = document.getElementById(id );
+
+        pdfdiv.innerHTML = '<a id="download-direct-link" title="download" target="_blank" href=\"data:application/pdf;base64,' + PDFContentBase64 + '\">' +
+                             '<i id="full-download" class=" fa fa-lg fa-download"></i>' +
+                            '</a>';
+    }
+
+
     // +--------------+
     // | Object KbOSD |
     // +--------------+
@@ -301,9 +332,10 @@ window.KbOSD = (function (window, undefined) {
             '</li>' +
             '<li>' +
             '<span id="' + this.uid + '-download" style="display: none;" class=" icon maximize">' +
-            '<a id="download-direct-link" title="download" target="_blank" download>' +
-            '<i id="full-download" class=" fa fa-lg fa-download"></i>' +
-            '</a></span>' +
+          //  '<a id="download-direct-link" title="download" target="_blank" download>' +
+         //   '<i id="full-download" class=" fa fa-lg fa-download"></i>' +
+         //   '</a>
+            '</span>' +
             '</li>' +
             '</ul>';
 
@@ -459,9 +491,28 @@ window.KbOSD = (function (window, undefined) {
             });
 
             // add download functionality
-            this.toolbarElem.querySelector('#' + this.uid + '-download').parentElement.firstChild.addEventListener('click', function () {
+
+            // calls CreatePDF() from createpdf.js to generate PDF file and return BytescoutPDF object instance
+            var pdf = CreatePDF();
+            var downloadId= this.uid + '-download';
+            // now we set "onload" event for our PDF object into a custom function which will create links to view and download PDF once the generation is done
+            // this is neccessary as PDF generation may take some time especially if you use images (so images should be downloaded and encoded)
+            // so this function below will be called in "onload" event which is fired once PDF file generation has been completed
+            pdf.onload(
+                function() {
+                    // get generated PDF file in a form of base64 encoded string
+                    var PDFContentBase64 = pdf.getBase64Text();
+                    // now we create links to view or download PDF file generated (using method [1] - via "datauri" supported in latest versions of most major browsers)
+                    CreatePDFDownloadLink(PDFContentBase64, downloadId);
+                }
+            );
+
+          /*  this.toolbarElem.querySelector('#' + this.uid + '-download').parentElement.firstChild.addEventListener('click', function () {
                 document.getElementById('download-direct-link').href = that.openSeadragon.source['@id'] + '/full/full/0/native.jpg';
-            });
+
+            });*/
+
+
 
             // setting up eventHandlers for kbFastNav
             this.fastNav = this.toolbarElem.getElementsByTagName('input')[0];
