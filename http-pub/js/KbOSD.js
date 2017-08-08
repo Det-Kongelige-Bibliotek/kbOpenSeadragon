@@ -116,7 +116,6 @@ window.KbOSD = (function (window, undefined) {
     loadAdditionalJavascript(rootURI + '3rdparty/html2pdf.js');
 
 
-
     // add openSeaDragon script
     loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
 
@@ -267,7 +266,7 @@ window.KbOSD = (function (window, undefined) {
     function createPDF(tileSources, title, metadata) {
         if (title == null) title = "document";
 
-        var doc = new jsPDF("p", "mm", "a4",true);
+        var doc = new jsPDF("p", "mm", "a4", true);
 
         //jspdf create a first blank page, delete it
         doc.deletePage(1);
@@ -284,13 +283,13 @@ window.KbOSD = (function (window, undefined) {
 
         //set the size of the images (to get the best possible quality)  depending of the number of pages to avoid very big size pdf
 
-        if (nbOfpages < 5){
+        if (nbOfpages < 5) {
             h = 1800;
-        }else if (nbOfpages < 40){
+        } else if (nbOfpages < 40) {
             h = 920;
-        }else if (nbOfpages < 80){
+        } else if (nbOfpages < 80) {
             h = 520;
-        }else{
+        } else {
             h = 320;
         }
 
@@ -573,8 +572,6 @@ window.KbOSD = (function (window, undefined) {
                 createPDF(config.tileSources, config.kbHeader, config.metadataHtml);
                 document.getElementById('pdf-download').className = "fa fa-spinner fa-spin fa-1x fa-fw";
             });
-
-
 
 
             // setting up eventHandlers for kbFastNav
