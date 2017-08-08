@@ -110,6 +110,12 @@ window.KbOSD = (function (window, undefined) {
     // add history polyfill
     loadAdditionalJavascript(rootURI + '3rdparty/native.history.js');
 
+    // add jspdf
+    loadAdditionalJavascript(rootURI + '3rdparty/jspdf.min.js');
+    loadAdditionalJavascript(rootURI + '3rdparty/html2canvas.min.js');
+    loadAdditionalJavascript(rootURI + '3rdparty/html2pdf.js');
+
+
 
     // add openSeaDragon script
     loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
@@ -235,9 +241,7 @@ window.KbOSD = (function (window, undefined) {
         var img = new Image();
 
         // onload fires when the image is fully loadded, and has width and height
-
         img.onload = function () {
-
             var canvas = document.createElement("canvas");
             canvas.width = img.width;
             canvas.height = img.height;
@@ -245,8 +249,12 @@ window.KbOSD = (function (window, undefined) {
             ctx.drawImage(img, 0, 0);
             var dataURL = canvas.toDataURL("image/jpg");
 
-            callback(dataURL, img.width, img.height); // the base64 string
+            //Convert pixels to mm.
+            var millimeters = {};
+            millimeters.width = Math.floor(canvas.width * 0.264583);
+            millimeters.height = Math.floor(canvas.height * 0.264583);
 
+            callback(dataURL, millimeters); // the base64 string
         };
 
         // set attributes and src
@@ -256,8 +264,14 @@ window.KbOSD = (function (window, undefined) {
     }
 
 
-    function createPDF(tileSources) {
-        var doc = new jsPDF("p", "mm", "a4");
+    function createPDF(tileSources, title, metadata) {
+        if (title == null) title = "document";
+
+        var doc = new jsPDF("p", "mm", "a4",true);
+
+        //jspdf create a first blank page, delete it
+        doc.deletePage(1);
+
         var width = doc.internal.pageSize.width;
         var height = doc.internal.pageSize.height;
         var ratio = height / width;
@@ -266,6 +280,19 @@ window.KbOSD = (function (window, undefined) {
         var count = 0;
         var requests = [];
 
+        var nbOfpages = tileSources.length;
+
+        //set the size of the images (to get the best possible quality)  depending of the number of pages to avoid very big size pdf
+
+        if (nbOfpages < 5){
+            h = 1800;
+        }else if (nbOfpages < 40){
+            h = 920;
+        }else if (nbOfpages < 80){
+            h = 520;
+        }else{
+            h = 320;
+        }
 
         for (source in tileSources) {
             requests.push($.ajax({
@@ -273,29 +300,23 @@ window.KbOSD = (function (window, undefined) {
                 async: false,
                 url: tileSources[source],
                 success: function (data) {
-                    images[count] = data['@id'] + "/full/!,920/0/native.jpg";
-                    console.log(images[count]);
+                    images[count] = data['@id'] + "/full/!," + h + "/0/native.jpg";
                     count++;
                 }
             }));
         }
 
-        $.when.apply($, requests).done(function() {
-            for (image in images){
+        $.when.apply($, requests).done(function () {
+            for (image in images) {
                 var count = 0;
-                getBase64Image(images[image], function (base64image, w, h) {
-
-                    Math.floor(px / $('#my_mm').height());
-
-                    console.log(width);
-                    console.log(height);
-                    doc.addImage(base64image, 'JPEG', 0, 0, width, height);
+                getBase64Image(images[image], function (base64image, millimeters) {
+                    doc.addPage(millimeters.width, millimeters.height);
+                    doc.addImage(base64image, 'JPEG', 0, 0, millimeters.width, millimeters.height, undefined, 'FAST');
                     count++;
                     console.log(count);
-                    if (count == images.length){
-                        doc.save('test.pdf');
-                    }else{
-                        doc.addPage();
+                    if (count == images.length) {
+                        doc.save(title + '.pdf');
+                        document.getElementById('pdf-download').className = "fa fa-file-pdf-o fa-lg";
                     }
                 });
             }
@@ -380,6 +401,10 @@ window.KbOSD = (function (window, undefined) {
             '<i id="full-download" class=" fa fa-lg fa-download"></i>' +
             '</a>' +
             '</span>' +
+            '<li class="pdf" >' +
+            '<span id="' + this.uid + '-pdf"  style="display: none;" class=" icon maximize"><i id="pdf-download" class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></span>' +
+            '</li>' +
+            '</span>' +
             '</li>' +
             '</ul>';
 
@@ -451,9 +476,14 @@ window.KbOSD = (function (window, undefined) {
             document.getElementById(this.uid + '-rotateLeft').style.display = 'none';
         }
 
-        //Show downlaod icon if showDownloadControl is set to true
+        //Show download icon if showDownloadControl is set to true
         if (config.showDownloadControl != null && config.showDownloadControl) {
             document.getElementById(this.uid + '-download').style.display = 'block';
+        }
+
+        //Show pdf icon if showPdfControl is set to true
+        if (config.showPdfControl != null && config.showPdfControl) {
+            document.getElementById(this.uid + '-pdf').style.display = 'block';
         }
 
         // Ugly hack: Since OpenSeadragon have no concept of rtl, we have disabled their prev/next buttons and emulated our own instead, that take normalization into account
@@ -536,11 +566,15 @@ window.KbOSD = (function (window, undefined) {
 
 
             this.toolbarElem.querySelector('#' + this.uid + '-download').parentElement.firstChild.addEventListener('click', function () {
-                //document.getElementById('download-direct-link').href = that.openSeadragon.source['@id'] + '/full/full/0/native.jpg';
-                createPDF(that.openSeadragon.tileSources);
-
-
+                document.getElementById('download-direct-link').href = that.openSeadragon.source['@id'] + '/full/full/0/native.jpg';
             });
+
+            this.toolbarElem.querySelector('#' + this.uid + '-pdf').parentElement.firstChild.addEventListener('click', function () {
+                createPDF(config.tileSources, config.kbHeader, config.metadataHtml);
+                document.getElementById('pdf-download').className = "fa fa-spinner fa-spin fa-1x fa-fw";
+            });
+
+
 
 
             // setting up eventHandlers for kbFastNav
