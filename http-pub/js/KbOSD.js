@@ -245,7 +245,7 @@ window.KbOSD = (function (window, undefined) {
             ctx.drawImage(img, 0, 0);
             var dataURL = canvas.toDataURL("image/jpg");
 
-            callback(dataURL); // the base64 string
+            callback(dataURL, img.width, img.height); // the base64 string
 
         };
 
@@ -257,7 +257,11 @@ window.KbOSD = (function (window, undefined) {
 
 
     function createPDF(tileSources) {
-        var doc = new jsPDF();
+        var doc = new jsPDF("p", "mm", "a4");
+        var width = doc.internal.pageSize.width;
+        var height = doc.internal.pageSize.height;
+        var ratio = height / width;
+
         var images = new Array;
         var count = 0;
         var requests = [];
@@ -269,7 +273,7 @@ window.KbOSD = (function (window, undefined) {
                 async: false,
                 url: tileSources[source],
                 success: function (data) {
-                    images[count] = data['@id'] + "/full/full/0/native.jpg";
+                    images[count] = data['@id'] + "/full/!,920/0/native.jpg";
                     console.log(images[count]);
                     count++;
                 }
@@ -279,9 +283,13 @@ window.KbOSD = (function (window, undefined) {
         $.when.apply($, requests).done(function() {
             for (image in images){
                 var count = 0;
-                getBase64Image(images[image], function (base64image) {
+                getBase64Image(images[image], function (base64image, w, h) {
 
-                    doc.addImage(base64image, 'JPEG', 15, 40);
+                    Math.floor(px / $('#my_mm').height());
+
+                    console.log(width);
+                    console.log(height);
+                    doc.addImage(base64image, 'JPEG', 0, 0, width, height);
                     count++;
                     console.log(count);
                     if (count == images.length){
