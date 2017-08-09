@@ -112,8 +112,6 @@ window.KbOSD = (function (window, undefined) {
 
     // add jspdf
     loadAdditionalJavascript(rootURI + '3rdparty/jspdf.min.js');
-    loadAdditionalJavascript(rootURI + '3rdparty/html2canvas.min.js');
-    loadAdditionalJavascript(rootURI + '3rdparty/html2pdf.js');
 
 
     // add openSeaDragon script
@@ -262,15 +260,7 @@ window.KbOSD = (function (window, undefined) {
 
     }
 
-
-    function createPDF(tileSources, title, metadata) {
-        if (title == null) title = "document";
-
-        var doc = new jsPDF("p", "mm", "a4", true);
-
-        //jspdf create a first blank page, delete it
-        doc.deletePage(1);
-
+    function setImagesIntoPdf(doc, tileSources, title) {
         var width = doc.internal.pageSize.width;
         var height = doc.internal.pageSize.height;
         var ratio = height / width;
@@ -284,7 +274,7 @@ window.KbOSD = (function (window, undefined) {
         //set the size of the images (to get the best possible quality)  depending of the number of pages to avoid very big size pdf
 
         if (nbOfpages < 5) {
-            h = 1800;
+            h = 1200;
         } else if (nbOfpages < 40) {
             h = 920;
         } else if (nbOfpages < 80) {
@@ -310,8 +300,10 @@ window.KbOSD = (function (window, undefined) {
                 var count = 0;
                 getBase64Image(images[image], function (base64image, millimeters) {
                     doc.addPage(millimeters.width, millimeters.height);
-                    doc.addImage(base64image, 'JPEG', 0, 0, millimeters.width, millimeters.height, undefined, 'FAST');
+                    doc.addImage(base64image, 'JPEG', 10, 10, millimeters.width - 20, millimeters.height - 20, undefined, 'FAST');
                     count++;
+                    //set page number
+                    doc.text(millimeters.width - 5, millimeters.height - 5, "" + count);
                     console.log(count);
                     if (count == images.length) {
                         doc.save(title + '.pdf');
@@ -321,6 +313,42 @@ window.KbOSD = (function (window, undefined) {
             }
 
         });
+    }
+
+    function setmetadataIntoPdf(doc, metadata) {
+        metadata.forEach(function (row, i) {
+            doc.setPage(1);
+            doc.text(10, 80 + 10 * i, row[0] + ": " + row[1]);
+        })
+
+    }
+
+
+    function createPDF(tileSources, title, metadata) {
+        if (title == null) title = "document";
+
+        var doc = new jsPDF("p", "mm", "a4", true);
+        doc.setFont("helvetica");
+        doc.setFontSize(10);
+        doc.setTextColor(60, 60, 60);
+
+        //Add logo on the first page
+      /*  var img = new Image();
+        img.src = rootURI + 'images/logo.png';
+        console.log(img.src);
+        img.addEventListener('load', function () {
+            doc.addImage(img, 'png', 80, 10, 150 * 0.264583, 190 * 0.264583);
+            if (metadata != null) {
+                setmetadataIntoPdf(doc, metadata);
+            }
+            setImagesIntoPdf(doc, tileSources, title);
+        });*/
+
+
+        if (metadata != null) {
+            setmetadataIntoPdf(doc, metadata);
+        }
+        setImagesIntoPdf(doc, tileSources, title);
     }
 
     // +--------------+
@@ -569,7 +597,7 @@ window.KbOSD = (function (window, undefined) {
             });
 
             this.toolbarElem.querySelector('#' + this.uid + '-pdf').parentElement.firstChild.addEventListener('click', function () {
-                createPDF(config.tileSources, config.kbHeader, config.metadataHtml);
+                createPDF(config.tileSources, config.kbHeader, config.metadata);
                 document.getElementById('pdf-download').className = "fa fa-spinner fa-spin fa-1x fa-fw";
             });
 

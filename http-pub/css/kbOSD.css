@@ -134,14 +134,7 @@
     height: 24px;
     background-repeat: no-repeat;
 }
-.kbOSDContent .indexPage .indexFan .glyphicon{
-    background-image: url(../images/glyphicons-list.png);
-    background-position-y:3px;
-}
-.kbOSDContent .indexPage.shown .indexFan .glyphicon{
-    background-image: url(../images/glyphicons-arrow-left.png);
-    background-position-y:4px;
-}
+
 .kbOSDContent .indexPage .indexContent{
     position:absolute;
     top:20px;
