@@ -234,60 +234,21 @@ window.KbOSD = (function (window, undefined) {
         }
     };
 
- /*   function getBase64Image(imgUrl, callback) {
-
-        var img = new Image();
-
-        // onload fires when the image is fully loadded, and has width and height
-        img.onload = function () {
-            var canvas = new fabric.Canvas(document.createElement("canvas"));
-            canvas.width = img.width;
-            canvas.height = img.height;
-
-            var fabricImage = new fabric.Image(img, {
-                width: 625, height: 469, angle: 0, opacity: 1
-            })
-
-            canvas.add(fabricImage);
-            console.log(canvas);
-
-
-            var imgData = canvas.toDataURL({
-                format: 'jpeg',
-                quality: 0.2
-            });
-
-            console.log(imgData);
-
-            //Convert pixels to mm.
-            var millimeters = {};
-            millimeters.width = Math.floor(canvas.width * 0.264583);
-            millimeters.height = Math.floor(canvas.height * 0.264583);
-
-            callback(imgData, millimeters); // the base64 string
-        };
-
-        // set attributes and src
-        img.setAttribute('crossOrigin', 'anonymous'); //
-        img.src = imgUrl;
-
-    }*/
 
 
     function getBase64Image(imgUrl, callback) {
 
-        var img = new Image();
 
-        // onload fires when the image is fully loaded, and has width and height
-        img.onload = function () {
-            var canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
+        fabric.Image.fromURL(imgUrl, function(oImg) {
+
+            var c = document.createElement("canvas");
+            c.width = oImg.width;
+            c.height = oImg.height;
+            var canvas = new fabric.Canvas(c);
+            canvas.add(oImg);
+
             var dataURL = canvas.toDataURL({
-                format: 'jpeg',
-                quality: 0.2
+                format: 'jpeg'
             });
 
             //Convert pixels to mm.
@@ -295,13 +256,8 @@ window.KbOSD = (function (window, undefined) {
             millimeters.width = Math.floor(canvas.width * 0.264583);
             millimeters.height = Math.floor(canvas.height * 0.264583);
 
-            callback(dataURL, millimeters); // the base64 string
-        };
-
-        // set attributes and src
-        img.setAttribute('crossOrigin', 'anonymous'); //
-        img.src = imgUrl;
-
+            callback(dataURL, millimeters);
+        }, { crossOrigin: "Anonymous" });
     }
 
     function setImagesIntoPdf(doc, tileSources, title) {
@@ -314,15 +270,12 @@ window.KbOSD = (function (window, undefined) {
         //set the size of the images (to get the best possible quality)  depending of the number of pages to avoid very big size pdf
 
         if (nbOfpages < 5) {
-            p = 50;
-        } else if (nbOfpages < 40) {
-            p = 25;
-        } else if (nbOfpages < 80) {
-            p = 15;
-        } else if (nbOfpages < 120) {
-            p = 10;
+            p = '!, 2339';
+        }
+        else if (nbOfpages < 120) {
+            p = '!, 1170';
         } else{
-            p = 5;
+            p = '!, 842';
         }
 
         for (source in tileSources) {
@@ -331,7 +284,7 @@ window.KbOSD = (function (window, undefined) {
                 async: false,
                 url: tileSources[source],
                 success: function (data) {
-                    images[count] = data['@id'] + "/full/!827, 1170/0/native.jpg";
+                    images[count] = data['@id'] + "/full/" + p + "/0/native.jpg";
 
                     count++;
                 }
@@ -344,7 +297,6 @@ window.KbOSD = (function (window, undefined) {
                 getBase64Image(images[image], function (base64image, millimeters) {
                     var w = millimeters.width;
                     var h = millimeters.height;
-                    console.log(w);
                     doc.addPage(w, h);
                     doc.addImage(base64image, 'JPEG', 10, 10, w  - 20, h  - 20, null, 'FAST');
                     count++;
