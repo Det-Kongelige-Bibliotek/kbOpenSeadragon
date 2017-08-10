@@ -112,6 +112,7 @@ window.KbOSD = (function (window, undefined) {
 
     // add jspdf
     loadAdditionalJavascript(rootURI + '3rdparty/jspdf.min.js');
+    loadAdditionalJavascript(rootURI + '3rdparty/fabric.min.js');
 
 
     // add openSeaDragon script
@@ -233,18 +234,61 @@ window.KbOSD = (function (window, undefined) {
         }
     };
 
-    function getBase64Image(imgUrl, callback) {
+ /*   function getBase64Image(imgUrl, callback) {
 
         var img = new Image();
 
         // onload fires when the image is fully loadded, and has width and height
+        img.onload = function () {
+            var canvas = new fabric.Canvas(document.createElement("canvas"));
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            var fabricImage = new fabric.Image(img, {
+                width: 625, height: 469, angle: 0, opacity: 1
+            })
+
+            canvas.add(fabricImage);
+            console.log(canvas);
+
+
+            var imgData = canvas.toDataURL({
+                format: 'jpeg',
+                quality: 0.2
+            });
+
+            console.log(imgData);
+
+            //Convert pixels to mm.
+            var millimeters = {};
+            millimeters.width = Math.floor(canvas.width * 0.264583);
+            millimeters.height = Math.floor(canvas.height * 0.264583);
+
+            callback(imgData, millimeters); // the base64 string
+        };
+
+        // set attributes and src
+        img.setAttribute('crossOrigin', 'anonymous'); //
+        img.src = imgUrl;
+
+    }*/
+
+
+    function getBase64Image(imgUrl, callback) {
+
+        var img = new Image();
+
+        // onload fires when the image is fully loaded, and has width and height
         img.onload = function () {
             var canvas = document.createElement("canvas");
             canvas.width = img.width;
             canvas.height = img.height;
             var ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
-            var dataURL = canvas.toDataURL("image/jpg");
+            var dataURL = canvas.toDataURL({
+                format: 'jpeg',
+                quality: 0.2
+            });
 
             //Convert pixels to mm.
             var millimeters = {};
@@ -261,10 +305,6 @@ window.KbOSD = (function (window, undefined) {
     }
 
     function setImagesIntoPdf(doc, tileSources, title) {
-        var width = doc.internal.pageSize.width;
-        var height = doc.internal.pageSize.height;
-        var ratio = height / width;
-
         var images = new Array;
         var count = 0;
         var requests = [];
@@ -274,13 +314,15 @@ window.KbOSD = (function (window, undefined) {
         //set the size of the images (to get the best possible quality)  depending of the number of pages to avoid very big size pdf
 
         if (nbOfpages < 5) {
-            h = 920;
+            p = 50;
         } else if (nbOfpages < 40) {
-            h = 720;
+            p = 25;
         } else if (nbOfpages < 80) {
-            h = 620;
-        } else {
-            h = 320;
+            p = 15;
+        } else if (nbOfpages < 120) {
+            p = 10;
+        } else{
+            p = 5;
         }
 
         for (source in tileSources) {
@@ -289,7 +331,8 @@ window.KbOSD = (function (window, undefined) {
                 async: false,
                 url: tileSources[source],
                 success: function (data) {
-                    images[count] = data['@id'] + "/full/!," + h + "/0/native.jpg";
+                    images[count] = data['@id'] + "/full/!827, 1170/0/native.jpg";
+
                     count++;
                 }
             }));
@@ -299,8 +342,11 @@ window.KbOSD = (function (window, undefined) {
             for (image in images) {
                 var count = 0;
                 getBase64Image(images[image], function (base64image, millimeters) {
-                    doc.addPage(millimeters.width, millimeters.height);
-                    doc.addImage(base64image, 'JPEG', 10, 10, millimeters.width - 20, millimeters.height - 20, undefined, 'FAST');
+                    var w = millimeters.width;
+                    var h = millimeters.height;
+                    console.log(w);
+                    doc.addPage(w, h);
+                    doc.addImage(base64image, 'JPEG', 10, 10, w  - 20, h  - 20, null, 'FAST');
                     count++;
                     //set page number
                     doc.text(millimeters.width - 10, millimeters.height - 5, "" + count);
@@ -330,7 +376,7 @@ window.KbOSD = (function (window, undefined) {
         doc.setTextColor(60, 60, 60);
 
         //Add logo on the first page
-        var img = new Image();
+       /* var img = new Image();
         img.src = rootURI + 'images/logo.png';
         console.log(img.src);
         img.addEventListener('load', function () {
@@ -339,7 +385,7 @@ window.KbOSD = (function (window, undefined) {
                 setmetadataIntoPdf(doc, metadata);
             }
             setImagesIntoPdf(doc, tileSources, title);
-        });
+        });*/
 
 
         if (metadata != null) {

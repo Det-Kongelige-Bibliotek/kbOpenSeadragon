@@ -11,7 +11,7 @@ module.exports = function () {
         // all the js to validate
         alljs: ['http-pub/js/*.js', './*.js'],
         //external libraries
-        externalJSSRC: ['http-pub/3rdparty/openseadragon.js', 'http-pub/3rdparty/native.history.js', 'http-pub/3rdparty/jspdf.min.js'],
+        externalJSSRC: ['http-pub/3rdparty/openseadragon.js', 'http-pub/3rdparty/native.history.js', 'http-pub/3rdparty/jspdf.min.js', 'http-pub/3rdparty/fabric.min.js'],
         // the CSS files
         CSSSRC: 'http-pub/css/*.css',
         // the images
