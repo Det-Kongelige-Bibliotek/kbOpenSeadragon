@@ -274,11 +274,11 @@ window.KbOSD = (function (window, undefined) {
         //set the size of the images (to get the best possible quality)  depending of the number of pages to avoid very big size pdf
 
         if (nbOfpages < 5) {
-            h = 1200;
-        } else if (nbOfpages < 40) {
             h = 920;
+        } else if (nbOfpages < 40) {
+            h = 720;
         } else if (nbOfpages < 80) {
-            h = 520;
+            h = 620;
         } else {
             h = 320;
         }
@@ -303,7 +303,7 @@ window.KbOSD = (function (window, undefined) {
                     doc.addImage(base64image, 'JPEG', 10, 10, millimeters.width - 20, millimeters.height - 20, undefined, 'FAST');
                     count++;
                     //set page number
-                    doc.text(millimeters.width - 5, millimeters.height - 5, "" + count);
+                    doc.text(millimeters.width - 10, millimeters.height - 5, "" + count);
                     console.log(count);
                     if (count == images.length) {
                         doc.save(title + '.pdf');
@@ -311,15 +311,12 @@ window.KbOSD = (function (window, undefined) {
                     }
                 });
             }
-
         });
     }
 
     function setmetadataIntoPdf(doc, metadata) {
-        metadata.forEach(function (row, i) {
-            doc.setPage(1);
-            doc.text(10, 80 + 10 * i, row[0] + ": " + row[1]);
-        })
+        var imgData = metadata.toDataURL('image/png');
+        doc.addImage(imgData, 'PNG', 10, 10);
 
     }
 
@@ -328,12 +325,12 @@ window.KbOSD = (function (window, undefined) {
         if (title == null) title = "document";
 
         var doc = new jsPDF("p", "mm", "a4", true);
-        doc.setFont("helvetica");
+        doc.setFont("courier");
         doc.setFontSize(10);
         doc.setTextColor(60, 60, 60);
 
         //Add logo on the first page
-      /*  var img = new Image();
+        var img = new Image();
         img.src = rootURI + 'images/logo.png';
         console.log(img.src);
         img.addEventListener('load', function () {
@@ -342,7 +339,7 @@ window.KbOSD = (function (window, undefined) {
                 setmetadataIntoPdf(doc, metadata);
             }
             setImagesIntoPdf(doc, tileSources, title);
-        });*/
+        });
 
 
         if (metadata != null) {
