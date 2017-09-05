@@ -234,11 +234,7 @@ window.KbOSD = (function (window, undefined) {
         }
     };
 
-
-
-    function getBase64Image(imgUrl, callback) {
-
-
+    function getBase64Image(imgUrl, pageNumber, callback) {
         fabric.Image.fromURL(imgUrl, function(oImg) {
 
             var c = document.createElement("canvas");
@@ -256,10 +252,11 @@ window.KbOSD = (function (window, undefined) {
             millimeters.width = Math.floor(canvas.width * 0.264583);
             millimeters.height = Math.floor(canvas.height * 0.264583);
 
-            callback(dataURL, millimeters);
+            callback(dataURL, millimeters, pageNumber);
         }, { crossOrigin: "Anonymous" });
     }
 
+    //return several arrays of size size
     function chunks(array, size) {
         var results = [];
         while (array.length) {
@@ -267,8 +264,6 @@ window.KbOSD = (function (window, undefined) {
         }
         return results;
     };
-
-
 
     function setImagesIntoPdf(doc, tileSources, title, partNumber) {
         var images = new Array;
@@ -281,19 +276,24 @@ window.KbOSD = (function (window, undefined) {
                 async: false,
                 url: tileSources[source],
                 success: function (data) {
-                    images[count] = data['@id'] + "/full/'!, 1170'/0/native.jpg";
+                    images[count] = data['@id'] + "/full/!, 1170/0/native.jpg";
                     count++;
+                    doc.addPage(300, 310);
+
                 }
             }));
         }
 
+        console.log(partNumber);
+
         $.when.apply($, requests).done(function () {
-            for (image in images) {
+            for (var j = 0; j < images.length; j++) {
                 var count = 0;
-                getBase64Image(images[image], function (base64image, millimeters) {
+
+                getBase64Image(images[j], j, function (base64image, millimeters, pageNumber) {
                     var w = millimeters.width;
                     var h = millimeters.height;
-                    doc.addPage(w, h);
+                    doc.setPage(pageNumber);
                     doc.addImage(base64image, 'JPEG', 10, 10, w  - 20, h  - 20, null, 'FAST');
                     base64image = null;
                     count++;
@@ -303,10 +303,12 @@ window.KbOSD = (function (window, undefined) {
                     if (count == images.length) {
                         if (partNumber > 0){
                             doc.save(title + '_part_' + partNumber + '.pdf');
+                            doc = null;
                         }else{
                             doc.save(title + '.pdf');
+                            doc = null;
                         }
-
+                        doc = null;
                         document.getElementById('pdf-download').className = "fa fa-file-pdf-o fa-lg";
                     }
                 });
@@ -317,24 +319,24 @@ window.KbOSD = (function (window, undefined) {
     function setmetadataIntoPdf(doc, metadata) {
         var imgData = metadata.toDataURL('image/png');
         doc.addImage(imgData, 'PNG', 10, 10);
-
     }
-
 
     function createPDF(tileSources, title, metadata) {
         if (title == null) title = "document";
 
-        var doc = new jsPDF("p", "mm", "a4", true);
-        doc.setFont("courier");
-        doc.setFontSize(10);
-        doc.setTextColor(60, 60, 60);
-
-        if (metadata != null) {
-            setmetadataIntoPdf(doc, metadata);
-        }
-
         var sub_tileSources = chunks(tileSources, 100);
-        for (i = 0; i <  sub_tileSources.length; i++) {
+
+        for (var i = 0; i <  sub_tileSources.length; i++) {
+
+            var doc = new jsPDF("p", "mm", "a4", true);
+            doc.setFont("courier");
+            doc.setFontSize(10);
+            doc.setTextColor(60, 60, 60);
+
+            if (metadata != null) {
+                setmetadataIntoPdf(doc, metadata);
+            }
+
             if (i > 0){
                 title = title + "_part_" + i;
             }
