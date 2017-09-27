@@ -266,7 +266,7 @@ window.KbOSD = (function (window, undefined) {
         };
 
         /*if the pdf is too big, create several pdf with name _part_partNumber, divided by 100 pages*/
-        function setImagesIntoPdf(doc, tileSources, title, partNumber) {
+        function setImagesIntoPdf(doc, tileSources, title, partNumber, NOfPart) {
             var images = new Array;
             var count = 0;
             var requests = [];
@@ -280,13 +280,13 @@ window.KbOSD = (function (window, undefined) {
                     success: function (data) {
 
                         //add empty pages to set the data afterwards,
-                        if (tileSources.length < 20){
+                        if (tileSources.length < 20) {
                             //A4 in 200dpi is 1654, 2339
                             //In mm around 440, 620
                             doc.addPage(440, 620);
                             images[count] = data['@id'] + "/full/!1654, 2339/0/native.jpg";
 
-                        }else{ //too many images, reduce the quality
+                            } else { //too many images, reduce the quality
                             //A4 in 100dpi is 827, 1170
                             //In mm around 220, 310
                             doc.addPage(220, 310);
@@ -294,7 +294,7 @@ window.KbOSD = (function (window, undefined) {
                         }
                         count++;
                         //set page number
-                        doc.text(300 - 10, 310 - 5 , "" + count);
+                        doc.text(300 - 10, 310 - 5, "" + count);
                     }
                 }));
             }
@@ -306,22 +306,18 @@ window.KbOSD = (function (window, undefined) {
                     getBase64Image(images[j], j, function (base64image, millimeters, pageNumber) {
                         var w = millimeters.width;
                         var h = millimeters.height;
-                        console.log(partNumber + ":" + pageNumber + 2);
+                       // console.log(partNumber + "/" + NOfPart);
+                       // console.log(pageNumber + 2);
                         doc.setPage(pageNumber + 2);
                         doc.addImage(base64image, 'JPEG', 10, 10, w - 20, h - 20, null, 'FAST');
                         base64image = null;
                         count++;
 
-
                         if (count == images.length) {
-                            if (partNumber > 0) {
-                                doc.save(title + '_part_' + partNumber + '.pdf');
-                                doc = null;
-                            } else {
-                                doc.save(title + '.pdf');
-                                doc = null;
-                            }
+                            doc.save(title + '.pdf');
                             doc = null;
+                            console.log("part" + partNumber + "is donne" );
+                            if (partNumber + 1 == NOfPart)
                             document.getElementById('pdf-download').className = "fa fa-file-pdf-o fa-lg";
                         }
                     });
@@ -335,26 +331,33 @@ window.KbOSD = (function (window, undefined) {
         }
 
         function createPDF(tileSources, title, metadata) {
-            if (title == null) title = "document";
+            if (title == null || title == "") title = "document";
 
-            var sub_tileSources = chunks(tileSources, 100);
+            if (tileSources.length > 100) {
+                var sub_tileSources = chunks(tileSources, 100);
 
-            for (var i = 0; i < sub_tileSources.length; i++) {
+                for (var i = 0; i < sub_tileSources.length; i++) {
 
+                    var doc = new jsPDF("p", "mm", "a4", true);
+                    doc.setFont("courier");
+                    doc.setFontSize(10);
+                    doc.setTextColor(60, 60, 60);
+                    if (metadata != null) {
+                        setmetadataIntoPdf(doc, metadata);
+                    }
+                    var newtitle = title + "_part_" + i;
+                    setImagesIntoPdf(doc, sub_tileSources[i], newtitle, i, sub_tileSources.length);
+                }
+            } else {
                 var doc = new jsPDF("p", "mm", "a4", true);
                 doc.setFont("courier");
                 doc.setFontSize(10);
                 doc.setTextColor(60, 60, 60);
-
                 if (metadata != null) {
                     setmetadataIntoPdf(doc, metadata);
                 }
-                if (i > 0) {
-                    title = title + "_part_" + i;
-                }
-                setImagesIntoPdf(doc, sub_tileSources[i], title, i);
+                setImagesIntoPdf(doc, tileSources, title, -1, 0);
             }
-
         }
 
 // +--------------+
@@ -435,7 +438,8 @@ window.KbOSD = (function (window, undefined) {
                 '</a>' +
                 '</span>' +
                 '<li class="pdf" >' +
-                '<span id="' + this.uid + '-pdf"  style="display: none;" class=" icon maximize"><i id="pdf-download" class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></span>' +
+                '<span id="' + this.uid + '-pdf"  style="display: none;" class=" icon maximize">' +
+                '   <i id="pdf-download" class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></span>' +
                 '</li>' +
                 '</span>' +
                 '</li>' +
@@ -477,6 +481,7 @@ window.KbOSD = (function (window, undefined) {
             document.getElementById(this.uid + '-flip').title = "Spejlvend";
             document.getElementById(this.uid + '-kbPrev').title = "Forrige side";
             document.getElementById(this.uid + '-kbNext').title = "Næste side";
+            document.getElementById(this.uid + '-pdf').title = "Download PDF, det kan tage flere minutter";
 
             that.openSeadragon = OpenSeadragon(config);
 
