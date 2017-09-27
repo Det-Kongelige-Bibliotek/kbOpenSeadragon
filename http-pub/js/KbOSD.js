@@ -280,7 +280,6 @@ window.KbOSD = (function (window, undefined) {
                     success: function (data) {
 
                         //add empty pages to set the data afterwards,
-
                         if (tileSources.length < 20){
                             //A4 in 200dpi is 1654, 2339
                             //In mm around 440, 620
@@ -296,8 +295,6 @@ window.KbOSD = (function (window, undefined) {
                         count++;
                         //set page number
                         doc.text(300 - 10, 310 - 5 , "" + count);
-
-
                     }
                 }));
             }
@@ -309,8 +306,8 @@ window.KbOSD = (function (window, undefined) {
                     getBase64Image(images[j], j, function (base64image, millimeters, pageNumber) {
                         var w = millimeters.width;
                         var h = millimeters.height;
-                        console.log(pageNumber);
-                        doc.setPage(partNumber + ":" + pageNumber + 2);
+                        console.log(partNumber + ":" + pageNumber + 2);
+                        doc.setPage(pageNumber + 2);
                         doc.addImage(base64image, 'JPEG', 10, 10, w - 20, h - 20, null, 'FAST');
                         base64image = null;
                         count++;
