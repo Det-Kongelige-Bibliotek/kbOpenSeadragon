@@ -111,7 +111,7 @@ window.KbOSD = (function (window, undefined) {
             var fragmentHash = extractFragmentIdentifier();
             window.kbOSDconfig.forEach(function (config) {
                 // prefetch the comming uid, in order to look for it in the fragment identifier (the uid is a unique indentifier for each KbOSD object on the page)
-                var uid = config.uid = config.uid || 's-' + uidGen.generate();
+                var uid = config.uid = config.uid || "kbOSD-" + uidGen.generate();
 
                 if ('undefined' === typeof config.initialPage) {
                     // if no initial page is given, set it here
@@ -248,7 +248,7 @@ window.KbOSD = (function (window, undefined) {
             throw new Exception('No config object with id property found');
         }
         var that = this;
-        this.uid = config.uid || 'kbOSD-' + uidGen.generate();
+        this.uid = config.uid || "kbOSD-" + uidGen.generate();
         this.config = config;
         if ('undefined' === typeof this.config.hidePageNav) { // default hidePageNav to false
             this.config.hidePageNav = false;
@@ -390,7 +390,7 @@ window.KbOSD = (function (window, undefined) {
         that.pageNumNormalizer.setOsd(that.openSeadragon);
 
         // inject index if there is one
-        if (('undefined' !== typeof config.indexPage) && config.indexPage.length && config.indexPage.length > 0) {
+       /* if (('undefined' !== typeof config.indexPage) && config.indexPage.length && config.indexPage.length > 0) {
             that.indexElem = document.createElement('div');
             that.indexElem.className = 'indexPage shown';
             that.indexFan = document.createElement('div');
@@ -423,7 +423,7 @@ window.KbOSD = (function (window, undefined) {
                     kbOSD.setCurrentPage(page);
                 }
             });
-        }
+        }*/
 
         if (this.toolbarElem.querySelector('#' + this.uid + '-prev')) {
             // set up listeners for the preview && next to keep the fastNav index updated.
@@ -559,17 +559,8 @@ window.KbOSD = (function (window, undefined) {
         },
         updateFragmentIdentifier: function () {
             var fragment = KbOSD.prototype.instances.map(function (kbosd) {
-                return kbosd.uid + '=page:' + kbosd.getCurrentPage();
+                return 'page:' + kbosd.getCurrentPage();
             }).join('&');
-        },
-        toggleIndexPage: function () {
-            if ('undefined' !== typeof this.indexElem) { // only do if there IS an indexPage
-                if (this.indexElem.className.indexOf('shown') > 0) {
-                    this.indexElem.className = 'indexPage';
-                } else {
-                    this.indexElem.className = 'indexPage shown';
-                }
-            }
         }
     };
 
