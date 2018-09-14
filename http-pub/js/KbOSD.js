@@ -104,19 +104,14 @@ window.KbOSD = (function (window, undefined) {
         };
     };
 
-    // initialization
-    // delete History if it is already loaded (endlösung workaround for a 4 year old bug in History :-/ https://github.com/browserstate/history.js/issues/189 )
-    delete History;
-    // add history polyfill
-    loadAdditionalJavascript(rootURI + '3rdparty/native.history.js');
     // add openSeaDragon script
-    loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
+    loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.min.js', function () {
 
         if ('undefined' !== window.kbOSDconfig) {
             var fragmentHash = extractFragmentIdentifier();
             window.kbOSDconfig.forEach(function (config) {
                 // prefetch the comming uid, in order to look for it in the fragment identifier (the uid is a unique indentifier for each KbOSD object on the page)
-                var uid = config.uid = config.uid || 'kbOSD-' + uidGen.generate();
+                var uid = config.uid = config.uid || 's-' + uidGen.generate();
 
                 if ('undefined' === typeof config.initialPage) {
                     // if no initial page is given, set it here
@@ -336,7 +331,8 @@ window.KbOSD = (function (window, undefined) {
             flipButton: this.uid + '-flip',
             previousButton: this.uid + '-prev',
             nextButton: this.uid + '-next',
-            fullPageButton: this.uid + '-fullscreen'
+            fullPageButton: this.uid + '-fullscreen',
+            homeFillsViewer: true
         });
 
         OpenSeadragon.setString("Tooltips.FullPage", "Fuld skærm");
@@ -353,6 +349,8 @@ window.KbOSD = (function (window, undefined) {
         document.getElementById(this.uid + '-kbNext').title="Næste side";
 
         that.openSeadragon = OpenSeadragon(config);
+
+
 
         that.openSeadragon.addHandler('full-screen', function (e) {
             kbTriggerEvent(that.contentElem, 'fullScreen', {fullScreen: e.fullScreen});
@@ -563,9 +561,6 @@ window.KbOSD = (function (window, undefined) {
             var fragment = KbOSD.prototype.instances.map(function (kbosd) {
                 return kbosd.uid + '=page:' + kbosd.getCurrentPage();
             }).join('&');
-            if ('undefined' !== typeof history.replaceState) { // Note: IE9 does not support history.replaceState
-                history.replaceState(undefined, undefined, '#' + fragment);
-            }
         },
         toggleIndexPage: function () {
             if ('undefined' !== typeof this.indexElem) { // only do if there IS an indexPage
