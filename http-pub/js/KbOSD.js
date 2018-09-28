@@ -277,26 +277,26 @@ window.KbOSD = (function (window, undefined) {
         this.toolbarElem.innerHTML =
             '<ul>' +
             '<li>' +
-            '<span id="' + this.uid + '-home"  class="icon home hideWhenSmall"><i class="fa fa-refresh fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-home"  class="icon home hideWhenSmall"><i class="icon refresh"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-zoomOut"  class=" icon zoomOut hideWhenSmall"><i class="fa fa-search-minus fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-zoomOut"  class=" icon zoomOut hideWhenSmall"><i class="icon zoom_out"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-zoomIn"  class="icon zoomIn hideWhenSmall"><i class="fa fa-search-plus fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-zoomIn"  class="icon zoomIn hideWhenSmall"><i class=".icon .zoom_in"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-rotateLeft" class="icon rotateLeft"><i id="rotateLeftIcon" class="fa fa-undo fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-rotateLeft" class="icon rotateLeft"><i id="rotateLeftIcon" class="icon undo"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-rotateRight"  class="icon rotateRight"><i id="rotateRightIcon" class="fa fa-repeat fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-rotateRight"  class="icon rotateRight"><i id="rotateRightIcon" class="icon repeat"></i></span>' +
             '</li>' +
             '<li>' +
             '<span id="' + this.uid + '-flip"  class="icon flip"><i class="fa fa-arrows-h fa-lg"></i></span>' +
             '</li>' +
             '<span id="' + this.uid + '-PageCount">' +
             '<li class="kbPrevNav">' +
-            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-left fa-lg"></i></span></div><span id="' + this.uid + '-prev"  class=" icon previous"></span>' +
+            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><span><i class="icon arrow_backward"></i></span></div><span id="' + this.uid + '-prev"  class=" icon previous"></span>' +
             '</li>' +
             '<li>' +
             '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
@@ -304,13 +304,16 @@ window.KbOSD = (function (window, undefined) {
             '<span  class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
             '</li>' +
             '<li>' +
-            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-right fa-lg"></i></span></div><span id="' + this.uid + '-next"  class="icon next"></span>' +
+            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><span><i class="icon arrow_forward"></i></span></div><span id="' + this.uid + '-next"  class="icon next"></span>' +
             '</li>' +
             '</span>' +
             '<li class="kbFullscreen">' +
-            '<span id="' + this.uid + '-fullscreen"  class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-fullscreen"  class=" icon maximize"><i id="full-screen" class="icon fullscreen"></i></span>' +
             '</li>' +
             '</ul>';
+
+
+
 
 
         // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
@@ -356,9 +359,9 @@ window.KbOSD = (function (window, undefined) {
             kbTriggerEvent(that.contentElem, 'fullScreen', {fullScreen: e.fullScreen});
             //change the fullscreen icon from expand to compress
             if (e.fullScreen) {
-                document.getElementById('full-screen').className = "fa fa-compress fa-lg";
+                document.getElementById('full-screen').className = "icon fullscreen_exit";
             } else {
-                document.getElementById('full-screen').className = "fa fa-expand fa-lg";
+                document.getElementById('full-screen').className = "icon fullscreen";
             }
         });
 
