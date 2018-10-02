@@ -277,26 +277,26 @@ window.KbOSD = (function (window, undefined) {
         this.toolbarElem.innerHTML =
             '<ul>' +
             '<li>' +
-            '<span id="' + this.uid + '-home"  class="icon home hideWhenSmall"><i class="icon refresh"></i></span>' +
+            '<span id="' + this.uid + '-home"  class="home hideWhenSmall"><i class="icon refresh"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-zoomOut"  class=" icon zoomOut hideWhenSmall"><i class="icon zoom_out"></i></span>' +
+            '<span id="' + this.uid + '-zoomOut"  class="zoomOut hideWhenSmall"><i class="icon zoom_out"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-zoomIn"  class="icon zoomIn hideWhenSmall"><i class=".icon .zoom_in"></i></span>' +
+            '<span id="' + this.uid + '-zoomIn"  class="zoomIn hideWhenSmall"><i class="icon zoom_in"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-rotateLeft" class="icon rotateLeft"><i id="rotateLeftIcon" class="icon undo"></i></span>' +
+            '<span id="' + this.uid + '-rotateLeft" class="rotateLeft"><i id="rotateLeftIcon" class="icon undo"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-rotateRight"  class="icon rotateRight"><i id="rotateRightIcon" class="icon repeat"></i></span>' +
+            '<span id="' + this.uid + '-rotateRight"  class="rotateRight"><i id="rotateRightIcon" class="icon repeat"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-flip"  class="icon flip"><i class="fa fa-arrows-h fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-flip"  class="flip"><i class="fa fa-arrows-h fa-lg"></i></span>' +
             '</li>' +
             '<span id="' + this.uid + '-PageCount">' +
             '<li class="kbPrevNav">' +
-            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><span><i class="icon arrow_backward"></i></span></div><span id="' + this.uid + '-prev"  class=" icon previous"></span>' +
+            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><span><i class="icon arrow_back"></i></span></div><span id="' + this.uid + '-prev"  class=" icon previous"></span>' +
             '</li>' +
             '<li>' +
             '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
@@ -308,7 +308,7 @@ window.KbOSD = (function (window, undefined) {
             '</li>' +
             '</span>' +
             '<li class="kbFullscreen">' +
-            '<span id="' + this.uid + '-fullscreen"  class=" icon maximize"><i id="full-screen" class="icon fullscreen"></i></span>' +
+            '<span id="' + this.uid + '-fullscreen"  class="maximize"><i id="full-screen" class="icon fullscreen"></i></span>' +
             '</li>' +
             '</ul>';
 
