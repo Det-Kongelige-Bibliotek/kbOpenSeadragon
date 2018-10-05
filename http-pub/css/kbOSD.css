@@ -22,7 +22,6 @@
 .kbOSDHeader, .kbOSDToolbar{
     height:35px;
     background:transparent;
-    color:#757575;
     width:100%;
     min-width:230px;
 }
