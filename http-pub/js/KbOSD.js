@@ -104,19 +104,14 @@ window.KbOSD = (function (window, undefined) {
         };
     };
 
-    // initialization
-    // delete History if it is already loaded (endlösung workaround for a 4 year old bug in History :-/ https://github.com/browserstate/history.js/issues/189 )
-    delete History;
-    // add history polyfill
-    loadAdditionalJavascript(rootURI + '3rdparty/native.history.js');
     // add openSeaDragon script
-    loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.js', function () {
+    loadAdditionalJavascript(rootURI + '3rdparty/openseadragon.min.js', function () {
 
         if ('undefined' !== window.kbOSDconfig && window.kbOSDconfig != null) {
             var fragmentHash = extractFragmentIdentifier();
             window.kbOSDconfig.forEach(function (config) {
                 // prefetch the comming uid, in order to look for it in the fragment identifier (the uid is a unique indentifier for each KbOSD object on the page)
-                var uid = config.uid = config.uid || 'kbOSD-' + uidGen.generate();
+                var uid = config.uid = config.uid || "kbOSD-" + uidGen.generate();
 
                 if ('undefined' === typeof config.initialPage) {
                     // if no initial page is given, set it here
@@ -237,7 +232,7 @@ window.KbOSD = (function (window, undefined) {
             throw new Exception('No config object with id property found');
         }
         var that = this;
-        this.uid = config.uid || 'kbOSD-' + uidGen.generate();
+        this.uid = config.uid || "kbOSD-" + uidGen.generate();
         this.config = config;
         if ('undefined' === typeof this.config.hidePageNav) { // default hidePageNav to false
             this.config.hidePageNav = false;
@@ -266,26 +261,26 @@ window.KbOSD = (function (window, undefined) {
         this.toolbarElem.innerHTML =
             '<ul>' +
             '<li>' +
-            '<span id="' + this.uid + '-home"  class="icon home hideWhenSmall"><i class="fa fa-refresh fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-home"  class="home hideWhenSmall"><i class="icon refresh"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-zoomOut"  class=" icon zoomOut hideWhenSmall"><i class="fa fa-search-minus fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-zoomOut"  class="zoomOut hideWhenSmall"><i class="icon zoom_out"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-zoomIn"  class="icon zoomIn hideWhenSmall"><i class="fa fa-search-plus fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-zoomIn"  class="zoomIn hideWhenSmall"><i class="icon zoom_in"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-rotateLeft" class="icon rotateLeft"><i id="rotateLeftIcon" class="fa fa-undo fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-rotateLeft" class="rotateLeft"><i id="rotateLeftIcon" class="icon undo"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-rotateRight"  class="icon rotateRight"><i id="rotateRightIcon" class="fa fa-repeat fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-rotateRight"  class="rotateRight"><i id="rotateRightIcon" class="icon repeat"></i></span>' +
             '</li>' +
             '<li>' +
-            '<span id="' + this.uid + '-flip"  class="icon flip"><i class="fa fa-arrows-h fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-flip"  class="flip"><i class="fa fa-arrows-h fa-lg"></i></span>' +
             '</li>' +
             '<span id="' + this.uid + '-PageCount">' +
             '<li class="kbPrevNav">' +
-            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-left fa-lg"></i></span></div><span id="' + this.uid + '-prev"  class=" icon previous"></span>' +
+            '<div id="' + this.uid + '-kbPrev" class="kbButtonOverlay kbRight" data-uid="' + this.uid + '"><span><i class="icon arrow_back"></i></span></div><span id="' + this.uid + '-prev"  class=" icon previous"></span>' +
             '</li>' +
             '<li>' +
             '<input id="' + this.uid + '-fastNav" class="kbOSDCurrentPage" type="text" pattern="\d*" value="' + (this.pageNumNormalizer.calculateNormalizedPageNumber(config.initialPage)) + '">' +
@@ -293,11 +288,11 @@ window.KbOSD = (function (window, undefined) {
             '<span  class="kbOSDPageCount">' + this.getPageCount() + '</span>' +
             '</li>' +
             '<li>' +
-            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><span><i class="fa fa-arrow-right fa-lg"></i></span></div><span id="' + this.uid + '-next"  class="icon next"></span>' +
+            '<div id="' + this.uid + '-kbNext" class="kbButtonOverlay kbLeft" data-uid="' + this.uid + '"><span><i class="icon arrow_forward"></i></span></div><span id="' + this.uid + '-next"  class="icon next"></span>' +
             '</li>' +
             '</span>' +
             '<li class="kbFullscreen">' +
-            '<span id="' + this.uid + '-fullscreen"  class=" icon maximize"><i id="full-screen" class="fa fa-expand fa-lg"></i></span>' +
+            '<span id="' + this.uid + '-fullscreen"  class="maximize"><i id="full-screen" class="icon fullscreen"></i></span>' +
             '</li>' +
             '<li>' +
             '<span id="' + this.uid + '-download" style="display: none;" class=" icon maximize">' +
@@ -308,14 +303,17 @@ window.KbOSD = (function (window, undefined) {
             '</ul>';
 
 
+
+
+
         // only include the page navigation elements if there are more than one image, and config does not ask to hide them.
         if ((this.getPageCount() <= 1) || this.config.hidePageNav) {
             document.getElementById(this.uid + '-PageCount').className = "hidden";
         }
 
         // overriding selected options with kb presets
-        OpenSeadragon.extend(true, config, {
-            showRotationControl: true,
+       OpenSeadragon.extend(true, config, {
+            showRotationControl:true,
             id: this.uid,
             toolbar: this.uid + '-toolbar',
             homeButton: this.uid + '-home',
@@ -327,8 +325,9 @@ window.KbOSD = (function (window, undefined) {
             previousButton: this.uid + '-prev',
             nextButton: this.uid + '-next',
             fullPageButton: this.uid + '-fullscreen',
-            downloadButton: this.uid + '-download'
+            homeFillsViewer: true
         });
+
 
         OpenSeadragon.setString("Tooltips.FullPage", "Fuld skærm");
         OpenSeadragon.setString("Tooltips.Home", "Reset");
@@ -346,13 +345,15 @@ window.KbOSD = (function (window, undefined) {
 
         that.openSeadragon = OpenSeadragon(config);
 
+
+
         that.openSeadragon.addHandler('full-screen', function (e) {
             kbTriggerEvent(that.contentElem, 'fullScreen', {fullScreen: e.fullScreen});
             //change the fullscreen icon from expand to compress
             if (e.fullScreen) {
-                document.getElementById('full-screen').className = "fa fa-compress fa-lg";
+                document.getElementById('full-screen').className = "icon fullscreen_exit";
             } else {
-                document.getElementById('full-screen').className = "fa fa-expand fa-lg";
+                document.getElementById('full-screen').className = "icon fullscreen";
             }
         });
 
@@ -389,7 +390,7 @@ window.KbOSD = (function (window, undefined) {
         that.pageNumNormalizer.setOsd(that.openSeadragon);
 
         // inject index if there is one
-        if (('undefined' !== typeof config.indexPage) && config.indexPage.length && config.indexPage.length > 0) {
+       /* if (('undefined' !== typeof config.indexPage) && config.indexPage.length && config.indexPage.length > 0) {
             that.indexElem = document.createElement('div');
             that.indexElem.className = 'indexPage shown';
             that.indexFan = document.createElement('div');
@@ -422,7 +423,7 @@ window.KbOSD = (function (window, undefined) {
                     kbOSD.setCurrentPage(page);
                 }
             });
-        }
+        }*/
 
         if (this.toolbarElem.querySelector('#' + this.uid + '-prev')) {
             // set up listeners for the preview && next to keep the fastNav index updated.
@@ -562,20 +563,8 @@ window.KbOSD = (function (window, undefined) {
         },
         updateFragmentIdentifier: function () {
             var fragment = KbOSD.prototype.instances.map(function (kbosd) {
-                return kbosd.uid + '=page:' + kbosd.getCurrentPage();
+                return 'page:' + kbosd.getCurrentPage();
             }).join('&');
-            if ('undefined' !== typeof history.replaceState) { // Note: IE9 does not support history.replaceState
-                history.replaceState(undefined, undefined, '#' + fragment);
-            }
-        },
-        toggleIndexPage: function () {
-            if ('undefined' !== typeof this.indexElem) { // only do if there IS an indexPage
-                if (this.indexElem.className.indexOf('shown') > 0) {
-                    this.indexElem.className = 'indexPage';
-                } else {
-                    this.indexElem.className = 'indexPage shown';
-                }
-            }
         }
     };
 

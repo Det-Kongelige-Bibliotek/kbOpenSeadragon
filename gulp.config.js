@@ -11,7 +11,7 @@ module.exports = function() {
         // all the js to validate
         alljs: ['http-pub/js/*.js', './*.js'],
         //external libraries
-        externalJSSRC: ['http-pub/3rdparty/openseadragon.js', 'http-pub/3rdparty/native.history.js'],
+        externalJSSRC: ['http-pub/3rdparty/openseadragon.min.js'],
         // the CSS files
         CSSSRC: 'http-pub/css/*.css',
         // the images
@@ -31,7 +31,7 @@ module.exports = function() {
         // localhost URL
         LOCALHOSTURL: 'http://localhost:8002/',
         // local IP address
-        IP_LOCALHOSTURL: 'http://192.168.109.130:8001/',     // TO BE CHANGED BY DEVELOPERS
+        IP_LOCALHOSTURL: 'http://192.168.109.132:8001/',     // TO BE CHANGED BY DEVELOPERS
         // Base URL in the static server
         STATICURL: 'https://static.kb.dk/kbOpenSeadragon/',
         // Base URL in the static test server
