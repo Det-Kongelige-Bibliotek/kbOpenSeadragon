@@ -329,7 +329,7 @@ window.KbOSD = (function (window, undefined) {
         });
 
 
-        OpenSeadragon.setString("Tooltips.FullPage", "Fuld skærm");
+        OpenSeadragon.setString("Tooltips.FullPage", "Se faksimile i fuld skærm");
         OpenSeadragon.setString("Tooltips.Home", "Reset");
         OpenSeadragon.setString("Tooltips.ZoomIn", "Zoom ind");
         OpenSeadragon.setString("Tooltips.ZoomOut", "Zoom ud");
